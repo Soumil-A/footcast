@@ -26,3 +26,5 @@ models/*
 !models/.gitkeep
 reports/figures/*
 !reports/figures/.gitkeep
+!reports/figures/phase2/
+!reports/figures/phase2/*.png

@@ -1,0 +1,40 @@
+{
+  "scope": {
+    "splits": [
+      "train",
+      "validation"
+    ],
+    "first_season": "2015-16",
+    "last_season": "2023-24",
+    "matches": 3420,
+    "excluded_splits": [
+      "test",
+      "holdout"
+    ]
+  },
+  "outcomes_percent": {
+    "home_win": 44.91,
+    "draw": 23.19,
+    "away_win": 31.9
+  },
+  "home_win_range": {
+    "lowest_season": "2020-21",
+    "lowest_percent": 37.89,
+    "highest_season": "2016-17",
+    "highest_percent": 49.21,
+    "average_percent": 44.91
+  },
+  "top_team_overall": {
+    "team": "Man City",
+    "points_per_match": 2.287
+  },
+  "promoted_comparison": {
+    "new_team_points_per_match": 0.931,
+    "continuing_team_points_per_match": 1.468
+  },
+  "strongest_non_goal_current_match_correlation": {
+    "variable": "shots_on_target_difference",
+    "correlation_with_home_result_points": 0.543
+  },
+  "team_seasons": 180
+}

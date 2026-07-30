@@ -26,3 +26,19 @@ Before adding a feature, record:
 | Season-to-date points | Before kickoff | Final table used | Planned |
 
 No feature is approved until its calculation and focused leakage test exist.
+
+## Phase 2 exploratory-use register
+
+| Quantity | Descriptive use | Direct pre-match use | Reason |
+| --- | --- | --- | --- |
+| Current match result/goals | Allowed | Forbidden | Known only after the match |
+| Current shots/target shots | Allowed | Forbidden | Accumulate after kickoff |
+| Current corners/fouls/cards | Allowed | Forbidden | Accumulate after kickoff |
+| Final season points per match | Allowed | Forbidden | Uses matches that were future at earlier dates |
+| Full-window head-to-head mean | Allowed | Forbidden | Includes later meetings |
+| Source-column missingness | Allowed | Not a match feature | Dataset metadata |
+| Promotion-candidate label | Allowed | Not yet approved | Inferred from adjacent team sets |
+
+Phase 3 may propose shifted historical versions of match statistics. Each one
+must be calculated strictly before the target kickoff and receive a
+hand-calculated leakage test.

@@ -82,3 +82,50 @@
   registry before team histories are built?
 - How should exploratory charts clearly distinguish descriptive current-match
   statistics from future leakage-safe model inputs?
+
+## Phase 2: Exploratory analysis
+
+### Concepts
+
+- Exploratory analysis can legitimately inspect post-match statistics to
+  understand the dataset, but that does not make those values valid pre-match
+  predictors.
+- A final season aggregate answers a retrospective question. A model feature
+  must instead be calculated as of each match date using completed history.
+- Correlation measures co-movement, not causation, and says nothing by itself
+  about when a value becomes available.
+- Protecting test and holdout seasons begins before modeling. Looking at their
+  outcome patterns while designing features would allow future information to
+  influence development decisions.
+
+### Decisions
+
+- Restrict every Phase 2 calculation to training and validation seasons,
+  covering 2015-16 through 2023-24.
+- Keep exploratory transformations in tested package code and use the notebook
+  as a readable guide rather than a second source of business logic.
+- Commit the small Phase 2 figures because they communicate the analysis in the
+  GitHub repository; continue to regenerate them from code.
+- Describe newly appearing teams as promotion/relegation candidates until a
+  verified promotion-status source or explicit rule is approved.
+
+### Observations
+
+- Home wins represent 44.91% of development matches, draws 23.19%, and away
+  wins 31.90%.
+- The 2020-21 season has the lowest home-win rate in the development window at
+  37.89%; the charts alone do not establish why.
+- Newly appearing teams average 0.931 points per match versus 1.468 for
+  continuing teams.
+- Shots-on-target difference has the strongest non-goal current-match
+  correlation with home-result points (0.543). It is still unavailable before
+  kickoff and therefore unsafe in its current-match form.
+
+### Questions for Phase 3
+
+- What default should early-season and newly promoted teams receive before
+  enough match history exists?
+- Should rolling statistics use only the current season or carry selected
+  history across season boundaries?
+- How should values be shrunk toward the league average when only one or two
+  prior matches exist?

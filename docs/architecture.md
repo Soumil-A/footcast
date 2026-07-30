@@ -19,6 +19,10 @@ Schema and quality validation
         v
 Canonical match table (Phase 1 complete)
         |
+        +----> Development-only exploration (Phase 2 complete)
+        |           |
+        |           +----> Figures and interpretation report
+        |
         v
 Leakage-safe pre-match features
         |
@@ -54,6 +58,7 @@ Leakage-safe pre-match features
 - `footcast.data.download`: verified atomic downloads and raw-file protection
 - `footcast.data.validate`: season-level validation and canonicalization
 - `footcast.data.pipeline`: orchestration and quality-report generation
+- `footcast.exploration`: development-only summaries, figures, and report
 
 Planned later:
 
