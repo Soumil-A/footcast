@@ -1,0 +1,187 @@
+{
+  "status": "passed",
+  "checkpoint": "Phase 4 checkpoint 1",
+  "train_seasons": [
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23"
+  ],
+  "validation_seasons": [
+    "2023-24"
+  ],
+  "test_seasons_used": [],
+  "holdout_seasons_used": [],
+  "training_rows": 3040,
+  "validation_rows": 380,
+  "feature_count": 38,
+  "feature_columns": [
+    "home_history_matches",
+    "home_rolling_matches",
+    "home_form_points_last_5",
+    "home_form_wins_last_5",
+    "home_goals_for_last_5",
+    "home_goals_against_last_5",
+    "home_shots_last_5",
+    "home_shots_on_target_last_5",
+    "home_venue_matches_last_5",
+    "home_venue_points_last_5",
+    "home_days_since_previous_match",
+    "home_season_matches_played",
+    "home_season_points",
+    "home_expanding_goals_for_mean",
+    "home_expanding_goals_against_mean",
+    "home_elo",
+    "away_history_matches",
+    "away_rolling_matches",
+    "away_form_points_last_5",
+    "away_form_wins_last_5",
+    "away_goals_for_last_5",
+    "away_goals_against_last_5",
+    "away_shots_last_5",
+    "away_shots_on_target_last_5",
+    "away_venue_matches_last_5",
+    "away_venue_points_last_5",
+    "away_days_since_previous_match",
+    "away_season_matches_played",
+    "away_season_points",
+    "away_expanding_goals_for_mean",
+    "away_expanding_goals_against_mean",
+    "away_elo",
+    "elo_difference",
+    "form_points_difference",
+    "goals_scored_difference",
+    "goals_conceded_difference",
+    "rest_days_difference",
+    "shots_on_target_difference"
+  ],
+  "class_order": [
+    "home_win",
+    "draw",
+    "away_win"
+  ],
+  "training_class_distribution": {
+    "home_win": 1361,
+    "draw": 711,
+    "away_win": 968
+  },
+  "validation_class_distribution": {
+    "home_win": 175,
+    "draw": 82,
+    "away_win": 123
+  },
+  "results": {
+    "Majority class": {
+      "accuracy": 0.4605263157894737,
+      "macro_f1": 0.21021021021021022,
+      "log_loss": 1.05404355376108,
+      "per_class_recall": {
+        "home_win": 1.0,
+        "draw": 0.0,
+        "away_win": 0.0
+      },
+      "confusion_matrix": [
+        [
+          175,
+          0,
+          0
+        ],
+        [
+          82,
+          0,
+          0
+        ],
+        [
+          123,
+          0,
+          0
+        ]
+      ]
+    },
+    "Always home": {
+      "accuracy": 0.4605263157894737,
+      "macro_f1": 0.21021021021021022,
+      "log_loss": 19.444602486234253,
+      "per_class_recall": {
+        "home_win": 1.0,
+        "draw": 0.0,
+        "away_win": 0.0
+      },
+      "confusion_matrix": [
+        [
+          175,
+          0,
+          0
+        ],
+        [
+          82,
+          0,
+          0
+        ],
+        [
+          123,
+          0,
+          0
+        ]
+      ]
+    },
+    "Elo": {
+      "accuracy": 0.5789473684210527,
+      "macro_f1": 0.42315406157287166,
+      "log_loss": 0.9452589662298324,
+      "per_class_recall": {
+        "home_win": 0.8342857142857143,
+        "draw": 0.0,
+        "away_win": 0.6016260162601627
+      },
+      "confusion_matrix": [
+        [
+          146,
+          0,
+          29
+        ],
+        [
+          51,
+          0,
+          31
+        ],
+        [
+          49,
+          0,
+          74
+        ]
+      ]
+    },
+    "Logistic regression": {
+      "accuracy": 0.5657894736842105,
+      "macro_f1": 0.41748792270531404,
+      "log_loss": 0.9350142445454265,
+      "per_class_recall": {
+        "home_win": 0.7771428571428571,
+        "draw": 0.0,
+        "away_win": 0.6422764227642277
+      },
+      "confusion_matrix": [
+        [
+          136,
+          1,
+          38
+        ],
+        [
+          46,
+          0,
+          36
+        ],
+        [
+          43,
+          1,
+          79
+        ]
+      ]
+    }
+  }
+}

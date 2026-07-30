@@ -20,6 +20,7 @@ dependencies = [
 footcast-data = "footcast.data.pipeline:main"
 footcast-explore = "footcast.exploration:main"
 footcast-features = "footcast.features.build_features:main"
+footcast-baselines = "footcast.models.run_baselines:main"
 
 [project.optional-dependencies]
 dev = [

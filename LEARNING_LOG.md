@@ -172,3 +172,51 @@
   pipeline without using future information?
 - Does Elo alone provide most of the signal, or do recent form and rest improve
   validation performance?
+
+## Phase 4 Checkpoint 1: Baselines
+
+### Concepts
+
+- A baseline is a reference point, not merely a weak model. It tells us whether
+  added complexity earns a measurable improvement.
+- Accuracy can conceal total failure on a minority outcome. Macro F1 and
+  per-class recall force the comparison to account for draws and away wins.
+- A classifier's label and its probabilities answer different questions. Elo
+  led label metrics here, while logistic regression produced the better log
+  loss.
+- Imputation and scaling learn parameters. They belong inside the training
+  pipeline so validation values cannot influence training medians or means.
+
+### Decisions
+
+- Fit every checkpoint model on 2015-16 through 2022-23 and evaluate on
+  2023-24; do not load 2024-25 or 2025-26.
+- Give logistic regression all 38 numeric pre-match features as the first
+  transparent learned model.
+- Give Elo only its two rating snapshots and estimate its draw probability from
+  training outcomes.
+- Report accuracy, macro F1, per-class recall, log loss, and fixed-order
+  confusion matrices for every model.
+- Keep this checkpoint reproducible from source rather than saving a model
+  artifact before model selection and calibration.
+
+### Observations
+
+- Elo reached `0.579` validation accuracy and `0.423` macro F1, leading the
+  checkpoint's label metrics.
+- Logistic regression reached `0.566` accuracy and `0.417` macro F1, but its
+  `0.935` log loss narrowly beat Elo's `0.945`.
+- The majority and always-home rules made identical labels, yet always-home's
+  certainty increased log loss from `1.054` to `19.445`.
+- Neither Elo nor logistic regression correctly selected a validation draw.
+  Draw handling is therefore a clear later error-analysis and calibration
+  target, not a reason to open the test season early.
+
+### Questions for the next Phase 4 checkpoint
+
+- Can Random Forest improve macro F1 or log loss without overfitting the single
+  validation season?
+- Which hyperparameters should be explored with time-aware cross-validation
+  inside the training period?
+- Do class weighting or calibrated probabilities improve draw behavior without
+  damaging overall probability quality?
