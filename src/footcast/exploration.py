@@ -24,7 +24,7 @@ import seaborn as sns  # noqa: E402
 
 from footcast.data.download import DEFAULT_RAW_DIR
 from footcast.data.manifest import DEFAULT_MANIFEST, DownloadSpec, load_manifest
-from footcast.data.validate import validate_season
+from footcast.data.matches import prepare_match_statistics
 
 PROJECT_ROOT = DEFAULT_MANIFEST.parents[1]
 DEFAULT_FIGURE_DIR = PROJECT_ROOT / "reports" / "figures" / "phase2"
@@ -32,20 +32,6 @@ DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "exploration.md"
 DEFAULT_SUMMARY_PATH = PROJECT_ROOT / "reports" / "exploration_summary.json"
 DEVELOPMENT_SPLITS = frozenset({"train", "validation"})
 
-STAT_COLUMN_MAP = {
-    "HS": "home_shots",
-    "AS": "away_shots",
-    "HST": "home_shots_on_target",
-    "AST": "away_shots_on_target",
-    "HF": "home_fouls",
-    "AF": "away_fouls",
-    "HC": "home_corners",
-    "AC": "away_corners",
-    "HY": "home_yellow_cards",
-    "AY": "away_yellow_cards",
-    "HR": "home_red_cards",
-    "AR": "away_red_cards",
-}
 OUTCOME_ORDER = ("home_win", "draw", "away_win")
 OUTCOME_LABELS = {
     "home_win": "Home win",
@@ -70,36 +56,6 @@ class ExplorationDataset:
     matches: pd.DataFrame
     source_missingness: pd.DataFrame
     promoted_candidates: dict[str, tuple[str, ...]]
-
-
-def _prepare_season(frame: pd.DataFrame, spec: DownloadSpec) -> pd.DataFrame:
-    """Validate a source frame and add stable descriptive match statistics."""
-    validated = validate_season(frame, spec)
-    source = pd.DataFrame(
-        {
-            "season": spec.season,
-            "match_date": pd.to_datetime(
-                frame["Date"], dayfirst=True, format="mixed"
-            ).dt.strftime("%Y-%m-%d"),
-            "home_team": frame["HomeTeam"].astype(str).str.strip(),
-            "away_team": frame["AwayTeam"].astype(str).str.strip(),
-        }
-    )
-    for source_column, canonical_column in STAT_COLUMN_MAP.items():
-        source[canonical_column] = (
-            pd.to_numeric(frame[source_column], errors="coerce")
-            if source_column in frame
-            else pd.NA
-        )
-
-    matches = validated.matches.merge(
-        source,
-        on=["season", "match_date", "home_team", "away_team"],
-        how="left",
-        validate="one_to_one",
-    )
-    matches["split"] = spec.split
-    return matches
 
 
 def load_exploration_data(
@@ -128,7 +84,7 @@ def load_exploration_data(
             )
         frame = pd.read_csv(path)
         raw_frames.append(frame)
-        prepared = _prepare_season(frame, spec)
+        prepared = prepare_match_statistics(frame, spec)
         matches.append(prepared)
         teams_by_season[spec.season] = set(prepared["home_team"]) | set(
             prepared["away_team"]

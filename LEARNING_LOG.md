@@ -129,3 +129,46 @@
   history across season boundaries?
 - How should values be shrunk toward the league average when only one or two
   prior matches exist?
+
+## Phase 3: Leakage-safe pre-match features and Elo
+
+### Concepts
+
+- The safe order is snapshot, predict, observe, then update. Reversing the last
+  two steps lets a match influence its own features.
+- A rolling window must be defined relative to each team, not relative to rows
+  in the league-wide match table.
+- Season-to-date state and general historical form have different boundaries.
+  Season points reset, while known completed history can carry forward.
+- Cold starts are information, not bad rows. History counts let a later model
+  distinguish a true zero from a value calculated over no prior matches.
+
+### Decisions
+
+- Use sums for five-match form and production, paired with the number of prior
+  matches actually available.
+- Carry general form, rest history, expanding averages, and Elo across seasons.
+- Reset season matches and season points at each new season.
+- Leave first-observation rest days missing rather than inventing a schedule
+  assumption; retain every row.
+- Initialize unseen teams at Elo `1500`, use `K=20`, and include a fixed
+  65-point home adjustment in the expected-score calculation.
+- Generate development features only. Test and holdout seasons remain excluded.
+
+### Verification
+
+- The real development table contains 3,420 rows and 38 pre-match feature
+  columns.
+- Every season contributes all 380 matches; early-history rows are not dropped.
+- Twenty-three rows contain at least one completely unseen team, and the same
+  23 rows have an unavailable rest-days difference.
+- No feature other than explicitly documented rest values is missing.
+- The maximum rolling-history count is exactly five.
+
+### Questions for Phase 4
+
+- Which feature subset should each baseline receive so comparisons remain fair?
+- How should missing first-match rest values be imputed inside a training
+  pipeline without using future information?
+- Does Elo alone provide most of the signal, or do recent form and rest improve
+  validation performance?
