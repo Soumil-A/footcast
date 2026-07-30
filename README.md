@@ -10,13 +10,14 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Phases 1 through 3 are complete. Football-Data acquisition is checksum-pinned and
-repeatable, raw files are immutable, eleven seasons pass schema and content
-validation, and the canonical match table can be regenerated locally.
-Exploratory analysis uses only the training and validation seasons and clearly
-labels current-match statistics as descriptive, not pre-kickoff features. The
-feature pipeline now creates tested pre-match form, rest, season-state, and Elo
-values. No model has been trained.
+Phases 1 through 3 and Phase 4 checkpoint 1 are complete. Football-Data
+acquisition is checksum-pinned and repeatable, raw files are immutable, eleven
+seasons pass schema and content validation, and the canonical match table can
+be regenerated locally. Exploratory analysis uses only the training and
+validation seasons and clearly labels current-match statistics as descriptive,
+not pre-kickoff features. The feature pipeline creates tested pre-match form,
+rest, season-state, and Elo values. Four baselines, including FootCast's first
+learned model, now establish the validation reference points.
 
 ## Planned modeling question
 
@@ -220,6 +221,29 @@ See [docs/features.md](docs/features.md) for definitions, required source
 columns, availability, leakage risks, and missing-history behavior. The
 [feature-quality report](reports/feature_quality.md) summarizes the generated
 table. The 2024-25 test season and 2025-26 holdout remain excluded.
+
+## Baseline modeling
+
+Phase 4 checkpoint 1 fits on 3,040 matches from 2015-16 through 2022-23 and
+compares once on the 380 matches in 2023-24:
+
+```bash
+python -m footcast.models.run_baselines
+```
+
+| Model | Accuracy | Macro F1 | Log loss |
+| --- | ---: | ---: | ---: |
+| Majority class | 0.461 | 0.210 | 1.054 |
+| Always home | 0.461 | 0.210 | 19.445 |
+| Elo | 0.579 | 0.423 | 0.945 |
+| Logistic regression | 0.566 | 0.417 | 0.935 |
+
+Elo leads validation accuracy and macro F1; logistic regression gives the best
+three-way probability score. Neither model yet detects draws reliably. The
+[baseline contract](docs/baselines.md) explains the four methods, preprocessing,
+and metrics. Full results are in the
+[baseline report](reports/baseline_results.md), with confusion matrices in
+`reports/figures/phase4/`. The command never loads the test or holdout seasons.
 
 ## Responsible use
 

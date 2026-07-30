@@ -26,7 +26,9 @@ Canonical match table (Phase 1 complete)
         v
 Leakage-safe pre-match features (Phase 3 complete)
         |
-        +----> Baselines
+        +----> Baselines (Phase 4 checkpoint 1 complete)
+        |           |
+        |           +----> Validation metrics and confusion matrices
         |
         +----> Random Forest
                     |
@@ -62,10 +64,14 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.features.form`: completed team histories and pre-match snapshots
 - `footcast.features.elo`: pre-match ratings and post-result updates
 - `footcast.features.build_features`: matchup assembly and feature audit
+- `footcast.models.baselines`: naive, Elo, and logistic-regression estimators
+- `footcast.models.run_baselines`: chronological fitting and report generation
+- `footcast.evaluation.metrics`: fixed-order multiclass model metrics
+- `footcast.evaluation.plots`: consistent confusion-matrix visualization
 
 Planned later:
 
-- `footcast.models`: baselines, training, calibration, and inference
-- `footcast.evaluation`: metrics, plots, and subgroup analysis
+- Random Forest training and model selection
+- calibration, subgroup analysis, artifact versioning, and inference
 
 These modules will be introduced only when their milestone begins.
