@@ -10,10 +10,12 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Phase 1 is complete: Football-Data acquisition is checksum-pinned and
+Phases 1 and 2 are complete. Football-Data acquisition is checksum-pinned and
 repeatable, raw files are immutable, eleven seasons pass schema and content
-validation, and the canonical match table can be regenerated locally. No
-features have been created and no model has been trained.
+validation, and the canonical match table can be regenerated locally.
+Exploratory analysis uses only the training and validation seasons and clearly
+labels current-match statistics as descriptive, not pre-kickoff features. No
+predictive features have been created and no model has been trained.
 
 ## Planned modeling question
 
@@ -161,6 +163,32 @@ Validation stops with one clear error containing every detected problem for a
 season. It checks required columns, missing values, dates, season boundaries,
 team names, home/away identity, scores, outcomes, score/outcome consistency,
 duplicate fixtures, row counts, team counts, and source-schema drift.
+
+## Exploratory analysis
+
+Phase 2 explores 3,420 development matches from 2015-16 through 2023-24. It
+deliberately excludes the 2024-25 test season and 2025-26 holdout from every
+calculation and chart.
+
+```bash
+python -m footcast.exploration
+```
+
+The command revalidates its input and regenerates:
+
+- outcome distribution by season
+- home-win percentage over time
+- team-by-season points-per-match heatmap
+- historical home-team versus away-team result heatmap
+- current-match numerical correlation heatmap
+- source missingness and schema-drift heatmap
+- new-team versus continuing-team comparison
+- `reports/exploration.md` and `reports/exploration_summary.json`
+
+See the guided notebook at `notebooks/02_exploration.ipynb`. Each visualization
+states its question, kickoff-time availability, permitted use, and conclusion
+limits. Current-match goals, shots, corners, fouls, cards, and results remain
+forbidden as predictors for that same match.
 
 ## Responsible use
 

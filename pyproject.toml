@@ -18,6 +18,7 @@ dependencies = [
 
 [project.scripts]
 footcast-data = "footcast.data.pipeline:main"
+footcast-explore = "footcast.exploration:main"
 
 [project.optional-dependencies]
 dev = [
@@ -30,6 +31,9 @@ packages = ["src/footcast"]
 
 [tool.pytest.ini_options]
 addopts = "-ra"
+filterwarnings = [
+  "ignore:The set_bad function will be deprecated.*:PendingDeprecationWarning:seaborn.matrix",
+]
 pythonpath = ["src"]
 testpaths = ["tests"]
 
