@@ -9,11 +9,15 @@ description = "Premier League match outcome prediction and analytics platform"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+  "certifi>=2024.8",
   "matplotlib>=3.9",
   "pandas>=2.2",
   "scikit-learn>=1.5",
   "seaborn>=0.13",
 ]
+
+[project.scripts]
+footcast-data = "footcast.data.pipeline:main"
 
 [project.optional-dependencies]
 dev = [
