@@ -24,7 +24,7 @@ Canonical match table (Phase 1 complete)
         |           +----> Figures and interpretation report
         |
         v
-Leakage-safe pre-match features
+Leakage-safe pre-match features (Phase 3 complete)
         |
         +----> Baselines
         |
@@ -59,10 +59,12 @@ Leakage-safe pre-match features
 - `footcast.data.validate`: season-level validation and canonicalization
 - `footcast.data.pipeline`: orchestration and quality-report generation
 - `footcast.exploration`: development-only summaries, figures, and report
+- `footcast.features.form`: completed team histories and pre-match snapshots
+- `footcast.features.elo`: pre-match ratings and post-result updates
+- `footcast.features.build_features`: matchup assembly and feature audit
 
 Planned later:
 
-- `footcast.features`: team histories, rolling form, and Elo
 - `footcast.models`: baselines, training, calibration, and inference
 - `footcast.evaluation`: metrics, plots, and subgroup analysis
 

@@ -10,12 +10,13 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Phases 1 and 2 are complete. Football-Data acquisition is checksum-pinned and
+Phases 1 through 3 are complete. Football-Data acquisition is checksum-pinned and
 repeatable, raw files are immutable, eleven seasons pass schema and content
 validation, and the canonical match table can be regenerated locally.
 Exploratory analysis uses only the training and validation seasons and clearly
-labels current-match statistics as descriptive, not pre-kickoff features. No
-predictive features have been created and no model has been trained.
+labels current-match statistics as descriptive, not pre-kickoff features. The
+feature pipeline now creates tested pre-match form, rest, season-state, and Elo
+values. No model has been trained.
 
 ## Planned modeling question
 
@@ -189,6 +190,36 @@ See the guided notebook at `notebooks/02_exploration.ipynb`. Each visualization
 states its question, kickoff-time availability, permitted use, and conclusion
 limits. Current-match goals, shots, corners, fouls, cards, and results remain
 forbidden as predictors for that same match.
+
+## Pre-match features
+
+Phase 3 transforms completed team history into values available immediately
+before each target kickoff:
+
+```bash
+python -m footcast.features.build_features
+```
+
+The development output contains 38 pre-match feature columns for 3,420 matches.
+It includes:
+
+- points, wins, goals, shots, and shots on target from up to five prior matches
+- same-role home or away form
+- days since the previous observed match
+- matches played and points earned earlier in the current season
+- expanding historical goals scored and conceded
+- pre-match Elo ratings
+- home-minus-away matchup differences
+- history counts that make cold starts explicit
+
+General history and Elo carry across seasons; season matches and points reset.
+Unseen teams start with empty history and Elo `1500`. First-match rest values
+remain missing rather than inventing information, and those rows are retained.
+
+See [docs/features.md](docs/features.md) for definitions, required source
+columns, availability, leakage risks, and missing-history behavior. The
+[feature-quality report](reports/feature_quality.md) summarizes the generated
+table. The 2024-25 test season and 2025-26 holdout remain excluded.
 
 ## Responsible use
 

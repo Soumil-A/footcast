@@ -18,14 +18,15 @@ Before adding a feature, record:
 
 | Feature | Availability | Leakage risk | Status |
 | --- | --- | --- | --- |
-| Pre-match Elo difference | Before kickoff | Elo updated too early | Planned |
-| Points in previous five matches | Before kickoff | Current result included | Planned |
-| Goals scored in previous five matches | Before kickoff | Current goals included | Planned |
-| Goals conceded in previous five matches | Before kickoff | Current goals included | Planned |
-| Days since previous match | Before kickoff | Incorrect match ordering | Planned |
-| Season-to-date points | Before kickoff | Final table used | Planned |
+| Pre-match Elo difference | Before kickoff | Elo updated too early | Approved |
+| Points in previous five matches | Before kickoff | Current result included | Approved |
+| Goals scored in previous five matches | Before kickoff | Current goals included | Approved |
+| Goals conceded in previous five matches | Before kickoff | Current goals included | Approved |
+| Days since previous match | Before kickoff | Incorrect match ordering | Approved |
+| Season-to-date points | Before kickoff | Final table used | Approved |
 
-No feature is approved until its calculation and focused leakage test exist.
+Approval means the calculation exists and its focused leakage tests pass. See
+`docs/features.md` for the complete contract and missing-history behavior.
 
 ## Phase 2 exploratory-use register
 
@@ -39,6 +40,21 @@ No feature is approved until its calculation and focused leakage test exist.
 | Source-column missingness | Allowed | Not a match feature | Dataset metadata |
 | Promotion-candidate label | Allowed | Not yet approved | Inferred from adjacent team sets |
 
-Phase 3 may propose shifted historical versions of match statistics. Each one
-must be calculated strictly before the target kickoff and receive a
-hand-calculated leakage test.
+Phase 3 implements shifted historical versions of match statistics. Each is
+calculated strictly before the target kickoff and has a hand-calculated leakage
+test.
+
+## Phase 3 update-order guarantee
+
+For every chronologically ordered match, the pipeline:
+
+1. Reads the two teams' existing completed-match histories.
+2. Records all pre-match feature values.
+3. Records the target result separately.
+4. Adds the completed match to both histories.
+5. Updates Elo from the completed result.
+
+Tests prove that the first match has empty history, the second can use only the
+first, the sixth uses the preceding five rather than itself, home and away
+statistics are assigned correctly, season counters reset, and Elo changes only
+for later matches.
