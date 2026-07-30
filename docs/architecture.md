@@ -1,18 +1,23 @@
 # Architecture
 
-## Initial system boundary
+## Current system boundary
 
 FootCast will separate data acquisition, feature creation, training, evaluation,
 and serving so that each stage can be tested independently.
 
 ```text
-Historical CSV files
+Versioned download manifest
+        |
+        v
+Checksum-verified raw CSV files
         |
         v
 Schema and quality validation
         |
+        +----> JSON and Markdown quality reports
+        |
         v
-Canonical match table
+Canonical match table (Phase 1 complete)
         |
         v
 Leakage-safe pre-match features
@@ -43,9 +48,15 @@ Leakage-safe pre-match features
 6. Notebooks explore ideas; reusable logic lives in `src/footcast`.
 7. Every transformation that could leak information receives a focused test.
 
-## Planned modules
+## Modules
 
-- `footcast.data`: download, schema validation, and cleaning
+- `footcast.data.manifest`: typed, chronological source contract
+- `footcast.data.download`: verified atomic downloads and raw-file protection
+- `footcast.data.validate`: season-level validation and canonicalization
+- `footcast.data.pipeline`: orchestration and quality-report generation
+
+Planned later:
+
 - `footcast.features`: team histories, rolling form, and Elo
 - `footcast.models`: baselines, training, calibration, and inference
 - `footcast.evaluation`: metrics, plots, and subgroup analysis

@@ -1,0 +1,130 @@
+{
+  "source": {
+    "name": "Football-Data",
+    "homepage": "https://www.football-data.co.uk/englandm.php",
+    "league_code": "E0"
+  },
+  "seasons": [
+    {
+      "season": "2015-16",
+      "split": "train",
+      "url": "https://www.football-data.co.uk/mmz4281/1516/E0.csv",
+      "filename": "premier_league_2015_16.csv",
+      "sha256": "bd3502a18c38a1597fd9af62e2366b4015006d3528dd4d18b311bd6237bbc085",
+      "date_min": "2015-07-01",
+      "date_max": "2016-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2016-17",
+      "split": "train",
+      "url": "https://www.football-data.co.uk/mmz4281/1617/E0.csv",
+      "filename": "premier_league_2016_17.csv",
+      "sha256": "9625a7652b5f98fbd3e2e4d378c851fc246693f3343e34a72428d5b6e864d3e0",
+      "date_min": "2016-07-01",
+      "date_max": "2017-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2017-18",
+      "split": "train",
+      "url": "https://www.football-data.co.uk/mmz4281/1718/E0.csv",
+      "filename": "premier_league_2017_18.csv",
+      "sha256": "4f3389365ef3f7ac966764ed8ba67cf3b79f5aebed18dd224099c4b2c98bc67b",
+      "date_min": "2017-07-01",
+      "date_max": "2018-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2018-19",
+      "split": "train",
+      "url": "https://www.football-data.co.uk/mmz4281/1819/E0.csv",
+      "filename": "premier_league_2018_19.csv",
+      "sha256": "7c096b3c2ecd54c6993d22eeea73450c2bde11e3457238b226b8f43c62dfc35e",
+      "date_min": "2018-07-01",
+      "date_max": "2019-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2019-20",
+      "split": "train",
+      "url": "https://www.football-data.co.uk/mmz4281/1920/E0.csv",
+      "filename": "premier_league_2019_20.csv",
+      "sha256": "100037618b94f94057400bb02bf6bac4ef74ddaa58cde4b38370839c39caee61",
+      "date_min": "2019-07-01",
+      "date_max": "2020-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2020-21",
+      "split": "train",
+      "url": "https://www.football-data.co.uk/mmz4281/2021/E0.csv",
+      "filename": "premier_league_2020_21.csv",
+      "sha256": "5afe63f69401457b8354eaacee24f9a3e520b3c3af6329564a9783e20d789c62",
+      "date_min": "2020-07-01",
+      "date_max": "2021-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2021-22",
+      "split": "train",
+      "url": "https://www.football-data.co.uk/mmz4281/2122/E0.csv",
+      "filename": "premier_league_2021_22.csv",
+      "sha256": "335afcbabeb2939fa10ab39ba3e8215072d0b577cb8d0705c1e44c56e934e703",
+      "date_min": "2021-07-01",
+      "date_max": "2022-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2022-23",
+      "split": "train",
+      "url": "https://www.football-data.co.uk/mmz4281/2223/E0.csv",
+      "filename": "premier_league_2022_23.csv",
+      "sha256": "8442792d3b614c94ea3cf381bd2736805889cc1713169035368fff19c3d02380",
+      "date_min": "2022-07-01",
+      "date_max": "2023-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2023-24",
+      "split": "validation",
+      "url": "https://www.football-data.co.uk/mmz4281/2324/E0.csv",
+      "filename": "premier_league_2023_24.csv",
+      "sha256": "b2e057b0ed959f198b0f63d2391c01239f3608e6de5db68edab3f88e04d07ff3",
+      "date_min": "2023-07-01",
+      "date_max": "2024-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2024-25",
+      "split": "test",
+      "url": "https://www.football-data.co.uk/mmz4281/2425/E0.csv",
+      "filename": "premier_league_2024_25.csv",
+      "sha256": "d0c8ce4a96d886cf60cf101f570f4a3893844226f91c7bd769eb568c49edbfa4",
+      "date_min": "2024-07-01",
+      "date_max": "2025-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    },
+    {
+      "season": "2025-26",
+      "split": "holdout",
+      "url": "https://www.football-data.co.uk/mmz4281/2526/E0.csv",
+      "filename": "premier_league_2025_26.csv",
+      "sha256": "3e3a8352f9ada6789c508d6ca184424421fed56a30400904a4a327c583407e62",
+      "date_min": "2025-07-01",
+      "date_max": "2026-07-31",
+      "expected_rows": 380,
+      "expected_teams": 20
+    }
+  ]
+}

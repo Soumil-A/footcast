@@ -10,9 +10,10 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Milestone 0 is complete: the repository structure, initial tests, documentation,
-and chronological data-split contract are in place. No data has been downloaded
-and no model has been trained yet.
+Phase 1 is complete: Football-Data acquisition is checksum-pinned and
+repeatable, raw files are immutable, eleven seasons pass schema and content
+validation, and the canonical match table can be regenerated locally. No
+features have been created and no model has been trained.
 
 ## Planned modeling question
 
@@ -104,10 +105,62 @@ pytest
 
 ## Data
 
-The initial dataset will consist of historical Premier League CSV files from
-[Football-Data](https://www.football-data.co.uk/englandm.php). Raw datasets are
-not committed to Git; download and validation scripts will make acquisition
-reproducible in the next milestone.
+The dataset contains all 4,180 Premier League matches from 2015-16 through
+2025-26, downloaded from
+[Football-Data](https://www.football-data.co.uk/englandm.php). Football-Data
+describes its Premier League files as containing full-time and half-time
+results, match statistics, and odds.
+
+The versioned [download manifest](data/download_manifest.json) records each
+official URL, local filename, chronological split, expected season bounds,
+expected row/team counts, and SHA-256 checksum. The downloader:
+
+- reuses a local raw file only when its checksum matches
+- downloads new files to a temporary path before moving them into place
+- rejects upstream bytes that do not match the reviewed manifest
+- refuses to overwrite a different existing raw file
+
+Raw and processed CSV files remain ignored by Git. They are generated locally;
+the manifest, pipeline, tests, and quality reports are committed.
+
+### Canonical match schema
+
+| Column | Rule |
+| --- | --- |
+| `season` | Manifest season in `YYYY-YY` format |
+| `match_date` | Valid ISO date inside the declared season |
+| `home_team` | Nonblank, whitespace-checked source team name |
+| `away_team` | Nonblank, different from the home team |
+| `full_time_home_goals` | Nonnegative integer |
+| `full_time_away_goals` | Nonnegative integer |
+| `result` | `home_win`, `draw`, or `away_win`, consistent with goals |
+
+Optional source columns are not copied into the Phase 1 canonical table. They
+are inventoried in the
+[data-quality report](reports/data_quality.md), which documents source schema
+drift from 65 columns in early files to 132 columns in 2025-26.
+
+### Reproduce Phase 1
+
+From the repository root, after local setup:
+
+```bash
+python -m footcast.data.pipeline
+pytest
+ruff check .
+```
+
+The pipeline creates:
+
+- `data/raw/premier_league_YYYY_YY.csv`: checksum-verified source bytes
+- `data/processed/matches.csv`: 4,180 validated canonical match rows
+- `reports/data_quality.json`: machine-readable full audit
+- `reports/data_quality.md`: reviewable audit summary
+
+Validation stops with one clear error containing every detected problem for a
+season. It checks required columns, missing values, dates, season boundaries,
+team names, home/away identity, scores, outcomes, score/outcome consistency,
+duplicate fixtures, row counts, team counts, and source-schema drift.
 
 ## Responsible use
 
