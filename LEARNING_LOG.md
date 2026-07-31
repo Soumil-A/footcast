@@ -269,3 +269,52 @@
   signal?
 - Which seasons, teams, cold starts, and confidence ranges contain the largest
   errors?
+
+## Phase 5 Checkpoint 1: Calibration and error analysis
+
+### Concepts
+
+- Calibration is a learned transformation and therefore needs its own
+  chronological training boundary.
+- Selecting no transformation is a valid result when every fitted calibrator
+  worsens forward probability metrics.
+- Log loss evaluates the probability assigned to the true outcome, while
+  Brier score measures squared error across all three outcomes and expected
+  calibration error compares confidence with observed accuracy.
+- Slice analysis can reveal failure modes, but small groups and single seasons
+  must not be generalized beyond their evidence.
+
+### Decisions
+
+- Generate five out-of-fold probability blocks with forests trained only on
+  earlier seasons.
+- Compare identity, multinomial sigmoid, and one-versus-rest isotonic
+  calibration by fitting on earlier out-of-fold seasons and evaluating on the
+  next block.
+- Select mean log loss first and Brier score only as an exact-tie breaker.
+- Analyze 2023-24 by outcome, season timing, prior-history availability, Elo
+  gap, confidence, and highest-confidence mistakes.
+- Keep 2024-25 test and 2025-26 holdout data unloaded.
+
+### Observations
+
+- Uncalibrated probabilities won the forward comparison with mean log loss
+  `0.994`, Brier score `0.590`, and expected calibration error `0.034`.
+- Sigmoid calibration slightly worsened mean log loss to `1.003`; isotonic
+  calibration worsened it to `1.166`.
+- The retained model's 2023-24 metrics remain log loss `0.931`, Brier `0.547`,
+  and expected calibration error `0.049`.
+- Draws have validation log loss `1.440` and zero classification accuracy,
+  making them the clearest unresolved failure mode.
+- Large Elo-gap matches perform better than close or medium-gap matches.
+- Twenty-five incorrect predictions carry at least 60% confidence.
+- The sole cold-start validation row was correct, but a sample of one cannot
+  establish cold-start quality.
+
+### Questions for the next checkpoint
+
+- Is the pipeline sufficiently frozen to authorize the one-time 2024-25 test?
+- Which exact code, feature list, constants, and no-calibration decision belong
+  in the versioned model artifact?
+- What acceptance criteria should stop deployment even if aggregate test
+  metrics look acceptable?

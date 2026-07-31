@@ -10,7 +10,7 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Phases 1 through 3 and Phase 4 checkpoints 1 and 2 are complete. Football-Data
+Phases 1 through 4 and Phase 5 checkpoint 1 are complete. Football-Data
 acquisition is checksum-pinned and repeatable, raw files are immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
 be regenerated locally. Exploratory analysis uses only the training and
@@ -18,8 +18,9 @@ validation seasons and clearly labels current-match statistics as descriptive,
 not pre-kickoff features. The feature pipeline creates tested pre-match form,
 rest, season-state, and Elo values. Four baselines, including FootCast's first
 learned model, establish the validation reference points. A time-aware Random
-Forest search now provides a modest nonlinear improvement without opening the
-reserved seasons.
+Forest search provides a modest nonlinear improvement. Forward-only calibration
+testing found that its original probabilities outperform sigmoid and isotonic
+post-processing, without opening the reserved seasons.
 
 ## Planned modeling question
 
@@ -264,8 +265,29 @@ but its draw recall remains zero.
 See the [Random Forest contract](docs/random_forest.md) for the selection
 design and the [generated report](reports/random_forest_results.md) for every
 candidate, fold, metric, and top training-derived importance. The test and
-holdout seasons remain untouched; calibration and deeper error analysis come
-next.
+holdout seasons remain untouched.
+
+## Calibration and error analysis
+
+Phase 5 checkpoint 1 compares no calibration, sigmoid calibration, and isotonic
+calibration using only forward out-of-fold predictions from the training
+period:
+
+```bash
+python -m footcast.models.run_calibration
+```
+
+No calibration was selected. The original Random Forest probabilities had the
+best training-period mean log loss (`0.994`), Brier score (`0.590`), and
+expected calibration error (`0.034`). On 2023-24 validation, the retained model
+has log loss `0.931`, Brier score `0.547`, and expected calibration error
+`0.049`.
+
+The [calibration contract](docs/calibration.md) explains the forward-only
+selection design. The [generated report](reports/calibration_results.md)
+documents reliability, outcome, season-timing, prior-history, Elo-gap, and
+high-confidence-error diagnostics. Draws remain the dominant weakness. The
+2024-25 test season remains sealed until the pipeline is explicitly frozen.
 
 ## Responsible use
 
