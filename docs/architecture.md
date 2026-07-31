@@ -84,6 +84,13 @@ Leakage-safe pre-match features (Phase 3 complete)
                     |
                     v
        Compose smoke test in CI
+                    |
+                    v
+       Render Blueprint deploy after CI
+                    |
+                    v
+       Native health checks plus scheduled
+       external provenance monitor
 ```
 
 ## Design principles
@@ -130,6 +137,7 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.api.main`: validated FastAPI schemas, lifecycle, and endpoints
 - `footcast.dashboard.client`: defensive HTTP client and error translation
 - `footcast.dashboard.app`: Streamlit presentation with no model imports
+- `footcast.monitoring`: deployed health and serving-provenance verification
 
 The API loads approved completed matches once at startup and shares that
 in-memory snapshot with inference and analytics. The dashboard is a separate
@@ -140,3 +148,9 @@ checksum-verified approved history at build time; the dashboard image contains
 no match data and reaches the API by its Compose service name. CI starts both
 images and verifies their health and model-data provenance before a change can
 merge.
+
+In production, Render builds those same Dockerfiles after the `main` branch CI
+checks pass. Its Blueprint injects the API's generated public URL into the
+dashboard. Native service health checks control routing, while a scheduled
+GitHub workflow verifies both public endpoints and the frozen approved-history
+contract every six hours.
