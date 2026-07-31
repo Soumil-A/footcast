@@ -28,8 +28,10 @@ seven expanding next-season backtests. They did not outperform Elo or Random
 Forest and did not solve draw recognition. A final two-stage draw-aware model
 improved draw recall only by damaging probability quality, so the fixed
 checkpoint gate rejected it. Elo is the Phase 7 educational reference model.
-Phase 7 checkpoint 1 now serves versioned future-fixture probabilities through
-a tested FastAPI application. The 2025-26 holdout remains sealed.
+Phase 7 now serves versioned future-fixture probabilities and deterministic
+completed-match analytics through FastAPI. A tested Streamlit dashboard uses
+that HTTP contract to present forecasts, Elo ratings, recent form, and
+head-to-head history. The 2025-26 holdout remains sealed.
 
 ## Planned modeling question
 
@@ -364,7 +366,7 @@ not as a betting-quality system. See the
 [draw-aware decision contract](docs/draw_aware.md) and
 [generated decision report](reports/draw_aware_results.md).
 
-## Phase 7 prediction API
+## Phase 7 product
 
 The first product checkpoint reconstructs immutable Elo state from 3,800
 approved completed matches and serves future-fixture probabilities without
@@ -380,6 +382,9 @@ Available endpoints are:
 - `GET /teams`
 - `POST /predict`
 - `GET /model/info`
+- `GET /analytics/team-form`
+- `GET /analytics/compare`
+- `GET /analytics/head-to-head`
 
 Interactive OpenAPI documentation is available at
 `http://127.0.0.1:8000/docs`. Every prediction exposes the model version, data
@@ -388,8 +393,18 @@ past dates, and extra post-match fields are rejected. See the
 [prediction API contract](docs/prediction_api.md) for the request schema,
 representative response, reproduction steps, tests, and limitations.
 
-The next checkpoint adds deterministic analytics endpoints and a Streamlit
-dashboard that consumes this API. The browser will not contain model logic.
+In a second terminal, run the dashboard:
+
+```bash
+streamlit run streamlit_app.py
+```
+
+Visit `http://127.0.0.1:8501`. The dashboard calls FastAPI over HTTP and never
+imports Elo inference or raw data. It provides fixture controls, three-way
+probability bars, recent-form summaries, rating comparison, head-to-head
+results, provenance, and limitations. Set `FOOTCAST_API_URL` when the API is
+not available at `http://127.0.0.1:8000`. See the
+[dashboard contract](docs/dashboard.md) for its architecture and test boundary.
 
 ## Responsible use
 

@@ -252,8 +252,12 @@ class EloReferenceService:
 
 def load_reference_service() -> EloReferenceService:
     """Build the local API service without reading the sealed holdout."""
-    matches = load_match_statistics(
+    return EloReferenceService(load_reference_matches())
+
+
+def load_reference_matches() -> pd.DataFrame:
+    """Load the one approved completed-match history used by Phase 7."""
+    return load_match_statistics(
         DEFAULT_RAW_DIR,
         splits=REFERENCE_SPLITS,
     )
-    return EloReferenceService(matches)

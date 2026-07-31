@@ -22,6 +22,8 @@ Phase 7 checkpoint 1 exposes that Elo reference through a versioned API. It
 reconstructs ratings from 3,800 approved completed matches, reports a
 `2025-05-25` data cutoff, and rejects data from the sealed holdout. The API is a
 portfolio demonstration, not evidence that the prediction quality improved.
+Checkpoint 2 adds descriptive form and head-to-head context plus a Streamlit
+client; it does not change, retrain, or improve the reference model.
 
 ## Intended use
 

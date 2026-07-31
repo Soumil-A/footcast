@@ -496,3 +496,48 @@ holdout remains sealed.
 
 Add deterministic recent-form, comparison, and head-to-head endpoints, then
 build a Streamlit dashboard that calls FastAPI rather than importing model code.
+
+## Phase 7 Checkpoint 2: Analytics and dashboard
+
+### Concepts
+
+- Descriptive analytics and predictive features are different. Recent form can
+  help a user interpret context without silently changing what the model uses.
+- Keeping the dashboard behind HTTP prevents model and data concerns from
+  leaking into the presentation process.
+- A team's view of a match must reverse goals and outcome when that team played
+  away; the stored fixture orientation should still be preserved for
+  head-to-head display.
+- Product validation includes browser behavior and error states as well as
+  Python functions.
+
+### Decisions
+
+- Load the approved train, validation, and test history once at API startup and
+  share it with immutable Elo inference and read-only analytics.
+- Continue to reject the 2025-26 holdout in both services.
+- Limit analytics requests to 1 through 20 matches and return latest first.
+- Make Streamlit call FastAPI through a small defensive standard-library HTTP
+  client. Do not import Elo or read raw files in the dashboard.
+- Display the data cutoff, model version, intended use, and limitations beside
+  the product output.
+
+### Verification observations
+
+- Analytics tests cover chronology, team perspective, scores, points,
+  head-to-head orientation, invalid teams, limits, and holdout rejection.
+- HTTP-client tests cover URL encoding, minimal pre-match payloads, API
+  validation errors, and unavailable-service errors.
+- Streamlit's headless test rendered both team controls, form tables, and the
+  product shell against an injected client.
+- All 109 repository tests and Ruff checks passed.
+- Live FastAPI and Streamlit processes loaded the real approved snapshot. An
+  Arsenal-Chelsea example displayed `54.0%` home, `23.3%` draw, and `22.7%`
+  away, plus current ratings, form, and head-to-head data. This verifies product
+  wiring, not future accuracy.
+
+### Outcome
+
+Phase 7 checkpoint 2 completes the first usable local FootCast product. The
+model is unchanged; this checkpoint improves accessibility, transparency, and
+portfolio presentation rather than predictive performance.
