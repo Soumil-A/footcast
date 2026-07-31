@@ -362,3 +362,48 @@ FootCast v1 is not recommended for deployment. This is a successful learning
 result: the untouched test exposed that the small validation advantage did not
 generalize. Any v2 work must treat 2024-25 as previously seen and define a new
 evaluation policy before development begins.
+
+## Phase 6: Poisson and Dixon-Coles goal models
+
+### Concepts
+
+- Modeling home and away goal counts provides a football-specific route to
+  three-way outcome probabilities by summing a score matrix.
+- Independent Poisson assumptions can misrepresent low-scoring dependence;
+  Dixon-Coles adjusts the four lowest score cells without changing the fitted
+  attack and defence rates.
+- A previously opened test season may enter later development research, but it
+  can never become unseen again. A new sealed boundary is required.
+- A plausible domain model is still only a hypothesis. It must outperform
+  simpler references on the same chronological folds.
+
+### Decisions
+
+- Treat 2015-16 through 2024-25 as v2 development data and preserve 2025-26 as
+  the untouched holdout.
+- Use seven expanding next-season folds beginning with evaluation on 2018-19.
+- Compare three Poisson regularization strengths and nine Dixon-Coles
+  alpha/rho combinations, selecting mean log loss first.
+- Refit Elo, logistic regression, and the Phase 4 Random Forest on every fold
+  so all five model families receive the same information.
+- Stop after the bounded experiment and record a negative result instead of
+  tuning repeatedly against the rolling backtests.
+
+### Observations
+
+- Random Forest had the lowest mean log loss at `0.975`, effectively tied with
+  Elo at `0.976`; logistic regression reached `0.996`.
+- Independent Poisson reached mean log loss `1.017`; Dixon-Coles reached
+  `1.018`. Neither improved the benchmarks.
+- Poisson and Dixon-Coles both had zero draw recall. The low-score correction
+  changed probabilities but never made draw the highest-probability outcome.
+- Logistic regression had the best macro F1 (`0.409`) and the highest draw
+  recall, but `0.024` remains too small to call the issue solved.
+
+### Outcome and next question
+
+The goal models are not promoted. Phase 6 establishes that a football-specific
+formulation alone is insufficient with these inputs. Before opening 2025-26,
+the next checkpoint should choose a bounded hypothesis around richer
+pre-match information or a draw-aware decision strategy and define its success
+criterion in advance.
