@@ -25,6 +25,7 @@ footcast-random-forest = "footcast.models.run_random_forest:main"
 footcast-calibration = "footcast.models.run_calibration:main"
 footcast-final-test = "footcast.models.run_final_test:main"
 footcast-goal-models = "footcast.models.run_goal_models:main"
+footcast-draw-aware = "footcast.models.run_draw_aware:main"
 
 [project.optional-dependencies]
 dev = [

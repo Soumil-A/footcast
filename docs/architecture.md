@@ -54,6 +54,16 @@ Leakage-safe pre-match features (Phase 3 complete)
                     v
          Retain benchmarks; goal models
          did not improve the evidence
+                    |
+                    v
+       Two-stage draw-aware checkpoint
+                    |
+                    v
+        Fixed gate rejects candidate;
+        Elo is Phase 7 reference model
+                    |
+                    v
+        Prediction API (next milestone)
 ```
 
 ## Design principles
@@ -86,14 +96,17 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.models.run_final_test`: frozen test evaluation and final report
 - `footcast.models.goal_models`: Poisson score rates and Dixon-Coles adjustment
 - `footcast.models.run_goal_models`: v2 expanding next-season backtests
+- `footcast.models.draw_aware`: two-stage draw and decisive classifiers
+- `footcast.models.run_draw_aware`: fixed search and promotion decision gate
 - `footcast.evaluation.metrics`: fixed-order multiclass model metrics
 - `footcast.evaluation.plots`: consistent confusion-matrix visualization
 - `footcast.evaluation.calibration_plots`: reliability and slice figures
 - `footcast.evaluation.error_analysis`: validation-only diagnostic slices
 - `footcast.evaluation.goal_model_plots`: rolling v2 comparison figures
+- `footcast.evaluation.draw_aware_plots`: final Phase 6 decision figures
 
-Planned later only after a new approved milestone:
+Planned for the next approved milestone:
 
-- additional v2 research, inference API, and dashboard work
+- deterministic inference API and dashboard work
 
 These modules will be introduced only when their milestone begins.

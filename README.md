@@ -10,8 +10,9 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Phases 1 through 5 and the Phase 6 goal-model checkpoint are complete. Football-Data
-acquisition is checksum-pinned and repeatable, raw files are immutable, eleven
+Phases 1 through 5 and all three Phase 6 research checkpoints are complete.
+Football-Data acquisition is checksum-pinned and repeatable, raw files are
+immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
 be regenerated locally. Exploratory analysis uses only the training and
 validation seasons and clearly labels current-match statistics as descriptive,
@@ -24,7 +25,10 @@ post-processing. The frozen v1 pipeline has now been evaluated once on the
 2024-25 test season. Its performance declined and it is not recommended for
 deployment. Phase 6 then evaluated Poisson and Dixon-Coles score models across
 seven expanding next-season backtests. They did not outperform Elo or Random
-Forest and did not solve draw recognition. The 2025-26 holdout remains sealed.
+Forest and did not solve draw recognition. A final two-stage draw-aware model
+improved draw recall only by damaging probability quality, so the fixed
+checkpoint gate rejected it. Elo is the Phase 7 educational reference model.
+The 2025-26 holdout remains sealed.
 
 ## Planned modeling question
 
@@ -336,6 +340,28 @@ selected a draw. This is retained as a documented negative result. See the
 [goal-model contract](docs/goal_models.md) and
 [generated report](reports/goal_model_results.md). No 2025-26 holdout data is
 loaded.
+
+### Draw-aware checkpoint and final decision
+
+Phase 6 checkpoint 2 separates draw detection from home-versus-away prediction:
+
+```bash
+python -m footcast.models.run_draw_aware
+```
+
+| Draw weight | Mean log loss | Mean macro F1 | Mean draw recall |
+| ---: | ---: | ---: | ---: |
+| **1.00 selected** | 0.996 | 0.405 | 0.016 |
+| 1.25 | 0.999 | 0.415 | 0.046 |
+| 1.50 | 1.010 | 0.431 | 0.109 |
+| 2.00 | 1.039 | 0.451 | 0.339 |
+
+Increasing draw weight raises draw recall but worsens log loss and Brier score.
+Checkpoint 3 therefore **rejects** the two-stage model under the fixed gate.
+Elo is selected as the Phase 7 reference for an educational probability demo,
+not as a betting-quality system. See the
+[draw-aware decision contract](docs/draw_aware.md) and
+[generated decision report](reports/draw_aware_results.md).
 
 ## Responsible use
 
