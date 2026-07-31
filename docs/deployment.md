@@ -83,6 +83,12 @@ Compose configuration, and build-context exclusions locally.
 
 ## Public deployment
 
+The production deployment is live:
+
+- dashboard: `https://footcast-dashboard-soumil.onrender.com`
+- API documentation: `https://footcast-api-soumil.onrender.com/docs`
+- API health: `https://footcast-api-soumil.onrender.com/health`
+
 `render.yaml` declares two Docker web services in Render's Virginia region:
 
 - `footcast-api-soumil` builds `docker/api.Dockerfile` and checks `/health`;
@@ -93,8 +99,9 @@ Both use the free plan. The dashboard receives `FOOTCAST_API_URL` from the API
 service's Render-generated `RENDER_EXTERNAL_URL`; no deployment hostname or
 secret is committed. Auto-deployment waits for GitHub CI checks to pass.
 
-The first deployment requires one account-level action that source code cannot
-perform: connect the GitHub repository to a Render workspace.
+Recreating the deployment in another workspace requires one account-level
+action that source code cannot perform: connect the GitHub repository to a
+Render workspace.
 
 1. Merge the deployment PR so `render.yaml` is on `main`.
 2. Sign in at `https://dashboard.render.com`.
@@ -112,8 +119,8 @@ The API and dashboard have platform-native health checks. The
 check every six hours. It verifies availability plus the scientific serving
 contract: 3,800 matches, cutoff `2025-05-25`, and no holdout use.
 
-After Render assigns URLs, enable the scheduled job by setting repository
-variables:
+The production repository variables are configured. For a replacement
+deployment, update them with:
 
 ```bash
 gh variable set FOOTCAST_API_URL --body "https://YOUR-API.onrender.com"
@@ -132,6 +139,10 @@ footcast-monitor \
 If either repository variable is absent, the scheduled job safely skips rather
 than reporting a false outage before initial deployment. GitHub records each
 run and reports failures through the repository's Actions notifications.
+
+The initial production check passed with 3,800 completed matches, cutoff
+`2025-05-25`, model version `footcast-elo-v2-reference`, and no holdout use.
+The first manually triggered GitHub monitor run also passed.
 
 ## Operational boundary
 

@@ -670,12 +670,18 @@ selecting a host, publishing the stack, and adding basic production monitoring.
   paths, free-plan region, CI-gated deploys, and generated API URL wiring.
 - Monitor tests cover the healthy product, provenance drift, and network
   failure paths without calling a live deployment.
-- Initial public provisioning still requires the repository owner to connect
-  the GitHub repository to a Render workspace after this checkpoint merges.
+- The `footcast-production` Blueprint deployed both Docker services from merged
+  commit `dc643ef`; Render reported both initial deploys live.
+- The live monitor passed with 3,800 matches, cutoff `2025-05-25`, Elo reference
+  version metadata, and `holdout_used=false`.
+- GitHub repository variables store both public URLs, and the first manually
+  triggered `Public deployment monitor` workflow passed in eight seconds.
+- The workspace is Hobby, both instances are Free, paid workflow concurrency is
+  zero, and the build-pipeline monthly spend limit is `$0`. Bandwidth has a
+  separate included allowance and no equivalent zero-dollar cap.
 
 ### Outcome
 
-FootCast has a tested public-hosting specification and an external monitoring
-contract. Once the one-time Render Blueprint authorization is applied, the live
-URLs can be recorded, monitored, and added to the portfolio README without any
-change to the model or data boundary.
+FootCast is publicly accessible as a monitored two-service portfolio product.
+Future changes merged to `main` deploy only after CI passes, so UI work can
+continue without changing the model or weakening the data boundary.
