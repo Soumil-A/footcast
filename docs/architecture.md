@@ -36,15 +36,16 @@ Leakage-safe pre-match features (Phase 3 complete)
                     |
                     v
           Calibration and evaluation
-          (Phase 5 checkpoint 1 complete)
+          (Phase 5 complete)
                     |
                     v
-             Versioned artifact
+       Frozen v1 contract and local artifact
                     |
-              +-----+------+
-              |            |
-              v            v
-         Prediction API  Dashboard
+                    v
+          One-time final test report
+                    |
+                    v
+          Do not deploy frozen v1
 ```
 
 ## Design principles
@@ -73,13 +74,15 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.models.run_random_forest`: selection, comparison, and reporting
 - `footcast.models.calibration`: forward-only probability calibration
 - `footcast.models.run_calibration`: calibration selection and error reporting
+- `footcast.models.frozen`: v1 contract, fitting, and artifact serialization
+- `footcast.models.run_final_test`: frozen test evaluation and final report
 - `footcast.evaluation.metrics`: fixed-order multiclass model metrics
 - `footcast.evaluation.plots`: consistent confusion-matrix visualization
 - `footcast.evaluation.calibration_plots`: reliability and slice figures
 - `footcast.evaluation.error_analysis`: validation-only diagnostic slices
 
-Planned later:
+Planned later only after a new approved development policy:
 
-- model freezing, test evaluation, artifact versioning, and inference
+- v2 research, inference API, and dashboard work
 
 These modules will be introduced only when their milestone begins.

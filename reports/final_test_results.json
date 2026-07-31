@@ -1,0 +1,797 @@
+{
+  "status": "passed",
+  "checkpoint": "Phase 5 checkpoint 2",
+  "test_evaluation_status": "opened_after_model_contract_freeze",
+  "model_version": "footcast-rf-v1",
+  "specification_sha256": "49913be31b579d051513d712cc2c239e6cf16e414e5e3aa35ecfdb3bec10ca91",
+  "frozen_specification": {
+    "model_version": "footcast-rf-v1",
+    "target": [
+      "home_win",
+      "draw",
+      "away_win"
+    ],
+    "estimator": "sklearn.ensemble.RandomForestClassifier",
+    "random_forest": {
+      "n_estimators": 300,
+      "max_features": "sqrt",
+      "random_state": 42,
+      "max_depth": 6,
+      "min_samples_leaf": 20,
+      "class_weight": null
+    },
+    "preprocessing": {
+      "imputation": "training median",
+      "missing_indicators": true,
+      "scaling": false
+    },
+    "calibration": "uncalibrated",
+    "feature_columns": [
+      "home_history_matches",
+      "home_rolling_matches",
+      "home_form_points_last_5",
+      "home_form_wins_last_5",
+      "home_goals_for_last_5",
+      "home_goals_against_last_5",
+      "home_shots_last_5",
+      "home_shots_on_target_last_5",
+      "home_venue_matches_last_5",
+      "home_venue_points_last_5",
+      "home_days_since_previous_match",
+      "home_season_matches_played",
+      "home_season_points",
+      "home_expanding_goals_for_mean",
+      "home_expanding_goals_against_mean",
+      "home_elo",
+      "away_history_matches",
+      "away_rolling_matches",
+      "away_form_points_last_5",
+      "away_form_wins_last_5",
+      "away_goals_for_last_5",
+      "away_goals_against_last_5",
+      "away_shots_last_5",
+      "away_shots_on_target_last_5",
+      "away_venue_matches_last_5",
+      "away_venue_points_last_5",
+      "away_days_since_previous_match",
+      "away_season_matches_played",
+      "away_season_points",
+      "away_expanding_goals_for_mean",
+      "away_expanding_goals_against_mean",
+      "away_elo",
+      "elo_difference",
+      "form_points_difference",
+      "goals_scored_difference",
+      "goals_conceded_difference",
+      "rest_days_difference",
+      "shots_on_target_difference"
+    ],
+    "fit_seasons": [
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24"
+    ],
+    "test_seasons": [
+      "2024-25"
+    ],
+    "holdout_seasons": [
+      "2025-26"
+    ]
+  },
+  "fit_seasons": [
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24"
+  ],
+  "test_seasons": [
+    "2024-25"
+  ],
+  "holdout_seasons_used": [],
+  "fit_rows": 3420,
+  "test_rows": 380,
+  "feature_count": 38,
+  "results": {
+    "Majority class": {
+      "accuracy": 0.40789473684210525,
+      "macro_f1": 0.19314641744548286,
+      "log_loss": 1.0810879896180008,
+      "multiclass_brier_score": 0.6557306521664787,
+      "expected_calibration_error": 0.0412280701754385,
+      "per_class_recall": {
+        "home_win": 1.0,
+        "draw": 0.0,
+        "away_win": 0.0
+      },
+      "per_class_precision": {
+        "home_win": 0.40789473684210525,
+        "draw": 0.0,
+        "away_win": 0.0
+      },
+      "confusion_matrix": [
+        [
+          155,
+          0,
+          0
+        ],
+        [
+          93,
+          0,
+          0
+        ],
+        [
+          132,
+          0,
+          0
+        ]
+      ]
+    },
+    "Always home": {
+      "accuracy": 0.40789473684210525,
+      "macro_f1": 0.19314641744548286,
+      "log_loss": 21.34163687513515,
+      "multiclass_brier_score": 1.1842105263157894,
+      "expected_calibration_error": 0.5921052631578947,
+      "per_class_recall": {
+        "home_win": 1.0,
+        "draw": 0.0,
+        "away_win": 0.0
+      },
+      "per_class_precision": {
+        "home_win": 0.40789473684210525,
+        "draw": 0.0,
+        "away_win": 0.0
+      },
+      "confusion_matrix": [
+        [
+          155,
+          0,
+          0
+        ],
+        [
+          93,
+          0,
+          0
+        ],
+        [
+          132,
+          0,
+          0
+        ]
+      ]
+    },
+    "Elo": {
+      "accuracy": 0.5263157894736842,
+      "macro_f1": 0.39236626689510756,
+      "log_loss": 0.9934579055185351,
+      "multiclass_brier_score": 0.5938235445700702,
+      "expected_calibration_error": 0.008688631741472124,
+      "per_class_recall": {
+        "home_win": 0.8451612903225807,
+        "draw": 0.0,
+        "away_win": 0.5227272727272727
+      },
+      "per_class_precision": {
+        "home_win": 0.5097276264591439,
+        "draw": 0.0,
+        "away_win": 0.5609756097560976
+      },
+      "confusion_matrix": [
+        [
+          131,
+          0,
+          24
+        ],
+        [
+          63,
+          0,
+          30
+        ],
+        [
+          63,
+          0,
+          69
+        ]
+      ]
+    },
+    "Logistic regression": {
+      "accuracy": 0.5289473684210526,
+      "macro_f1": 0.3979068511974872,
+      "log_loss": 1.0063091820486896,
+      "multiclass_brier_score": 0.6031053115972098,
+      "expected_calibration_error": 0.05730626060090823,
+      "per_class_recall": {
+        "home_win": 0.7870967741935484,
+        "draw": 0.0,
+        "away_win": 0.5984848484848485
+      },
+      "per_class_precision": {
+        "home_win": 0.5327510917030568,
+        "draw": 0.0,
+        "away_win": 0.5231788079470199
+      },
+      "confusion_matrix": [
+        [
+          122,
+          0,
+          33
+        ],
+        [
+          54,
+          0,
+          39
+        ],
+        [
+          53,
+          0,
+          79
+        ]
+      ]
+    },
+    "Frozen Random Forest": {
+      "accuracy": 0.5131578947368421,
+      "macro_f1": 0.38314176245210724,
+      "log_loss": 1.0049793479333773,
+      "multiclass_brier_score": 0.6004332268508561,
+      "expected_calibration_error": 0.03659291096478028,
+      "per_class_recall": {
+        "home_win": 0.8129032258064516,
+        "draw": 0.0,
+        "away_win": 0.5227272727272727
+      },
+      "per_class_precision": {
+        "home_win": 0.50199203187251,
+        "draw": 0.0,
+        "away_win": 0.5348837209302325
+      },
+      "confusion_matrix": [
+        [
+          126,
+          0,
+          29
+        ],
+        [
+          62,
+          0,
+          31
+        ],
+        [
+          63,
+          0,
+          69
+        ]
+      ]
+    }
+  },
+  "model_decision": {
+    "status": "not_recommended_for_deployment",
+    "reasons": [
+      "Test accuracy and macro F1 fell below validation results.",
+      "The frozen forest did not outperform both simpler baselines.",
+      "Draw precision and recall are both zero."
+    ],
+    "test_result_used_for_retuning": false
+  },
+  "calibration_bins": {
+    "home_win": [
+      {
+        "lower": 0.1,
+        "upper": 0.2,
+        "count": 21,
+        "mean_probability": 0.16515897427286008,
+        "observed_frequency": 0.23809523809523808
+      },
+      {
+        "lower": 0.2,
+        "upper": 0.30000000000000004,
+        "count": 64,
+        "mean_probability": 0.25320146903885066,
+        "observed_frequency": 0.15625
+      },
+      {
+        "lower": 0.30000000000000004,
+        "upper": 0.4,
+        "count": 67,
+        "mean_probability": 0.3504342768252737,
+        "observed_frequency": 0.29850746268656714
+      },
+      {
+        "lower": 0.4,
+        "upper": 0.5,
+        "count": 79,
+        "mean_probability": 0.45052862404338645,
+        "observed_frequency": 0.4050632911392405
+      },
+      {
+        "lower": 0.5,
+        "upper": 0.6000000000000001,
+        "count": 74,
+        "mean_probability": 0.5470801297698524,
+        "observed_frequency": 0.527027027027027
+      },
+      {
+        "lower": 0.6000000000000001,
+        "upper": 0.7000000000000001,
+        "count": 36,
+        "mean_probability": 0.6514441124380956,
+        "observed_frequency": 0.6111111111111112
+      },
+      {
+        "lower": 0.7000000000000001,
+        "upper": 0.8,
+        "count": 34,
+        "mean_probability": 0.7471080436963332,
+        "observed_frequency": 0.6764705882352942
+      },
+      {
+        "lower": 0.8,
+        "upper": 0.9,
+        "count": 5,
+        "mean_probability": 0.8255741639220128,
+        "observed_frequency": 0.8
+      }
+    ],
+    "draw": [
+      {
+        "lower": 0.0,
+        "upper": 0.1,
+        "count": 2,
+        "mean_probability": 0.09696034644296009,
+        "observed_frequency": 0.0
+      },
+      {
+        "lower": 0.1,
+        "upper": 0.2,
+        "count": 88,
+        "mean_probability": 0.16507406694400203,
+        "observed_frequency": 0.19318181818181818
+      },
+      {
+        "lower": 0.2,
+        "upper": 0.30000000000000004,
+        "count": 289,
+        "mean_probability": 0.24854782221713345,
+        "observed_frequency": 0.25951557093425603
+      },
+      {
+        "lower": 0.30000000000000004,
+        "upper": 0.4,
+        "count": 1,
+        "mean_probability": 0.30385497476319784,
+        "observed_frequency": 1.0
+      }
+    ],
+    "away_win": [
+      {
+        "lower": 0.0,
+        "upper": 0.1,
+        "count": 16,
+        "mean_probability": 0.08247362544779133,
+        "observed_frequency": 0.125
+      },
+      {
+        "lower": 0.1,
+        "upper": 0.2,
+        "count": 88,
+        "mean_probability": 0.157713818682353,
+        "observed_frequency": 0.125
+      },
+      {
+        "lower": 0.2,
+        "upper": 0.30000000000000004,
+        "count": 96,
+        "mean_probability": 0.25050947964093473,
+        "observed_frequency": 0.3229166666666667
+      },
+      {
+        "lower": 0.30000000000000004,
+        "upper": 0.4,
+        "count": 68,
+        "mean_probability": 0.3454251530496781,
+        "observed_frequency": 0.38235294117647056
+      },
+      {
+        "lower": 0.4,
+        "upper": 0.5,
+        "count": 56,
+        "mean_probability": 0.4502288516472855,
+        "observed_frequency": 0.5714285714285714
+      },
+      {
+        "lower": 0.5,
+        "upper": 0.6000000000000001,
+        "count": 36,
+        "mean_probability": 0.5529616059542447,
+        "observed_frequency": 0.4722222222222222
+      },
+      {
+        "lower": 0.6000000000000001,
+        "upper": 0.7000000000000001,
+        "count": 19,
+        "mean_probability": 0.6512442913136322,
+        "observed_frequency": 0.631578947368421
+      },
+      {
+        "lower": 0.7000000000000001,
+        "upper": 0.8,
+        "count": 1,
+        "mean_probability": 0.7065439938845072,
+        "observed_frequency": 1.0
+      }
+    ]
+  },
+  "error_analysis": {
+    "overall": {
+      "rows": 380,
+      "accuracy": 0.5131578947368421,
+      "macro_f1": 0.38314176245210724,
+      "log_loss": 1.0049793479333773,
+      "multiclass_brier_score": 0.6004332268508561,
+      "expected_calibration_error": 0.03659291096478028,
+      "mean_confidence": 0.5329327898683355
+    },
+    "by_actual_outcome": {
+      "home_win": {
+        "rows": 155,
+        "accuracy": 0.8129032258064516,
+        "macro_f1": 0.298932384341637,
+        "log_loss": 0.6989227538150198,
+        "multiclass_brier_score": 0.3839792081616974,
+        "expected_calibration_error": 0.2485410427076173,
+        "mean_confidence": 0.5643621830988343
+      },
+      "away_win": {
+        "rows": 132,
+        "accuracy": 0.5227272727272727,
+        "macro_f1": 0.2288557213930348,
+        "log_loss": 1.0342987786934685,
+        "multiclass_brier_score": 0.6163680064980183,
+        "expected_calibration_error": 0.08218627157024089,
+        "mean_confidence": 0.5043351076315309
+      },
+      "draw": {
+        "rows": 93,
+        "accuracy": 0.0,
+        "macro_f1": 0.0,
+        "log_loss": 1.4734589955464246,
+        "multiclass_brier_score": 0.9385728180701485,
+        "expected_calibration_error": 0.5211407264761948,
+        "mean_confidence": 0.5211407264761949
+      }
+    },
+    "by_history": {
+      "known_history": {
+        "rows": 379,
+        "accuracy": 0.5118733509234829,
+        "macro_f1": 0.38192872675631295,
+        "log_loss": 1.006451725207593,
+        "multiclass_brier_score": 0.6015031799013805,
+        "expected_calibration_error": 0.03764044652265106,
+        "mean_confidence": 0.5326514069008857
+      },
+      "cold_start": {
+        "rows": 1,
+        "accuracy": 1.0,
+        "macro_f1": 0.3333333333333333,
+        "log_loss": 0.44694836100568347,
+        "multiclass_brier_score": 0.1949210207021314,
+        "expected_calibration_error": 0.36042306546824054,
+        "mean_confidence": 0.6395769345317595
+      }
+    },
+    "by_season_timing": {
+      "early_season": {
+        "rows": 50,
+        "accuracy": 0.5,
+        "macro_f1": 0.39353400222965434,
+        "log_loss": 0.9430921113385784,
+        "multiclass_brier_score": 0.5580122582088453,
+        "expected_calibration_error": 0.11268358590209364,
+        "mean_confidence": 0.5386860044868228
+      },
+      "established_season": {
+        "rows": 330,
+        "accuracy": 0.5151515151515151,
+        "macro_f1": 0.38043043043043046,
+        "log_loss": 1.0143562019628924,
+        "multiclass_brier_score": 0.6068606463420699,
+        "expected_calibration_error": 0.043421335895328816,
+        "mean_confidence": 0.5320610906837162
+      }
+    },
+    "by_elo_gap": {
+      "large_over_100": {
+        "rows": 196,
+        "accuracy": 0.6122448979591837,
+        "macro_f1": 0.4656859391036606,
+        "log_loss": 0.9366791356897348,
+        "multiclass_brier_score": 0.5511745756190028,
+        "expected_calibration_error": 0.05344863675886853,
+        "mean_confidence": 0.5973455333895198
+      },
+      "close_0_50": {
+        "rows": 104,
+        "accuracy": 0.36538461538461536,
+        "macro_f1": 0.20677361853832443,
+        "log_loss": 1.1042294609540877,
+        "multiclass_brier_score": 0.6710114749607577,
+        "expected_calibration_error": 0.08354775292124947,
+        "mean_confidence": 0.4489323683058649
+      },
+      "medium_50_100": {
+        "rows": 80,
+        "accuracy": 0.4625,
+        "macro_f1": 0.3351279494848787,
+        "log_loss": 1.043289721003378,
+        "multiclass_brier_score": 0.6293651998260248,
+        "expected_calibration_error": 0.10609486517162373,
+        "mean_confidence": 0.48432211627264604
+      }
+    },
+    "by_confidence": {
+      "high_over_60pct": {
+        "rows": 95,
+        "accuracy": 0.6526315789473685,
+        "macro_f1": 0.45478036175710596,
+        "log_loss": 0.8757711820729888,
+        "multiclass_brier_score": 0.507702246223048,
+        "expected_calibration_error": 0.04275492507263533,
+        "mean_confidence": 0.6953865040200038
+      },
+      "low_up_to_45pct": {
+        "rows": 107,
+        "accuracy": 0.4205607476635514,
+        "macro_f1": 0.3230033919210607,
+        "log_loss": 1.0716385939199518,
+        "multiclass_brier_score": 0.6478091602333915,
+        "expected_calibration_error": 0.054455773280689124,
+        "mean_confidence": 0.4083034390383716
+      },
+      "medium_45_60pct": {
+        "rows": 178,
+        "accuracy": 0.4943820224719101,
+        "macro_f1": 0.37167143724520774,
+        "log_loss": 1.0338683166759248,
+        "multiclass_brier_score": 0.6214456891413643,
+        "expected_calibration_error": 0.026765585904277522,
+        "mean_confidence": 0.5211476083761876
+      }
+    },
+    "high_confidence_mistake_count": 33,
+    "highest_confidence_mistakes": [
+      {
+        "season": "2024-25",
+        "match_date": "2024-12-14",
+        "home_team": "Liverpool",
+        "away_team": "Fulham",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.8123962989570189,
+        "probabilities": {
+          "home_win": 0.8123962989570189,
+          "draw": 0.10812538002312169,
+          "away_win": 0.0794783210198595
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2024-09-14",
+        "home_team": "Liverpool",
+        "away_team": "Nott'm Forest",
+        "actual": "away_win",
+        "predicted": "home_win",
+        "confidence": 0.7906575942504714,
+        "probabilities": {
+          "home_win": 0.7906575942504714,
+          "draw": 0.11499614962286889,
+          "away_win": 0.09434625612665994
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2024-11-10",
+        "home_team": "Tottenham",
+        "away_team": "Ipswich",
+        "actual": "away_win",
+        "predicted": "home_win",
+        "confidence": 0.7880329329777654,
+        "probabilities": {
+          "home_win": 0.7880329329777654,
+          "draw": 0.12798909187618038,
+          "away_win": 0.0839779751460544
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2025-02-22",
+        "home_team": "Arsenal",
+        "away_team": "West Ham",
+        "actual": "away_win",
+        "predicted": "home_win",
+        "confidence": 0.7794597675045052,
+        "probabilities": {
+          "home_win": 0.7794597675045052,
+          "draw": 0.12048315304292546,
+          "away_win": 0.10005707945256949
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2025-04-13",
+        "home_team": "Chelsea",
+        "away_team": "Ipswich",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.767768911373835,
+        "probabilities": {
+          "home_win": 0.767768911373835,
+          "draw": 0.12725603609198305,
+          "away_win": 0.10497505253418125
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2025-05-03",
+        "home_team": "Arsenal",
+        "away_team": "Bournemouth",
+        "actual": "away_win",
+        "predicted": "home_win",
+        "confidence": 0.733446668650609,
+        "probabilities": {
+          "home_win": 0.733446668650609,
+          "draw": 0.13872008788073575,
+          "away_win": 0.1278332434686557
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2025-01-05",
+        "home_team": "Liverpool",
+        "away_team": "Man United",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.7317381259644095,
+        "probabilities": {
+          "home_win": 0.7317381259644095,
+          "draw": 0.17288376309922124,
+          "away_win": 0.09537811093636926
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2024-08-31",
+        "home_team": "Arsenal",
+        "away_team": "Brighton",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.7246367394412013,
+        "probabilities": {
+          "home_win": 0.7246367394412013,
+          "draw": 0.15986858082329497,
+          "away_win": 0.11549467973550352
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2025-04-23",
+        "home_team": "Arsenal",
+        "away_team": "Crystal Palace",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.7238631950371246,
+        "probabilities": {
+          "home_win": 0.7238631950371246,
+          "draw": 0.15614017742062458,
+          "away_win": 0.11999662754225042
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2025-04-12",
+        "home_team": "Arsenal",
+        "away_team": "Brentford",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.7134202529340106,
+        "probabilities": {
+          "home_win": 0.7134202529340106,
+          "draw": 0.1504518257790444,
+          "away_win": 0.13612792128694445
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2024-10-06",
+        "home_team": "Chelsea",
+        "away_team": "Nott'm Forest",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.7111871909162152,
+        "probabilities": {
+          "home_win": 0.7111871909162152,
+          "draw": 0.1663999283710955,
+          "away_win": 0.1224128807126894
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2024-12-14",
+        "home_team": "Arsenal",
+        "away_team": "Everton",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.7105480478058745,
+        "probabilities": {
+          "home_win": 0.7105480478058745,
+          "draw": 0.16367604150421208,
+          "away_win": 0.12577591068991292
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2024-12-26",
+        "home_team": "Chelsea",
+        "away_team": "Fulham",
+        "actual": "away_win",
+        "predicted": "home_win",
+        "confidence": 0.6936439496689265,
+        "probabilities": {
+          "home_win": 0.6936439496689265,
+          "draw": 0.18426466770353125,
+          "away_win": 0.12209138262754263
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2025-05-25",
+        "home_team": "Liverpool",
+        "away_team": "Crystal Palace",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.6907091282276793,
+        "probabilities": {
+          "home_win": 0.6907091282276793,
+          "draw": 0.1675119142368634,
+          "away_win": 0.14177895753545766
+        }
+      },
+      {
+        "season": "2024-25",
+        "match_date": "2025-01-18",
+        "home_team": "Arsenal",
+        "away_team": "Aston Villa",
+        "actual": "draw",
+        "predicted": "home_win",
+        "confidence": 0.6845143678984332,
+        "probabilities": {
+          "home_win": 0.6845143678984332,
+          "draw": 0.16777157284785105,
+          "away_win": 0.147714059253716
+        }
+      }
+    ]
+  },
+  "runtime": {
+    "python": "3.13.1",
+    "numpy": "2.5.1",
+    "pandas": "3.0.5",
+    "scikit_learn": "1.9.0"
+  },
+  "local_model_artifact": {
+    "path": "models/footcast-rf-v1.joblib",
+    "sha256": "c88442cbf5771bb45a0d2299ccaf9953ae9dc1a005e5b722f5908c9e473a8ab3",
+    "bytes": 2160859,
+    "specification_sha256": "49913be31b579d051513d712cc2c239e6cf16e414e5e3aa35ecfdb3bec10ca91"
+  }
+}

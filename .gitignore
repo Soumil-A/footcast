@@ -24,6 +24,7 @@ data/processed/*
 !data/processed/.gitkeep
 models/*
 !models/.gitkeep
+!models/frozen_model_spec.json
 reports/figures/*
 !reports/figures/.gitkeep
 !reports/figures/phase2/

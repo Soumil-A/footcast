@@ -318,3 +318,47 @@
   in the versioned model artifact?
 - What acceptance criteria should stop deployment even if aggregate test
   metrics look acceptable?
+
+## Phase 5 Checkpoint 2: Frozen model and final test
+
+### Concepts
+
+- A test set evaluates the entire development process, including feature,
+  model, hyperparameter, and calibration choices.
+- Freezing first prevents test results from quietly becoming another tuning
+  signal.
+- A lower calibration error does not imply better discrimination or accuracy.
+  Probability reliability and outcome separation measure different qualities.
+- Simpler baselines remain valuable at the final checkpoint because complexity
+  must demonstrate a stable benefit, not merely a validation advantage.
+
+### Decisions
+
+- Freeze 38 ordered features, the selected Random Forest parameters, training
+  median imputation, and the no-calibration decision in a tracked JSON contract.
+- Refit on training plus validation seasons, then evaluate 2024-25 once without
+  changing the contract.
+- Generate a local ignored `joblib` artifact and record its checksum, contract
+  hash, size, and runtime versions in the final JSON report.
+- Compare the frozen forest with the already-defined naive, Elo, and logistic
+  baselines on the same test season.
+- Do not load the 2025-26 holdout.
+
+### Final observations
+
+- Frozen Random Forest accuracy declined from `0.579` validation to `0.513`
+  test; macro F1 declined from `0.425` to `0.383`.
+- Test log loss worsened from `0.931` to `1.005`, while Elo achieved `0.993`.
+- Logistic regression achieved the best test accuracy (`0.529`) and macro F1
+  (`0.398`) among the learned/reference strength models.
+- The forest recalled 81.3% of home wins, 52.3% of away wins, and zero draws.
+- Close Elo-gap matches had only `0.365` accuracy, compared with `0.612` for
+  large gaps.
+- Thirty-three incorrect predictions carried confidence of at least 60%.
+
+### Outcome
+
+FootCast v1 is not recommended for deployment. This is a successful learning
+result: the untouched test exposed that the small validation advantage did not
+generalize. Any v2 work must treat 2024-25 as previously seen and define a new
+evaluation policy before development begins.

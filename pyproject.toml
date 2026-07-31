@@ -23,6 +23,7 @@ footcast-features = "footcast.features.build_features:main"
 footcast-baselines = "footcast.models.run_baselines:main"
 footcast-random-forest = "footcast.models.run_random_forest:main"
 footcast-calibration = "footcast.models.run_calibration:main"
+footcast-final-test = "footcast.models.run_final_test:main"
 
 [project.optional-dependencies]
 dev = [
@@ -37,6 +38,7 @@ packages = ["src/footcast"]
 addopts = "-ra"
 filterwarnings = [
   "ignore:The set_bad function will be deprecated.*:PendingDeprecationWarning:seaborn.matrix",
+  "ignore:Setting the shape on a NumPy array has been deprecated.*:DeprecationWarning:joblib.numpy_pickle",
 ]
 pythonpath = ["src"]
 testpaths = ["tests"]

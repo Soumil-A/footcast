@@ -59,6 +59,8 @@ def plot_confusion_matrices(
 def plot_single_confusion_matrix(
     metrics: dict[str, Any],
     destination: Path,
+    *,
+    title: str = "Selected Random Forest — 2023-24 validation",
 ) -> None:
     """Write one fixed-order confusion matrix for the selected forest."""
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -74,7 +76,7 @@ def plot_single_confusion_matrix(
         yticklabels=display_labels,
         ax=axis,
     )
-    axis.set_title("Selected Random Forest — 2023-24 validation")
+    axis.set_title(title)
     axis.set_xlabel("Predicted outcome")
     axis.set_ylabel("Actual outcome")
     figure.savefig(destination, dpi=160, bbox_inches="tight")
@@ -84,6 +86,8 @@ def plot_single_confusion_matrix(
 def plot_model_comparison(
     results: dict[str, dict[str, Any]],
     destination: Path,
+    *,
+    title: str = "FootCast model comparison — 2023-24 validation",
 ) -> None:
     """Compare label quality and probability quality without mixing scales."""
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -136,7 +140,7 @@ def plot_model_comparison(
     axes[1].set_ylim(0, display_ceiling * 1.13)
     axes[1].set_title("Multiclass log loss (lower is better)")
     axes[1].set_xticks(positions, names, rotation=25, ha="right")
-    figure.suptitle("FootCast model comparison — 2023-24 validation")
+    figure.suptitle(title)
     figure.savefig(destination, dpi=160, bbox_inches="tight")
     plt.close(figure)
 
