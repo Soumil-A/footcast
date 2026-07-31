@@ -407,3 +407,50 @@ formulation alone is insufficient with these inputs. Before opening 2025-26,
 the next checkpoint should choose a bounded hypothesis around richer
 pre-match information or a draw-aware decision strategy and define its success
 criterion in advance.
+
+## Phase 6 Checkpoint 2: Draw-aware two-stage model
+
+### Concepts
+
+- A hierarchical classifier can decompose a multiclass question into draw
+  versus non-draw and home versus away conditional on a decisive match.
+- Class weighting changes the fitted decision surface and often changes the
+  meaning of predicted probabilities; higher minority-class recall is not
+  automatically better probability estimation.
+- A three-way product can be reconstructed coherently by reserving the draw
+  probability and dividing the remaining mass between home and away.
+
+### Decisions
+
+- Use the existing 38 leakage-safe features and seven expanding folds.
+- Test only four predeclared draw weights: `1.0`, `1.25`, `1.5`, and `2.0`.
+- Select mean log loss first because FootCast presents probabilities.
+- Keep preprocessing and both classifiers inside each chronological fold.
+- Continue to exclude 2025-26.
+
+### Observations
+
+- Draw recall rose monotonically from `0.016` at weight `1.0` to `0.339` at
+  weight `2.0`.
+- Macro F1 also rose from `0.405` to `0.451`.
+- The same weighting worsened log loss from `0.996` to `1.039` and Brier score
+  from `0.589` to `0.619`.
+- The unweighted model won the predeclared probability-first selection.
+
+## Phase 6 Checkpoint 3: Fixed model decision
+
+### Decision gate
+
+- Mean log loss at most `0.970`: failed at `0.996`.
+- Mean Brier score at most `0.578`: failed at `0.589`.
+- Mean macro F1 at least `0.400`: passed at `0.405`.
+- Mean draw recall at least `0.100`: failed at `0.016`.
+
+### Outcome
+
+Reject the two-stage model and end the bounded v2 model search. Elo becomes the
+Phase 7 reference because it is simpler, effectively tied with Random Forest
+on rolling probability quality, and performed better than the forest on the
+original final-test log loss. It remains an educational reference with serious
+draw limitations, not a deployment-quality forecasting claim. The 2025-26
+holdout remains sealed.

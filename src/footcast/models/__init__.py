@@ -6,6 +6,7 @@ from footcast.models.baselines import (
     LogisticRegressionBaseline,
     MajorityClassBaseline,
 )
+from footcast.models.draw_aware import TwoStageDrawClassifier
 from footcast.models.random_forest import make_random_forest
 
 __all__ = [
@@ -13,5 +14,6 @@ __all__ = [
     "EloBaseline",
     "LogisticRegressionBaseline",
     "MajorityClassBaseline",
+    "TwoStageDrawClassifier",
     "make_random_forest",
 ]
