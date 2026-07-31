@@ -77,6 +77,13 @@ Leakage-safe pre-match features (Phase 3 complete)
                     |
                     v
        Streamlit dashboard over HTTP
+                    |
+                    v
+       Separate non-root API and dashboard
+       containers with health checks
+                    |
+                    v
+       Compose smoke test in CI
 ```
 
 ## Design principles
@@ -95,6 +102,7 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.data.download`: verified atomic downloads and raw-file protection
 - `footcast.data.validate`: season-level validation and canonicalization
 - `footcast.data.pipeline`: orchestration and quality-report generation
+- `footcast.data.serving`: approved-only serving snapshot bootstrap
 - `footcast.exploration`: development-only summaries, figures, and report
 - `footcast.features.form`: completed team histories and pre-match snapshots
 - `footcast.features.elo`: pre-match ratings and post-result updates
@@ -126,3 +134,9 @@ Leakage-safe pre-match features (Phase 3 complete)
 The API loads approved completed matches once at startup and shares that
 in-memory snapshot with inference and analytics. The dashboard is a separate
 process and can only reach those capabilities through HTTP.
+
+The container boundary preserves that separation. The API image reproduces its
+checksum-verified approved history at build time; the dashboard image contains
+no match data and reaches the API by its Compose service name. CI starts both
+images and verifies their health and model-data provenance before a change can
+merge.

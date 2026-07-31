@@ -3,14 +3,19 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
-from footcast.config import DATA_SPLIT
+from footcast.config import DATA_SPLIT, PROJECT_ROOT
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_MANIFEST = PROJECT_ROOT / "data" / "download_manifest.json"
+DEFAULT_MANIFEST = Path(
+    os.getenv(
+        "FOOTCAST_MANIFEST",
+        PROJECT_ROOT / "data" / "download_manifest.json",
+    )
+).resolve()
 
 
 @dataclass(frozen=True)

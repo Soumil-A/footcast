@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import shutil
 import ssl
 import urllib.request
@@ -12,7 +13,9 @@ import certifi
 
 from footcast.data.manifest import DEFAULT_MANIFEST, DownloadSpec, load_manifest
 
-DEFAULT_RAW_DIR = DEFAULT_MANIFEST.parent / "raw"
+DEFAULT_RAW_DIR = Path(
+    os.getenv("FOOTCAST_RAW_DIR", DEFAULT_MANIFEST.parent / "raw")
+).resolve()
 TLS_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 
 

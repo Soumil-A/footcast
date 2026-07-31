@@ -2,7 +2,11 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -19,3 +23,29 @@ jobs:
         run: ruff check .
       - name: Test
         run: pytest
+
+  containers:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build images
+        run: docker compose build
+      - name: Start healthy stack
+        run: docker compose up -d --wait --wait-timeout 120
+      - name: Verify API serving contract
+        run: >-
+          python -c "import json, urllib.request;
+          info=json.load(urllib.request.urlopen('http://127.0.0.1:8000/model/info'));
+          assert info['holdout_seasons_used'] == [];
+          assert info['completed_matches'] == 3800;
+          assert info['data_cutoff'] == '2025-05-25'"
+      - name: Verify dashboard health
+        run: curl --fail --silent --show-error http://127.0.0.1:8501/_stcore/health
+      - name: Show container logs
+        if: failure()
+        run: docker compose logs --no-color
+      - name: Stop stack
+        if: always()
+        run: docker compose down --volumes --remove-orphans

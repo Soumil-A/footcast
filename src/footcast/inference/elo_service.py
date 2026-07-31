@@ -12,13 +12,14 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from footcast.config import SERVING_SPLITS
 from footcast.data.download import DEFAULT_RAW_DIR
 from footcast.data.matches import load_match_statistics
 from footcast.evaluation.metrics import CLASS_LABELS, validate_probabilities
 from footcast.features.elo import EloConfig, EloRatings, expected_home_score
 
 REFERENCE_MODEL_VERSION = "footcast-elo-v2-reference"
-REFERENCE_SPLITS = frozenset({"train", "validation", "test"})
+REFERENCE_SPLITS = SERVING_SPLITS
 INTENDED_USE = "educational probability demonstration"
 LIMITATIONS = (
     "Not intended for betting or financial decisions.",
