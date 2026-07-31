@@ -685,3 +685,34 @@ selecting a host, publishing the stack, and adding basic production monitoring.
 FootCast is publicly accessible as a monitored two-service portfolio product.
 Future changes merged to `main` deploy only after CI passes, so UI work can
 continue without changing the model or weakening the data boundary.
+
+## Portfolio Analytics Checkpoint
+
+### Concepts
+
+- A portfolio product should expose both its useful output and the evidence
+  needed to judge that output. Overall accuracy alone can hide a failed class.
+- Descriptive charts and predictive features are different. Recent form can
+  help a visitor understand the matchup without silently changing the model.
+- A frontend should receive aggregated contracts through the product API, not
+  read research reports or raw CSV files directly.
+- Static evaluation numbers need provenance. A test can prevent dashboard
+  metrics from drifting away from the final tracked experiment.
+
+### Decisions
+
+- Organize the dashboard into Match Forecast, Team Analytics, and Model Insights
+  instead of placing every result on one long page.
+- Add one read-only portfolio endpoint for dataset coverage, outcome balance,
+  current Elo leaders, and the untouched 2024-25 benchmark evidence.
+- Use the existing ten-match API boundary for form and scoring charts; do not
+  turn that descriptive information into new model inputs.
+- Display Elo's zero draw recall and complete confusion matrix alongside its
+  accuracy and log loss.
+- Keep the existing model, raw-data snapshot, and prediction schema unchanged.
+
+### Outcome
+
+FootCast now explains team context, dataset scope, model selection, and failure
+modes visually. This increases the product's portfolio value without making an
+unsupported accuracy claim or weakening the API/data separation.

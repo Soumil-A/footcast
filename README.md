@@ -395,6 +395,7 @@ Available endpoints are:
 - `GET /analytics/team-form`
 - `GET /analytics/compare`
 - `GET /analytics/head-to-head`
+- `GET /analytics/portfolio`
 
 Interactive OpenAPI documentation is available at
 `http://127.0.0.1:8000/docs`. Every prediction exposes the model version, data
@@ -421,6 +422,25 @@ glass panels, team monograms, a probability spectrum, Elo balance indicator,
 W/D/L momentum chips, compact match-history cards, and a mobile control drawer.
 This is a presentation-only improvement; the API and model outputs are
 unchanged.
+
+### Portfolio analytics checkpoint
+
+The dashboard now separates its evidence into three focused tabs:
+
+- **Match Forecast** retains the future-fixture probabilities, ten-match form,
+  Elo comparison, and recent head-to-head results.
+- **Team Analytics** adds cumulative-points and goals charts, head-to-head
+  balance, the approved dataset profile, outcome distribution, and current Elo
+  leaders.
+- **Model Insights** presents the untouched 2024-25 test comparison, accuracy,
+  macro F1, log loss, Elo class recall, and its confusion matrix—including the
+  deployed model's zero draw recall.
+
+The aggregated evidence comes from `GET /analytics/portfolio`. Test metrics are
+guarded against drift from `reports/final_test_results.json`; team form and
+dataset summaries are generated from the same immutable in-memory history used
+by the API. These charts explain the product but do not alter predictions or
+claim an accuracy improvement.
 
 ## Phase 8 container checkpoint
 

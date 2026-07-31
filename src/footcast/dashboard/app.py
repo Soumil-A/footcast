@@ -8,6 +8,7 @@ from datetime import date, timedelta
 from html import escape
 from typing import Any
 
+import pandas as pd
 import streamlit as st
 
 from footcast.dashboard.client import FootCastApiClient, FootCastApiError
@@ -33,9 +34,14 @@ def load_analytics(
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     client = FootCastApiClient(api_url)
     return (
-        client.compare(home_team, away_team, limit=5),
+        client.compare(home_team, away_team, limit=10),
         client.head_to_head(home_team, away_team, limit=10),
     )
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def load_portfolio(api_url: str) -> dict[str, Any]:
+    return FootCastApiClient(api_url).portfolio()
 
 
 def _team_initials(team: str) -> str:
@@ -257,6 +263,182 @@ def _render_head_to_head(meetings: dict[str, Any]) -> None:
     )
 
 
+def _team_trend_frame(form: dict[str, Any]) -> pd.DataFrame:
+    rows = []
+    running_points = 0
+    for match in reversed(form["matches"]):
+        running_points += int(match["points"])
+        rows.append(
+            {
+                "Match date": str(match["match_date"]),
+                "Cumulative points": running_points,
+                "Goals for": int(match["goals_for"]),
+                "Goals against": int(match["goals_against"]),
+            }
+        )
+    if not rows:
+        return pd.DataFrame(
+            columns=["Cumulative points", "Goals for", "Goals against"]
+        )
+    return pd.DataFrame(rows).set_index("Match date")
+
+
+def _render_team_analytics(
+    home_team: str,
+    away_team: str,
+    comparison: dict[str, Any],
+    meetings: dict[str, Any],
+    portfolio: dict[str, Any],
+) -> None:
+    st.markdown(
+        '<div class="fc-section-label">Ten-match performance trends</div>',
+        unsafe_allow_html=True,
+    )
+    columns = st.columns(2, gap="large")
+    for column, team, key in zip(
+        columns, (home_team, away_team), ("home", "away"), strict=True
+    ):
+        form = comparison[key]
+        summary = form["summary"]
+        frame = _team_trend_frame(form)
+        with column:
+            st.subheader(team)
+            metric_columns = st.columns(3)
+            metric_columns[0].metric("Points", int(summary["points"]))
+            metric_columns[1].metric("Goals for", int(summary["goals_for"]))
+            metric_columns[2].metric(
+                "Goal difference",
+                int(summary["goals_for"]) - int(summary["goals_against"]),
+            )
+            st.caption("Cumulative points across the displayed matches")
+            st.line_chart(frame[["Cumulative points"]], color="#22d3ee")
+            st.caption("Goals scored and conceded by match")
+            st.bar_chart(
+                frame[["Goals for", "Goals against"]],
+                color=["#34d399", "#fb7185"],
+            )
+
+    st.markdown(
+        '<div class="fc-section-label">Head-to-head balance</div>',
+        unsafe_allow_html=True,
+    )
+    outcomes = [match["team_a_outcome"] for match in meetings["matches"]]
+    h2h = pd.DataFrame(
+        {
+            "Matches": [
+                outcomes.count("win"),
+                outcomes.count("draw"),
+                outcomes.count("loss"),
+            ]
+        },
+        index=[f"{home_team} wins", "Draws", f"{away_team} wins"],
+    )
+    if outcomes:
+        st.bar_chart(h2h, color="#8b5cf6")
+    else:
+        st.caption("No meetings are present in the approved history.")
+
+    st.markdown(
+        '<div class="fc-section-label">Approved-history snapshot</div>',
+        unsafe_allow_html=True,
+    )
+    overview = st.columns(4)
+    overview[0].metric("Completed matches", f"{portfolio['completed_matches']:,}")
+    overview[1].metric("Seasons", int(portfolio["season_count"]))
+    overview[2].metric("First match", str(portfolio["first_match_date"]))
+    overview[3].metric("Data cutoff", str(portfolio["data_cutoff"]))
+
+    history_columns = st.columns(2, gap="large")
+    with history_columns[0]:
+        st.subheader("Outcome distribution")
+        distribution = pd.DataFrame(portfolio["outcome_distribution"])
+        distribution["Outcome"] = distribution["outcome"].map(RESULT_LABELS)
+        distribution["Share"] = distribution["share"] * 100
+        st.bar_chart(
+            distribution.set_index("Outcome")[["Share"]], color="#22d3ee"
+        )
+        st.caption("Percentage of all approved completed matches")
+    with history_columns[1]:
+        st.subheader("Current Elo leaders")
+        ranking = pd.DataFrame(portfolio["strength_ranking"])
+        st.bar_chart(ranking.set_index("team")[["elo"]], color="#8b5cf6")
+        st.caption(
+            "Final ratings after replaying the approved history; the list can "
+            "include clubs outside the current Premier League."
+        )
+
+
+def _render_model_insights(
+    model_info: dict[str, Any], portfolio: dict[str, Any]
+) -> None:
+    st.markdown(
+        '<div class="fc-section-label">Untouched final-test evidence</div>',
+        unsafe_allow_html=True,
+    )
+    st.info(portfolio["selection_note"])
+    evidence = st.columns(4)
+    deployed = next(
+        item for item in portfolio["benchmarks"] if item["model"] == "Elo (deployed)"
+    )
+    evidence[0].metric("Test season", portfolio["test_season"])
+    evidence[1].metric("Test matches", int(portfolio["test_matches"]))
+    evidence[2].metric("Elo accuracy", f"{deployed['accuracy']:.1%}")
+    evidence[3].metric("Elo log loss", f"{deployed['log_loss']:.3f}")
+
+    chart_columns = st.columns(2, gap="large")
+    benchmarks = pd.DataFrame(portfolio["benchmarks"]).set_index("model")
+    with chart_columns[0]:
+        st.subheader("Model comparison")
+        st.bar_chart(
+            benchmarks[["accuracy", "macro_f1"]],
+            color=["#22d3ee", "#8b5cf6"],
+        )
+        st.caption("Accuracy and macro F1: higher is better")
+    with chart_columns[1]:
+        st.subheader("Probability quality")
+        st.bar_chart(benchmarks[["log_loss"]], color="#f472b6")
+        st.caption("Log loss: lower is better")
+
+    diagnostic_columns = st.columns(2, gap="large")
+    recall = pd.DataFrame(
+        {
+            "Recall": [
+                portfolio["deployed_elo_recall"][label]
+                for label in portfolio["class_order"]
+            ]
+        },
+        index=[RESULT_LABELS[label] for label in portfolio["class_order"]],
+    )
+    confusion = pd.DataFrame(
+        portfolio["deployed_elo_confusion_matrix"],
+        index=[f"Actual {RESULT_LABELS[label]}" for label in portfolio["class_order"]],
+        columns=[
+            f"Predicted {RESULT_LABELS[label]}" for label in portfolio["class_order"]
+        ],
+    )
+    with diagnostic_columns[0]:
+        st.subheader("Elo recall by outcome")
+        st.bar_chart(recall, color="#fbbf24")
+        st.warning(
+            "Draw recall is 0%. The deployed reference model assigns a draw "
+            "probability, but does not select draws as its highest-probability label."
+        )
+    with diagnostic_columns[1]:
+        st.subheader("Elo confusion matrix")
+        st.dataframe(confusion, width="stretch")
+        st.caption("Rows are actual results; columns are model selections")
+
+    with st.expander("Model transparency and responsible use"):
+        st.write(model_info["intended_use"].capitalize() + ".")
+        for limitation in model_info["limitations"]:
+            st.markdown(f"- {limitation}")
+        st.caption(
+            f"Specification: {model_info['specification_sha256'][:12]}… · "
+            f"{model_info['completed_matches']:,} completed matches · "
+            "Recent form and dashboard charts are descriptive context, not extra inputs."
+        )
+
+
 def render_dashboard(client: FootCastApiClient | None = None) -> None:
     """Render the dashboard; an injected client keeps the boundary testable."""
     st.set_page_config(
@@ -318,9 +500,6 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
             unsafe_allow_html=True,
         )
 
-    _render_hero(model_info, cutoff)
-    _render_matchup(home_team, away_team)
-
     if predict_clicked:
         st.session_state.pop("prediction", None)
         try:
@@ -339,42 +518,50 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
     ):
         prediction = None
 
-    if prediction:
-        _render_prediction(prediction)
-    else:
-        _render_empty_forecast()
-
     try:
         if client is None:
             comparison, meetings = load_analytics(API_URL, home_team, away_team)
+            portfolio = load_portfolio(API_URL)
         else:
-            comparison = active_client.compare(home_team, away_team, limit=5)
+            comparison = active_client.compare(home_team, away_team, limit=10)
             meetings = active_client.head_to_head(home_team, away_team, limit=10)
+            portfolio = active_client.portfolio()
     except FootCastApiError as error:
         st.warning(f"Historical analytics could not be loaded: {error}")
         return
 
-    _render_elo(home_team, away_team, comparison)
-    st.markdown('<div class="fc-section-label">Momentum monitor</div>', unsafe_allow_html=True)
-    form_columns = st.columns(2, gap="large")
-    with form_columns[0]:
-        with st.container(border=True):
-            _render_form(home_team, comparison["home"])
-    with form_columns[1]:
-        with st.container(border=True):
-            _render_form(away_team, comparison["away"])
+    _render_hero(model_info, cutoff)
+    _render_matchup(home_team, away_team)
+    forecast_tab, analytics_tab, model_tab = st.tabs(
+        ["Match Forecast", "Team Analytics", "Model Insights"]
+    )
 
-    _render_head_to_head(meetings)
-
-    with st.expander("Model transparency and responsible use"):
-        st.write(model_info["intended_use"].capitalize() + ".")
-        for limitation in model_info["limitations"]:
-            st.markdown(f"- {limitation}")
-        st.caption(
-            f"Specification: {model_info['specification_sha256'][:12]}… · "
-            f"{model_info['completed_matches']:,} completed matches · "
-            "Recent form is descriptive context, not an extra model input."
+    with forecast_tab:
+        if prediction:
+            _render_prediction(prediction)
+        else:
+            _render_empty_forecast()
+        _render_elo(home_team, away_team, comparison)
+        st.markdown(
+            '<div class="fc-section-label">Momentum monitor · last 10</div>',
+            unsafe_allow_html=True,
         )
+        form_columns = st.columns(2, gap="large")
+        with form_columns[0]:
+            with st.container(border=True):
+                _render_form(home_team, comparison["home"])
+        with form_columns[1]:
+            with st.container(border=True):
+                _render_form(away_team, comparison["away"])
+        _render_head_to_head(meetings)
+
+    with analytics_tab:
+        _render_team_analytics(
+            home_team, away_team, comparison, meetings, portfolio
+        )
+
+    with model_tab:
+        _render_model_insights(model_info, portfolio)
 
 
 def main() -> None:

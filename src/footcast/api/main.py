@@ -11,6 +11,7 @@ from time import perf_counter
 from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel, ConfigDict, Field
 
+from footcast.analytics.portfolio import final_test_evidence
 from footcast.analytics.service import AnalyticsInputError, AnalyticsService
 from footcast.inference.elo_service import (
     REFERENCE_MODEL_VERSION,
@@ -121,6 +122,42 @@ class HeadToHeadResponse(BaseModel):
     team_b: str
     data_cutoff: date
     matches: list[HeadToHeadMatchResponse]
+
+
+class OutcomeDistributionResponse(BaseModel):
+    outcome: str
+    matches: int
+    share: float = Field(ge=0.0, le=1.0)
+
+
+class StrengthRankingResponse(BaseModel):
+    rank: int
+    team: str
+    elo: float
+
+
+class ModelBenchmarkResponse(BaseModel):
+    model: str
+    accuracy: float = Field(ge=0.0, le=1.0)
+    macro_f1: float = Field(ge=0.0, le=1.0)
+    log_loss: float = Field(ge=0.0)
+
+
+class PortfolioAnalyticsResponse(BaseModel):
+    completed_matches: int
+    first_match_date: date
+    data_cutoff: date
+    seasons: list[str]
+    season_count: int
+    outcome_distribution: list[OutcomeDistributionResponse]
+    strength_ranking: list[StrengthRankingResponse]
+    test_season: str
+    test_matches: int
+    benchmarks: list[ModelBenchmarkResponse]
+    deployed_elo_recall: dict[str, float]
+    deployed_elo_confusion_matrix: list[list[int]]
+    class_order: list[str]
+    selection_note: str
 
 
 def create_app(
@@ -262,6 +299,29 @@ def create_app(
             )
         except AnalyticsInputError as error:
             raise HTTPException(status_code=422, detail=str(error)) from error
+
+    @application.get(
+        "/analytics/portfolio", response_model=PortfolioAnalyticsResponse
+    )
+    def portfolio_analytics(request: Request) -> dict:
+        """Expose aggregated history and frozen evaluation evidence."""
+        analytics = current_analytics(request).portfolio_overview()
+        predictor = current_service(request)
+        ranked = sorted(
+            (
+                {"team": team, "elo": predictor.rating(team)}
+                for team in predictor.teams
+            ),
+            key=lambda item: (-item["elo"], item["team"]),
+        )[:10]
+        return {
+            **analytics,
+            "strength_ranking": [
+                {"rank": index, **item}
+                for index, item in enumerate(ranked, start=1)
+            ],
+            **final_test_evidence(),
+        }
 
     return application
 

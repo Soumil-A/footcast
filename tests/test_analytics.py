@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import json
 from datetime import date
+from pathlib import Path
 
 import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
+from footcast.analytics.portfolio import final_test_evidence
 from footcast.analytics.service import AnalyticsInputError, AnalyticsService
 from footcast.api.main import create_app
 from footcast.features.elo import EloConfig
@@ -18,6 +21,7 @@ def _matches() -> pd.DataFrame:
     return pd.DataFrame(
         [
             {
+                "season": "2023-24",
                 "split": "train",
                 "match_date": "2024-01-01",
                 "home_team": "Alpha",
@@ -27,6 +31,7 @@ def _matches() -> pd.DataFrame:
                 "result": "home_win",
             },
             {
+                "season": "2023-24",
                 "split": "validation",
                 "match_date": "2024-01-08",
                 "home_team": "Gamma",
@@ -36,6 +41,7 @@ def _matches() -> pd.DataFrame:
                 "result": "draw",
             },
             {
+                "season": "2023-24",
                 "split": "test",
                 "match_date": "2024-01-15",
                 "home_team": "Beta",
@@ -102,6 +108,44 @@ def test_compare_and_head_to_head_preserve_orientation(
     assert meetings["matches"][1]["team_a_outcome"] == "win"
 
 
+def test_portfolio_overview_summarizes_approved_history(
+    analytics: AnalyticsService,
+) -> None:
+    overview = analytics.portfolio_overview()
+
+    assert overview["completed_matches"] == 3
+    assert overview["first_match_date"] == date(2024, 1, 1)
+    assert overview["data_cutoff"] == date(2024, 1, 15)
+    assert overview["seasons"] == ["2023-24"]
+    assert overview["season_count"] == 1
+    assert sum(item["matches"] for item in overview["outcome_distribution"]) == 3
+    total_share = sum(
+        item["share"] for item in overview["outcome_distribution"]
+    )
+    assert total_share == pytest.approx(1.0)
+
+
+def test_portfolio_model_evidence_matches_tracked_final_test() -> None:
+    report_path = Path(__file__).parents[1] / "reports" / "final_test_results.json"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    evidence = final_test_evidence()
+
+    source_names = {
+        "Majority class": "Majority class",
+        "Elo (deployed)": "Elo",
+        "Logistic regression": "Logistic regression",
+        "Frozen Random Forest": "Frozen Random Forest",
+    }
+    for benchmark in evidence["benchmarks"]:
+        source = report["results"][source_names[benchmark["model"]]]
+        assert benchmark["accuracy"] == source["accuracy"]
+        assert benchmark["macro_f1"] == source["macro_f1"]
+        assert benchmark["log_loss"] == source["log_loss"]
+    assert evidence["deployed_elo_confusion_matrix"] == report["results"]["Elo"][
+        "confusion_matrix"
+    ]
+
+
 @pytest.mark.parametrize(
     ("operation", "message"),
     [
@@ -144,6 +188,7 @@ def test_analytics_endpoints_return_typed_comparison() -> None:
             "/analytics/head-to-head",
             params={"team_a": "Alpha", "team_b": "Beta"},
         )
+        portfolio = client.get("/analytics/portfolio")
         invalid = client.get(
             "/analytics/team-form", params={"team": "Unknown", "limit": 5}
         )
@@ -162,6 +207,11 @@ def test_analytics_endpoints_return_typed_comparison() -> None:
     )
     assert meetings.status_code == 200
     assert len(meetings.json()["matches"]) == 2
+    assert portfolio.status_code == 200
+    assert portfolio.json()["completed_matches"] == 3
+    assert portfolio.json()["strength_ranking"][0]["rank"] == 1
+    assert portfolio.json()["test_season"] == "2024-25"
+    assert portfolio.json()["benchmarks"][1]["model"] == "Elo (deployed)"
     assert invalid.status_code == 422
     assert invalid.json()["detail"] == "Unknown team: 'Unknown'"
     assert invalid_limit.status_code == 422
