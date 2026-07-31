@@ -406,6 +406,12 @@ results, provenance, and limitations. Set `FOOTCAST_API_URL` when the API is
 not available at `http://127.0.0.1:8000`. See the
 [dashboard contract](docs/dashboard.md) for its architecture and test boundary.
 
+The Phase 7 polish checkpoint adds a responsive dark analytics-console design:
+glass panels, team monograms, a probability spectrum, Elo balance indicator,
+W/D/L momentum chips, compact match-history cards, and a mobile control drawer.
+This is a presentation-only improvement; the API and model outputs are
+unchanged.
+
 ## Responsible use
 
 FootCast is an educational sports-analytics project. Its predictions are not

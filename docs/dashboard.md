@@ -21,6 +21,21 @@ This separation means a later model can replace Elo behind the API without
 rewriting the page. It also prevents raw files or model internals from moving
 into the browser-facing process.
 
+## Visual system
+
+The Phase 7 polish checkpoint uses a responsive broadcast-analytics direction:
+
+- a deep navy background with restrained cyan and violet signals
+- glass-style matchup, probability, Elo, and history surfaces
+- text monograms instead of external crest assets or licensing dependencies
+- three probability cards plus one proportional spectrum
+- color-and-letter W/D/L chips so form does not depend on color alone
+- a collapsible control deck on narrow screens
+- a model-status pill, visible cutoff, and sealed-holdout indicator
+
+The layout collapses its matchup, probability, and Elo grids below `760px` and
+does not introduce horizontal scrolling at a `390px` viewport.
+
 ## Run locally
 
 Start the two processes from separate terminals after installing the project:
@@ -52,9 +67,10 @@ FOOTCAST_API_URL=http://127.0.0.1:8000 streamlit run streamlit_app.py
 
 Unit tests verify URL encoding, the exact pre-match prediction payload, HTTP
 validation detail, and connection failures. A Streamlit `AppTest` renders the
-page headlessly against an injected client. Live verification additionally
-starts FastAPI and Streamlit, loads the real approved history, generates an
-Arsenal-Chelsea forecast, and checks the rendered form and comparison sections.
+page headlessly against an injected client and now exercises the generated
+forecast state. Live verification additionally starts FastAPI and Streamlit,
+loads the real approved history, generates an Arsenal-Chelsea forecast, and
+checks the rendered form and comparison sections at desktop and mobile widths.
 
 ## Limitations
 
