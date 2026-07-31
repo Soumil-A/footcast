@@ -105,6 +105,14 @@ Accepts distinct `team_a` and `team_b` values plus an optional limit. Returns
 the latest meetings in descending date order while preserving each fixture's
 historical home/away orientation and score.
 
+### `GET /analytics/portfolio`
+
+Returns an aggregated, read-only presentation contract for the public
+dashboard: approved-history coverage, outcome distribution, the ten highest
+current Elo ratings, and frozen 2024-25 model-comparison evidence. It exposes no
+raw rows. The final-test figures are copied from the tracked report and guarded
+by a synchronization test.
+
 All responses include an `X-Process-Time-Ms` header for local latency
 measurement. FastAPI also exposes interactive OpenAPI documentation at `/docs`.
 
@@ -127,7 +135,8 @@ holdout rejection, tracked-spec synchronization, response schemas, extra-field
 rejection, endpoint readiness, and latency headers. CI uses injected synthetic
 history so tests do not depend on ignored raw files. Analytics tests also cover
 team-perspective conversion, latest-N chronology, score orientation, limits,
-unknown teams, comparison ratings, and holdout rejection.
+unknown teams, comparison ratings, portfolio aggregation, evaluation-evidence
+synchronization, and holdout rejection.
 
 ## Known limitations
 

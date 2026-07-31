@@ -45,6 +45,19 @@ def test_client_builds_encoded_analytics_request() -> None:
     assert captured["timeout"] == 10.0
 
 
+def test_client_requests_portfolio_summary() -> None:
+    captured = {}
+
+    def opener(request, *, timeout):
+        captured["url"] = request.full_url
+        return _Response({"completed_matches": 3800})
+
+    result = FootCastApiClient("http://localhost:8000", opener=opener).portfolio()
+
+    assert result == {"completed_matches": 3800}
+    assert captured["url"] == "http://localhost:8000/analytics/portfolio"
+
+
 def test_client_posts_only_pre_match_fixture_fields() -> None:
     captured = {}
 
@@ -141,6 +154,51 @@ class _DashboardClient:
     def head_to_head(self, _home: str, _away: str, *, limit: int) -> dict:
         return {"matches": []}
 
+    def portfolio(self) -> dict:
+        return {
+            "completed_matches": 3800,
+            "first_match_date": "2015-08-08",
+            "data_cutoff": "2025-05-25",
+            "season_count": 10,
+            "outcome_distribution": [
+                {"outcome": "home_win", "matches": 1660, "share": 0.437},
+                {"outcome": "draw", "matches": 884, "share": 0.233},
+                {"outcome": "away_win", "matches": 1256, "share": 0.330},
+            ],
+            "strength_ranking": [
+                {"rank": 1, "team": "Arsenal", "elo": 1600.0},
+                {"rank": 2, "team": "Chelsea", "elo": 1500.0},
+            ],
+            "test_season": "2024-25",
+            "test_matches": 380,
+            "benchmarks": [
+                {
+                    "model": "Elo (deployed)",
+                    "accuracy": 0.526,
+                    "macro_f1": 0.392,
+                    "log_loss": 0.993,
+                },
+                {
+                    "model": "Frozen Random Forest",
+                    "accuracy": 0.513,
+                    "macro_f1": 0.383,
+                    "log_loss": 1.005,
+                },
+            ],
+            "deployed_elo_recall": {
+                "home_win": 0.845,
+                "draw": 0.0,
+                "away_win": 0.523,
+            },
+            "deployed_elo_confusion_matrix": [
+                [131, 0, 24],
+                [63, 0, 30],
+                [63, 0, 69],
+            ],
+            "class_order": ["home_win", "draw", "away_win"],
+            "selection_note": "Elo is the transparent reference model.",
+        }
+
     def predict(self, home: str, away: str, match_date: str) -> dict:
         return {
             "home_team": home,
@@ -166,6 +224,11 @@ def test_streamlit_dashboard_renders_against_client_contract() -> None:
 
     assert not app.exception
     assert len(app.selectbox) == 2
+    assert [tab.label for tab in app.tabs] == [
+        "Match Forecast",
+        "Team Analytics",
+        "Model Insights",
+    ]
     assert any("FootCast" in element.value for element in app.markdown)
     assert any(
         "Forecast engine standing by" in element.value

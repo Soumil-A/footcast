@@ -134,6 +134,7 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.evaluation.draw_aware_plots`: final Phase 6 decision figures
 - `footcast.inference.elo_service`: immutable approved-history replay and scoring
 - `footcast.analytics.service`: recent form, comparison, and head-to-head views
+- `footcast.analytics.portfolio`: audited public final-test evidence
 - `footcast.api.main`: validated FastAPI schemas, lifecycle, and endpoints
 - `footcast.dashboard.client`: defensive HTTP client and error translation
 - `footcast.dashboard.app`: Streamlit presentation with no model imports

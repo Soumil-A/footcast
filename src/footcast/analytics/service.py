@@ -11,6 +11,7 @@ from footcast.inference.elo_service import REFERENCE_SPLITS
 
 REQUIRED_ANALYTICS_COLUMNS = frozenset(
     {
+        "season",
         "split",
         "match_date",
         "home_team",
@@ -133,6 +134,28 @@ class AnalyticsService:
             "home": self.recent_form(home, limit=count),
             "away": self.recent_form(away, limit=count),
             "data_cutoff": self._data_cutoff,
+        }
+
+    def portfolio_overview(self) -> dict[str, Any]:
+        """Summarize the approved history without exposing individual raw rows."""
+        outcomes = self._history["result"].astype(str).value_counts()
+        total = int(len(self._history))
+        distribution = [
+            {
+                "outcome": outcome,
+                "matches": int(outcomes.get(outcome, 0)),
+                "share": float(outcomes.get(outcome, 0) / total),
+            }
+            for outcome in ("home_win", "draw", "away_win")
+        ]
+        seasons = sorted(self._history["season"].astype(str).unique())
+        return {
+            "completed_matches": total,
+            "first_match_date": self._history["match_date"].min().date(),
+            "data_cutoff": self._data_cutoff,
+            "seasons": seasons,
+            "season_count": len(seasons),
+            "outcome_distribution": distribution,
         }
 
     def head_to_head(

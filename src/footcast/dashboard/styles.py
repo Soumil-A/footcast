@@ -87,6 +87,34 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
   background: rgba(15, 23, 42, 0.72);
 }
 
+[data-testid="stTabs"] [data-baseweb="tab-list"] {
+  gap: 0.45rem;
+  padding: 0.35rem;
+  border: 1px solid var(--fc-border);
+  border-radius: 0.95rem;
+  background: rgba(8, 13, 28, 0.72);
+}
+
+[data-testid="stTabs"] [data-baseweb="tab"] {
+  min-height: 2.8rem;
+  padding: 0 1.15rem;
+  border-radius: 0.7rem;
+  color: var(--fc-muted);
+  font-weight: 750;
+}
+
+[data-testid="stTabs"] [aria-selected="true"] {
+  background: linear-gradient(110deg, rgba(6, 182, 212, 0.16), rgba(139, 92, 246, 0.18));
+  color: var(--fc-text);
+}
+
+[data-testid="stMetric"] {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--fc-border);
+  border-radius: 0.9rem;
+  background: rgba(15, 23, 42, 0.66);
+}
+
 [data-testid="stExpander"] {
   border-color: var(--fc-border);
   border-radius: 1rem;

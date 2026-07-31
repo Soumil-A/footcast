@@ -37,6 +37,9 @@ class FootCastApiClient:
     def model_info(self) -> dict[str, Any]:
         return self._request("/model/info")
 
+    def portfolio(self) -> dict[str, Any]:
+        return self._request("/analytics/portfolio")
+
     def predict(
         self, home_team: str, away_team: str, match_date: str
     ) -> dict[str, Any]:
