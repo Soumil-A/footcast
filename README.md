@@ -10,14 +10,16 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Phases 1 through 3 and Phase 4 checkpoint 1 are complete. Football-Data
+Phases 1 through 3 and Phase 4 checkpoints 1 and 2 are complete. Football-Data
 acquisition is checksum-pinned and repeatable, raw files are immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
 be regenerated locally. Exploratory analysis uses only the training and
 validation seasons and clearly labels current-match statistics as descriptive,
 not pre-kickoff features. The feature pipeline creates tested pre-match form,
 rest, season-state, and Elo values. Four baselines, including FootCast's first
-learned model, now establish the validation reference points.
+learned model, establish the validation reference points. A time-aware Random
+Forest search now provides a modest nonlinear improvement without opening the
+reserved seasons.
 
 ## Planned modeling question
 
@@ -244,6 +246,26 @@ three-way probability score. Neither model yet detects draws reliably. The
 and metrics. Full results are in the
 [baseline report](reports/baseline_results.md), with confusion matrices in
 `reports/figures/phase4/`. The command never loads the test or holdout seasons.
+
+## Random Forest
+
+Phase 4 checkpoint 2 evaluates 12 Random Forest configurations across five
+expanding, next-season folds entirely within the training period:
+
+```bash
+python -m footcast.models.run_random_forest
+```
+
+The selected 300-tree forest has depth `6`, a minimum leaf size of `20`, and no
+class weighting. On 2023-24 validation it reaches `0.579` accuracy, `0.425`
+macro F1, and `0.931` log loss. This narrowly leads the checkpoint-one models,
+but its draw recall remains zero.
+
+See the [Random Forest contract](docs/random_forest.md) for the selection
+design and the [generated report](reports/random_forest_results.md) for every
+candidate, fold, metric, and top training-derived importance. The test and
+holdout seasons remain untouched; calibration and deeper error analysis come
+next.
 
 ## Responsible use
 

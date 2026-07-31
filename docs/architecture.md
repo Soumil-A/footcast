@@ -30,7 +30,9 @@ Leakage-safe pre-match features (Phase 3 complete)
         |           |
         |           +----> Validation metrics and confusion matrices
         |
-        +----> Random Forest
+        +----> Random Forest (Phase 4 checkpoint 2 complete)
+                    |
+                    +----> Expanding-season selection
                     |
                     v
           Calibration and evaluation
@@ -66,12 +68,13 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.features.build_features`: matchup assembly and feature audit
 - `footcast.models.baselines`: naive, Elo, and logistic-regression estimators
 - `footcast.models.run_baselines`: chronological fitting and report generation
+- `footcast.models.random_forest`: deterministic forest and expanding folds
+- `footcast.models.run_random_forest`: selection, comparison, and reporting
 - `footcast.evaluation.metrics`: fixed-order multiclass model metrics
 - `footcast.evaluation.plots`: consistent confusion-matrix visualization
 
 Planned later:
 
-- Random Forest training and model selection
 - calibration, subgroup analysis, artifact versioning, and inference
 
 These modules will be introduced only when their milestone begins.

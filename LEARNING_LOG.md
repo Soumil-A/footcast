@@ -220,3 +220,52 @@
   inside the training period?
 - Do class weighting or calibrated probabilities improve draw behavior without
   damaging overall probability quality?
+
+## Phase 4 Checkpoint 2: Random Forest
+
+### Concepts
+
+- Hyperparameter tuning needs its own evaluation boundary. Reusing the outer
+  validation season for every choice would gradually overfit decisions to that
+  season.
+- Expanding season folds imitate the real forecasting direction: learn from
+  completed seasons, then evaluate on the next unseen season.
+- Model selection must name a primary metric before results are viewed.
+  FootCast prioritizes log loss because the product promises probabilities,
+  while macro F1 remains an important label-quality diagnostic.
+- Feature importance explains how this fitted forest splits its data; it does
+  not establish that a feature causes match outcomes.
+
+### Decisions
+
+- Use five expanding folds entirely within the eight training seasons.
+- Search 12 combinations of maximum depth, minimum leaf size, and class
+  weighting with 300 trees and a fixed random seed.
+- Fit median imputation and missingness indicators independently inside every
+  fold.
+- Select lowest mean log loss, using mean macro F1 only to break an exact tie.
+- Compare the selected forest once on 2023-24 and continue to exclude test and
+  holdout seasons.
+
+### Observations
+
+- Cross-validation selected depth `6`, minimum leaf size `20`, and no class
+  weighting, with mean log loss `0.978`.
+- Balanced class weighting improved mean fold macro F1 as high as `0.474`, but
+  worsened probability quality to roughly `0.999` log loss.
+- Random Forest reached `0.579` validation accuracy, `0.425` macro F1, and
+  `0.931` log loss. This is a narrow improvement over Elo and logistic
+  regression, not a decisive leap.
+- Draw recall remained `0.000`. More model complexity did not by itself solve
+  the minority-outcome problem.
+- Elo difference was the largest impurity importance, supporting the earlier
+  observation that stable team-strength information carries substantial
+  signal. Correlated Elo fields mean these values must not be read causally.
+
+### Questions for the next checkpoint
+
+- Are the Random Forest probabilities systematically over- or under-confident?
+- Can calibration improve probability quality without changing the ranking
+  signal?
+- Which seasons, teams, cold starts, and confidence ranges contain the largest
+  errors?

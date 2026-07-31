@@ -6,10 +6,12 @@ from footcast.models.baselines import (
     LogisticRegressionBaseline,
     MajorityClassBaseline,
 )
+from footcast.models.random_forest import make_random_forest
 
 __all__ = [
     "AlwaysHomeBaseline",
     "EloBaseline",
     "LogisticRegressionBaseline",
     "MajorityClassBaseline",
+    "make_random_forest",
 ]
