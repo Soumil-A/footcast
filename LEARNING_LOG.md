@@ -631,3 +631,51 @@ deployment and a README demo capture; accuracy work remains a separate track.
 FootCast now has a portable, reviewable deployment unit and a CI gate that
 tests the running product boundary. It is ready for the next Phase 8 checkpoint:
 selecting a host, publishing the stack, and adding basic production monitoring.
+
+## Phase 8 Checkpoint 2: Public deployment and monitoring
+
+### Concepts
+
+- Infrastructure as code makes the host configuration reviewable beside the
+  application: runtime, region, plan, health endpoints, and service wiring are
+  part of the repository contract.
+- A generated service URL should be passed by a platform reference instead of
+  copied into source. This keeps redeployments and service renames declarative.
+- Process health and product correctness are different. A server can return
+  HTTP 200 while loading the wrong data, so external monitoring should verify
+  provenance as well as availability.
+- Deployment should follow CI rather than race it. A host can wait until GitHub
+  checks pass before building the new production revision.
+- Account authorization is intentionally outside source control. The repo can
+  describe resources, but its owner must connect GitHub to the hosting account.
+
+### Decisions
+
+- Select Render because its Blueprint supports both Docker services, generated
+  cross-service environment values, health checks, and CI-gated auto-deploys.
+- Use two public free web services in Virginia. The API remains public for the
+  portfolio's OpenAPI demo; Streamlit consumes its generated external URL.
+- Preserve the exact Phase 8 checkpoint 1 Dockerfiles instead of creating a
+  host-specific execution path.
+- Monitor `/health`, `/model/info`, and Streamlit health every six hours from
+  GitHub Actions after public URL variables are configured.
+- Fail monitoring if the match count, data cutoff, or holdout boundary drifts,
+  even when both processes are technically reachable.
+
+### Verification observations
+
+- Render's current official JSON schema accepts `render.yaml`.
+- Ruff passes and all 121 repository tests pass.
+- Contract tests cover both service definitions, Dockerfile selection, health
+  paths, free-plan region, CI-gated deploys, and generated API URL wiring.
+- Monitor tests cover the healthy product, provenance drift, and network
+  failure paths without calling a live deployment.
+- Initial public provisioning still requires the repository owner to connect
+  the GitHub repository to a Render workspace after this checkpoint merges.
+
+### Outcome
+
+FootCast has a tested public-hosting specification and an external monitoring
+contract. Once the one-time Render Blueprint authorization is applied, the live
+URLs can be recorded, monitored, and added to the portfolio README without any
+change to the model or data boundary.

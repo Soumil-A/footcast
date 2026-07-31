@@ -433,6 +433,21 @@ and a live Compose health/provenance smoke test. See the
 [container and deployment contract](docs/deployment.md) for the reproducibility,
 security, configuration, and CI boundaries.
 
+### Public deployment
+
+The repository includes a schema-validated `render.yaml` Blueprint for two free
+Render web services in Virginia. Render builds the same API and dashboard
+Dockerfiles used by Compose, injects the generated API URL into Streamlit, and
+deploys from `main` only after CI passes. Platform health checks cover both
+services.
+
+An external GitHub Actions monitor runs every six hours after
+`FOOTCAST_API_URL` and `FOOTCAST_DASHBOARD_URL` repository variables are set.
+It checks the public endpoints and asserts that production still serves exactly
+3,800 approved matches through `2025-05-25` without the holdout. See the
+[deployment contract](docs/deployment.md) for initial Blueprint setup,
+monitoring activation, and operational limitations.
+
 ## Responsible use
 
 FootCast is an educational sports-analytics project. Its predictions are not

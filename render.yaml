@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: footcast-api-soumil
+    runtime: docker
+    plan: free
+    region: virginia
+    branch: main
+    dockerContext: .
+    dockerfilePath: ./docker/api.Dockerfile
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+
+  - type: web
+    name: footcast-dashboard-soumil
+    runtime: docker
+    plan: free
+    region: virginia
+    branch: main
+    dockerContext: .
+    dockerfilePath: ./docker/dashboard.Dockerfile
+    healthCheckPath: /_stcore/health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: FOOTCAST_API_URL
+        fromService:
+          type: web
+          name: footcast-api-soumil
+          envVarKey: RENDER_EXTERNAL_URL
