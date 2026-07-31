@@ -1,0 +1,35 @@
+{
+  "model_version": "footcast-elo-v2-reference",
+  "model_type": "Elo reference probability model",
+  "class_order": [
+    "home_win",
+    "draw",
+    "away_win"
+  ],
+  "approved_splits": [
+    "test",
+    "train",
+    "validation"
+  ],
+  "holdout_seasons_used": [],
+  "elo_config": {
+    "initial_rating": 1500.0,
+    "k_factor": 20.0,
+    "home_advantage": 65.0,
+    "rating_scale": 400.0
+  },
+  "draw_probability": "empirical rate across approved completed matches",
+  "development_evidence": {
+    "rolling_mean_log_loss": 0.976,
+    "rolling_mean_macro_f1": 0.401,
+    "rolling_mean_draw_recall": 0.0,
+    "original_2024_25_test_log_loss": 0.993
+  },
+  "intended_use": "educational probability demonstration",
+  "limitations": [
+    "Not intended for betting or financial decisions.",
+    "Draw probability is a historical training rate, not matchup-specific.",
+    "Ratings omit injuries, lineups, transfers, and tactical context.",
+    "The service uses completed data only through its displayed cutoff."
+  ]
+}

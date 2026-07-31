@@ -28,7 +28,8 @@ seven expanding next-season backtests. They did not outperform Elo or Random
 Forest and did not solve draw recognition. A final two-stage draw-aware model
 improved draw recall only by damaging probability quality, so the fixed
 checkpoint gate rejected it. Elo is the Phase 7 educational reference model.
-The 2025-26 holdout remains sealed.
+Phase 7 checkpoint 1 now serves versioned future-fixture probabilities through
+a tested FastAPI application. The 2025-26 holdout remains sealed.
 
 ## Planned modeling question
 
@@ -362,6 +363,33 @@ Elo is selected as the Phase 7 reference for an educational probability demo,
 not as a betting-quality system. See the
 [draw-aware decision contract](docs/draw_aware.md) and
 [generated decision report](reports/draw_aware_results.md).
+
+## Phase 7 prediction API
+
+The first product checkpoint reconstructs immutable Elo state from 3,800
+approved completed matches and serves future-fixture probabilities without
+loading 2025-26:
+
+```bash
+uvicorn footcast.api.main:app --reload
+```
+
+Available endpoints are:
+
+- `GET /health`
+- `GET /teams`
+- `POST /predict`
+- `GET /model/info`
+
+Interactive OpenAPI documentation is available at
+`http://127.0.0.1:8000/docs`. Every prediction exposes the model version, data
+cutoff, Elo ratings, intended use, and warning. Invalid teams, identical teams,
+past dates, and extra post-match fields are rejected. See the
+[prediction API contract](docs/prediction_api.md) for the request schema,
+representative response, reproduction steps, tests, and limitations.
+
+The next checkpoint adds deterministic analytics endpoints and a Streamlit
+dashboard that consumes this API. The browser will not contain model logic.
 
 ## Responsible use
 

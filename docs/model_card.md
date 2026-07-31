@@ -18,6 +18,11 @@ unweighted configuration reached mean rolling log loss `0.996`, Brier score
 educational reference model, not an approved system for betting or financial
 use.
 
+Phase 7 checkpoint 1 exposes that Elo reference through a versioned API. It
+reconstructs ratings from 3,800 approved completed matches, reports a
+`2025-05-25` data cutoff, and rejects data from the sealed holdout. The API is a
+portfolio demonstration, not evidence that the prediction quality improved.
+
 ## Intended use
 
 FootCast is intended for:
@@ -95,3 +100,7 @@ are included in the Phase 5 reports.
   probability estimates; it is not retained.
 - Elo remains unable to identify draws as the most likely class in these
   backtests and is suitable only for an explicitly limited educational demo.
+- API predictions use a historical snapshot rather than live injuries,
+  lineups, transfers, fixtures, or results.
+- The API team list contains all observed clubs since 2015-16, including clubs
+  that may not belong to the latest Premier League season.

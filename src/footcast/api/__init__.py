@@ -1,0 +1,1 @@
+"""FootCast HTTP API package."""

@@ -454,3 +454,45 @@ on rolling probability quality, and performed better than the forest on the
 original final-test log loss. It remains an educational reference with serious
 draw limitations, not a deployment-quality forecasting claim. The 2025-26
 holdout remains sealed.
+
+## Phase 7 Checkpoint 1: Prediction API
+
+### Concepts
+
+- Training code consumes completed outcomes; inference code must accept an
+  unfinished fixture without inventing goals, shots, or a result.
+- Replaying approved completed matches creates a point-in-time model state.
+  Scoring a hypothetical fixture must not mutate that state.
+- A stable HTTP contract allows the model to change later without rewriting
+  the dashboard.
+- Model provenance belongs in the product response: version, specification
+  hash, data cutoff, intended use, and limitations are part of correctness.
+
+### Decisions
+
+- Serve the Phase 6 Elo reference as `footcast-elo-v2-reference`.
+- Load only train, validation, and previously seen test splits, totaling 3,800
+  completed matches; continue excluding 2025-26.
+- Require a future date and two distinct known teams. Reject all extra request
+  fields so post-match information cannot enter the API accidentally.
+- Reconstruct state at application startup and keep prediction calls immutable.
+- Package the API under `footcast.api` so editable installs, wheels, tests, and
+  Uvicorn use the same import path.
+- Track a canonical JSON model specification and expose its hash.
+
+### Verification observations
+
+- Synthetic service and endpoint tests cover probability order, normalization,
+  mutation, invalid requests, holdout rejection, and response metadata.
+- The real service reconstructed 34 historically observed teams with data
+  cutoff `2025-05-25` and historical draw rate `0.2332`.
+- A real local Arsenal-Chelsea request returned home/draw/away probabilities
+  `0.5397`, `0.2332`, and `0.2272`; this is a smoke-test example, not a future
+  accuracy claim.
+- Uvicorn served all four endpoints successfully and response-time headers were
+  present.
+
+### Next checkpoint
+
+Add deterministic recent-form, comparison, and head-to-head endpoints, then
+build a Streamlit dashboard that calls FastAPI rather than importing model code.
