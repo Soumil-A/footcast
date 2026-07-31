@@ -63,7 +63,7 @@ Leakage-safe pre-match features (Phase 3 complete)
         Elo is Phase 7 reference model
                     |
                     v
-        Prediction API (next milestone)
+        Prediction API
                     |
                     v
        Versioned Elo inference service
@@ -73,7 +73,10 @@ Leakage-safe pre-match features (Phase 3 complete)
        and model-information endpoints
                     |
                     v
-       Streamlit dashboard (next checkpoint)
+       Read-only analytics endpoints
+                    |
+                    v
+       Streamlit dashboard over HTTP
 ```
 
 ## Design principles
@@ -115,10 +118,11 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.evaluation.goal_model_plots`: rolling v2 comparison figures
 - `footcast.evaluation.draw_aware_plots`: final Phase 6 decision figures
 - `footcast.inference.elo_service`: immutable approved-history replay and scoring
+- `footcast.analytics.service`: recent form, comparison, and head-to-head views
 - `footcast.api.main`: validated FastAPI schemas, lifecycle, and endpoints
+- `footcast.dashboard.client`: defensive HTTP client and error translation
+- `footcast.dashboard.app`: Streamlit presentation with no model imports
 
-Planned for the next approved checkpoint:
-
-- deterministic analytics endpoints and the Streamlit dashboard
-
-These modules will be introduced only when their milestone begins.
+The API loads approved completed matches once at startup and shares that
+in-memory snapshot with inference and analytics. The dashboard is a separate
+process and can only reach those capabilities through HTTP.

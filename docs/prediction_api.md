@@ -87,6 +87,24 @@ Representative response from the approved local data snapshot:
 Returns model provenance, constants, evidence, limitations, supported-team
 count, completed-match count, and holdout status.
 
+### `GET /analytics/team-form`
+
+Accepts `team` and an optional `limit` from 1 through 20. Returns the latest
+completed matches from that team's perspective, including opponent, venue,
+goals for and against, W/D/L outcome, points, and an aggregate summary.
+
+### `GET /analytics/compare`
+
+Accepts distinct `home_team` and `away_team` values plus an optional form
+limit. Returns each team's recent form and current immutable Elo rating. The
+rating difference is home minus away.
+
+### `GET /analytics/head-to-head`
+
+Accepts distinct `team_a` and `team_b` values plus an optional limit. Returns
+the latest meetings in descending date order while preserving each fixture's
+historical home/away orientation and score.
+
 All responses include an `X-Process-Time-Ms` header for local latency
 measurement. FastAPI also exposes interactive OpenAPI documentation at `/docs`.
 
@@ -107,7 +125,9 @@ Tests cover chronological replay, immutable prediction state, normalized fixed-
 order probabilities, invalid fixtures, unknown teams, cutoff enforcement,
 holdout rejection, tracked-spec synchronization, response schemas, extra-field
 rejection, endpoint readiness, and latency headers. CI uses injected synthetic
-history so tests do not depend on ignored raw files.
+history so tests do not depend on ignored raw files. Analytics tests also cover
+team-perspective conversion, latest-N chronology, score orientation, limits,
+unknown teams, comparison ratings, and holdout rejection.
 
 ## Known limitations
 
@@ -116,4 +136,5 @@ history so tests do not depend on ignored raw files.
 - Injuries, lineups, transfers, and tactical context are unavailable.
 - The team list includes every club observed since 2015-16, not only the latest
   Premier League membership.
-- Phase 7 checkpoint 2 must add analytics endpoints and the Streamlit client.
+- Recent form and head-to-head are descriptive completed-match context, not
+  new predictive inputs.

@@ -8,14 +8,15 @@ from contextlib import asynccontextmanager
 from datetime import date
 from time import perf_counter
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel, ConfigDict, Field
 
+from footcast.analytics.service import AnalyticsInputError, AnalyticsService
 from footcast.inference.elo_service import (
     REFERENCE_MODEL_VERSION,
     EloReferenceService,
     PredictionInputError,
-    load_reference_service,
+    load_reference_matches,
 )
 
 LOGGER = logging.getLogger("footcast.api")
@@ -66,12 +67,79 @@ class TeamsResponse(BaseModel):
     data_cutoff: date
 
 
-def create_app(service: EloReferenceService | None = None) -> FastAPI:
+class FormMatchResponse(BaseModel):
+    """One completed fixture from the requested team's perspective."""
+
+    match_date: date
+    opponent: str
+    venue: str
+    goals_for: int
+    goals_against: int
+    outcome: str
+    points: int
+
+
+class FormSummaryResponse(BaseModel):
+    """Aggregate over only the displayed recent matches."""
+
+    matches: int
+    wins: int
+    draws: int
+    losses: int
+    points: int
+    goals_for: int
+    goals_against: int
+
+
+class TeamFormResponse(BaseModel):
+    team: str
+    data_cutoff: date
+    summary: FormSummaryResponse
+    matches: list[FormMatchResponse]
+
+
+class TeamComparisonResponse(BaseModel):
+    home: TeamFormResponse
+    away: TeamFormResponse
+    home_elo: float
+    away_elo: float
+    elo_difference: float
+    data_cutoff: date
+
+
+class HeadToHeadMatchResponse(BaseModel):
+    match_date: date
+    home_team: str
+    away_team: str
+    home_goals: int
+    away_goals: int
+    team_a_outcome: str
+
+
+class HeadToHeadResponse(BaseModel):
+    team_a: str
+    team_b: str
+    data_cutoff: date
+    matches: list[HeadToHeadMatchResponse]
+
+
+def create_app(
+    service: EloReferenceService | None = None,
+    analytics_service: AnalyticsService | None = None,
+) -> FastAPI:
     """Create an application with injectable deterministic model state."""
 
     @asynccontextmanager
     async def lifespan(application: FastAPI) -> AsyncIterator[None]:
-        application.state.prediction_service = service or load_reference_service()
+        if service is None:
+            approved_matches = load_reference_matches()
+            application.state.prediction_service = EloReferenceService(
+                approved_matches
+            )
+            application.state.analytics_service = AnalyticsService(approved_matches)
+        else:
+            application.state.prediction_service = service
+            application.state.analytics_service = analytics_service
         yield
 
     application = FastAPI(
@@ -101,6 +169,12 @@ def create_app(service: EloReferenceService | None = None) -> FastAPI:
 
     def current_service(request: Request) -> EloReferenceService:
         return request.app.state.prediction_service
+
+    def current_analytics(request: Request) -> AnalyticsService:
+        active = request.app.state.analytics_service
+        if active is None:
+            raise HTTPException(status_code=503, detail="Analytics are unavailable")
+        return active
 
     @application.get("/health", response_model=HealthResponse)
     def health(request: Request) -> dict:
@@ -136,6 +210,58 @@ def create_app(service: EloReferenceService | None = None) -> FastAPI:
         except PredictionInputError as error:
             raise HTTPException(status_code=422, detail=str(error)) from error
         return prediction.to_dict()
+
+    @application.get("/analytics/team-form", response_model=TeamFormResponse)
+    def team_form(
+        request: Request,
+        team: str = Query(min_length=1, max_length=100),
+        limit: int = Query(default=5, ge=1, le=20),
+    ) -> dict:
+        try:
+            return current_analytics(request).recent_form(team, limit=limit)
+        except AnalyticsInputError as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
+
+    @application.get(
+        "/analytics/compare", response_model=TeamComparisonResponse
+    )
+    def compare_teams(
+        request: Request,
+        home_team: str = Query(min_length=1, max_length=100),
+        away_team: str = Query(min_length=1, max_length=100),
+        limit: int = Query(default=5, ge=1, le=20),
+    ) -> dict:
+        try:
+            comparison = current_analytics(request).compare(
+                home_team, away_team, limit=limit
+            )
+            active = current_service(request)
+            home_elo = active.rating(home_team)
+            away_elo = active.rating(away_team)
+        except (AnalyticsInputError, PredictionInputError) as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
+        return {
+            **comparison,
+            "home_elo": home_elo,
+            "away_elo": away_elo,
+            "elo_difference": home_elo - away_elo,
+        }
+
+    @application.get(
+        "/analytics/head-to-head", response_model=HeadToHeadResponse
+    )
+    def head_to_head(
+        request: Request,
+        team_a: str = Query(min_length=1, max_length=100),
+        team_b: str = Query(min_length=1, max_length=100),
+        limit: int = Query(default=10, ge=1, le=20),
+    ) -> dict:
+        try:
+            return current_analytics(request).head_to_head(
+                team_a, team_b, limit=limit
+            )
+        except AnalyticsInputError as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
 
     return application
 
