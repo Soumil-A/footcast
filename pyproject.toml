@@ -10,10 +10,12 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
   "certifi>=2024.8",
+  "fastapi>=0.115",
   "matplotlib>=3.9",
   "pandas>=2.2",
   "scikit-learn>=1.5",
   "seaborn>=0.13",
+  "uvicorn>=0.34",
 ]
 
 [project.scripts]
@@ -29,6 +31,7 @@ footcast-draw-aware = "footcast.models.run_draw_aware:main"
 
 [project.optional-dependencies]
 dev = [
+  "httpx2>=2.9",
   "pytest>=8.3",
   "ruff>=0.9",
 ]

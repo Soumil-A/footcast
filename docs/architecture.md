@@ -64,6 +64,16 @@ Leakage-safe pre-match features (Phase 3 complete)
                     |
                     v
         Prediction API (next milestone)
+                    |
+                    v
+       Versioned Elo inference service
+                    |
+                    v
+       FastAPI health, teams, prediction,
+       and model-information endpoints
+                    |
+                    v
+       Streamlit dashboard (next checkpoint)
 ```
 
 ## Design principles
@@ -104,9 +114,11 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.evaluation.error_analysis`: validation-only diagnostic slices
 - `footcast.evaluation.goal_model_plots`: rolling v2 comparison figures
 - `footcast.evaluation.draw_aware_plots`: final Phase 6 decision figures
+- `footcast.inference.elo_service`: immutable approved-history replay and scoring
+- `footcast.api.main`: validated FastAPI schemas, lifecycle, and endpoints
 
-Planned for the next approved milestone:
+Planned for the next approved checkpoint:
 
-- deterministic inference API and dashboard work
+- deterministic analytics endpoints and the Streamlit dashboard
 
 These modules will be introduced only when their milestone begins.
