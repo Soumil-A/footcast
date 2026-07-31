@@ -8,9 +8,16 @@ have been available before each match.
 The project is intentionally being built in stages so that every modeling,
 evaluation, and engineering decision is understandable and reproducible.
 
+**Live demo:** [FootCast dashboard](https://footcast-dashboard-soumil.onrender.com)
+
+**API:** [interactive documentation](https://footcast-api-soumil.onrender.com/docs)
+
+Both services use Render's free instance type and can take about a minute to
+wake after inactivity.
+
 ## Current status
 
-Phases 1 through 5 and all three Phase 6 research checkpoints are complete.
+Phases 1 through 8 are complete.
 Football-Data acquisition is checksum-pinned and repeatable, raw files are
 immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
@@ -32,6 +39,9 @@ Phase 7 now serves versioned future-fixture probabilities and deterministic
 completed-match analytics through FastAPI. A tested Streamlit dashboard uses
 that HTTP contract to present forecasts, Elo ratings, recent form, and
 head-to-head history. The 2025-26 holdout remains sealed.
+Phase 8 packages the API and dashboard as separate non-root containers and
+deploys them through a CI-gated Render Blueprint. Native health checks and a
+six-hour external monitor verify the public product and serving provenance.
 
 ## Planned modeling question
 
@@ -447,6 +457,16 @@ It checks the public endpoints and asserts that production still serves exactly
 3,800 approved matches through `2025-05-25` without the holdout. See the
 [deployment contract](docs/deployment.md) for initial Blueprint setup,
 monitoring activation, and operational limitations.
+
+Production is live at:
+
+- dashboard: `https://footcast-dashboard-soumil.onrender.com`
+- API docs: `https://footcast-api-soumil.onrender.com/docs`
+- API health: `https://footcast-api-soumil.onrender.com/health`
+
+The Render workspace remains on Hobby, both services are Free, and the build
+pipeline's monthly spend limit is `$0`. Bandwidth is tracked separately against
+the workspace's included monthly allowance.
 
 ## Responsible use
 
