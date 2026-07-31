@@ -2,12 +2,14 @@
 
 ## Status
 
-Phase 5 is complete. `footcast-rf-v1` was frozen before evaluation on the
+Phase 6 goal-model research is complete. `footcast-rf-v1` was frozen before evaluation on the
 2024-25 test season. No post-processing calibration was retained because both
 sigmoid and isotonic methods worsened forward training-period probability
 metrics. The frozen forest reached test accuracy `0.513`, macro F1 `0.383`, and
-log loss `1.005`. It is not recommended for deployment. The 2025-26 holdout
-remains untouched.
+log loss `1.005`. It is not recommended for deployment. Seven v2 rolling
+backtests subsequently found that Poisson and Dixon-Coles models had worse mean
+log loss than Elo and Random Forest and zero draw recall. They are not
+replacement candidates. The 2025-26 holdout remains untouched.
 
 ## Intended use
 
@@ -45,6 +47,12 @@ logistic regression achieved accuracy `0.529` and macro F1 `0.398`; the frozen
 forest achieved accuracy `0.513`, macro F1 `0.383`, and log loss `1.005`.
 The forest again had zero draw precision and recall.
 
+For Phase 6 v2 research, Random Forest and Elo reached mean rolling log loss
+`0.975` and `0.976`. Poisson reached `1.017`, and Dixon-Coles reached `1.018`.
+The goal models both had zero mean draw recall; logistic regression had the
+highest, but still very low, draw recall at `0.024`. These are development
+backtests through the already-seen 2024-25 season, not a new final-test claim.
+
 Brier score, calibration curves, subgroup evaluation, and per-class precision
 are included in the Phase 5 reports.
 
@@ -67,3 +75,7 @@ are included in the Phase 5 reports.
 - The final forest underperformed simpler alternatives on important test
   metrics and is not approved for deployment.
 - The 2024-25 result cannot be used to tune v1 and then treated as unseen again.
+- Independent Poisson team/opponent effects omit injuries, lineups, transfers,
+  tactics, and other time-varying context.
+- The bounded Dixon-Coles correction changed low-score probabilities but did
+  not make draws the most likely class in the rolling evaluation matches.

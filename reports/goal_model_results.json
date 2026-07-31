@@ -1,0 +1,5821 @@
+{
+  "status": "passed",
+  "phase": "Phase 6 v2 goal-model research",
+  "evaluation_policy": "expanding next-season development backtests; no final claim",
+  "development_seasons": [
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25"
+  ],
+  "evaluation_seasons": [
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25"
+  ],
+  "holdout_seasons_used": [],
+  "feature_count": 38,
+  "goal_model": {
+    "formulation": "regularized Poisson team attack and opponent defense with a home indicator",
+    "maximum_score_grid": 10,
+    "poisson_candidates": [
+      {
+        "parameters": {
+          "alpha": 0.1,
+          "rho": 0.0
+        },
+        "mean_log_loss": 1.016739358949017,
+        "mean_macro_f1": 0.36439100747385134,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5868421052631579,
+              "macro_f1": 0.41173356918397025,
+              "log_loss": 0.980871648739551,
+              "multiclass_brier_score": 0.5834110050191365,
+              "expected_calibration_error": 0.13435753489339097,
+              "per_class_recall": {
+                "home_win": 0.9226519337016574,
+                "draw": 0.0,
+                "away_win": 0.4375
+              },
+              "per_class_precision": {
+                "home_win": 0.5529801324503312,
+                "draw": 0.0,
+                "away_win": 0.717948717948718
+              },
+              "confusion_matrix": [
+                [
+                  167,
+                  0,
+                  14
+                ],
+                [
+                  63,
+                  0,
+                  8
+                ],
+                [
+                  72,
+                  0,
+                  56
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5131578947368421,
+              "macro_f1": 0.3612439240346217,
+              "log_loss": 1.0096472640243723,
+              "multiclass_brier_score": 0.6029119030805116,
+              "expected_calibration_error": 0.05834357669981074,
+              "per_class_recall": {
+                "home_win": 0.8837209302325582,
+                "draw": 0.0,
+                "away_win": 0.3706896551724138
+              },
+              "per_class_precision": {
+                "home_win": 0.5049833887043189,
+                "draw": 0.0,
+                "away_win": 0.5443037974683544
+              },
+              "confusion_matrix": [
+                [
+                  152,
+                  0,
+                  20
+                ],
+                [
+                  76,
+                  0,
+                  16
+                ],
+                [
+                  73,
+                  0,
+                  43
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.48157894736842105,
+              "macro_f1": 0.34047271666180334,
+              "log_loss": 1.039874768722658,
+              "multiclass_brier_score": 0.6255990725510895,
+              "expected_calibration_error": 0.030468732055890027,
+              "per_class_recall": {
+                "home_win": 0.9375,
+                "draw": 0.0,
+                "away_win": 0.3137254901960784
+              },
+              "per_class_precision": {
+                "home_win": 0.44554455445544555,
+                "draw": 0.0,
+                "away_win": 0.6233766233766234
+              },
+              "confusion_matrix": [
+                [
+                  135,
+                  0,
+                  9
+                ],
+                [
+                  63,
+                  0,
+                  20
+                ],
+                [
+                  105,
+                  0,
+                  48
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5263157894736842,
+              "macro_f1": 0.3833278151786043,
+              "log_loss": 1.004043967447554,
+              "multiclass_brier_score": 0.5989941150728393,
+              "expected_calibration_error": 0.08063053161223267,
+              "per_class_recall": {
+                "home_win": 0.8773006134969326,
+                "draw": 0.0,
+                "away_win": 0.4418604651162791
+              },
+              "per_class_precision": {
+                "home_win": 0.4965277777777778,
+                "draw": 0.0,
+                "away_win": 0.6195652173913043
+              },
+              "confusion_matrix": [
+                [
+                  143,
+                  0,
+                  20
+                ],
+                [
+                  73,
+                  0,
+                  15
+                ],
+                [
+                  72,
+                  0,
+                  57
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5157894736842106,
+              "macro_f1": 0.35847470097328205,
+              "log_loss": 1.0227286543995258,
+              "multiclass_brier_score": 0.6129013454575577,
+              "expected_calibration_error": 0.07499093109669504,
+              "per_class_recall": {
+                "home_win": 0.8315217391304348,
+                "draw": 0.0,
+                "away_win": 0.3944954128440367
+              },
+              "per_class_precision": {
+                "home_win": 0.5331010452961672,
+                "draw": 0.0,
+                "away_win": 0.46236559139784944
+              },
+              "confusion_matrix": [
+                [
+                  153,
+                  0,
+                  31
+                ],
+                [
+                  68,
+                  0,
+                  19
+                ],
+                [
+                  66,
+                  0,
+                  43
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5552631578947368,
+              "macro_f1": 0.3968253968253968,
+              "log_loss": 1.0024369483891886,
+              "multiclass_brier_score": 0.5978190737737598,
+              "expected_calibration_error": 0.10983944437999557,
+              "per_class_recall": {
+                "home_win": 0.8914285714285715,
+                "draw": 0.0,
+                "away_win": 0.44715447154471544
+              },
+              "per_class_precision": {
+                "home_win": 0.5324232081911263,
+                "draw": 0.0,
+                "away_win": 0.632183908045977
+              },
+              "confusion_matrix": [
+                [
+                  156,
+                  0,
+                  19
+                ],
+                [
+                  69,
+                  0,
+                  13
+                ],
+                [
+                  68,
+                  0,
+                  55
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42894736842105263,
+              "macro_f1": 0.2986589294592809,
+              "log_loss": 1.0575722609202698,
+              "multiclass_brier_score": 0.6382634626413088,
+              "expected_calibration_error": 0.03095072686841774,
+              "per_class_recall": {
+                "home_win": 0.8193548387096774,
+                "draw": 0.0,
+                "away_win": 0.2727272727272727
+              },
+              "per_class_precision": {
+                "home_win": 0.43197278911564624,
+                "draw": 0.0,
+                "away_win": 0.4186046511627907
+              },
+              "confusion_matrix": [
+                [
+                  127,
+                  0,
+                  28
+                ],
+                [
+                  71,
+                  0,
+                  22
+                ],
+                [
+                  96,
+                  0,
+                  36
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 0.5,
+          "rho": 0.0
+        },
+        "mean_log_loss": 1.049672707362038,
+        "mean_macro_f1": 0.30225495393571095,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5157894736842106,
+              "macro_f1": 0.3058947283246349,
+              "log_loss": 1.0278737018620225,
+              "multiclass_brier_score": 0.618579393003589,
+              "expected_calibration_error": 0.10975156249498308,
+              "per_class_recall": {
+                "home_win": 0.9723756906077348,
+                "draw": 0.0,
+                "away_win": 0.15625
+              },
+              "per_class_precision": {
+                "home_win": 0.4971751412429379,
+                "draw": 0.0,
+                "away_win": 0.7692307692307693
+              },
+              "confusion_matrix": [
+                [
+                  176,
+                  0,
+                  5
+                ],
+                [
+                  70,
+                  0,
+                  1
+                ],
+                [
+                  108,
+                  0,
+                  20
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49473684210526314,
+              "macro_f1": 0.31141999141999144,
+              "log_loss": 1.0503115589732033,
+              "multiclass_brier_score": 0.6328554234235283,
+              "expected_calibration_error": 0.0928655562015195,
+              "per_class_recall": {
+                "home_win": 0.9651162790697675,
+                "draw": 0.0,
+                "away_win": 0.1896551724137931
+              },
+              "per_class_precision": {
+                "home_win": 0.4797687861271676,
+                "draw": 0.0,
+                "away_win": 0.6470588235294118
+              },
+              "confusion_matrix": [
+                [
+                  166,
+                  0,
+                  6
+                ],
+                [
+                  86,
+                  0,
+                  6
+                ],
+                [
+                  94,
+                  0,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.41842105263157897,
+              "macro_f1": 0.25815063088574736,
+              "log_loss": 1.0593555741460683,
+              "multiclass_brier_score": 0.6405712557072031,
+              "expected_calibration_error": 0.05621829430919887,
+              "per_class_recall": {
+                "home_win": 0.9722222222222222,
+                "draw": 0.0,
+                "away_win": 0.12418300653594772
+              },
+              "per_class_precision": {
+                "home_win": 0.4,
+                "draw": 0.0,
+                "away_win": 0.6333333333333333
+              },
+              "confusion_matrix": [
+                [
+                  140,
+                  0,
+                  4
+                ],
+                [
+                  76,
+                  0,
+                  7
+                ],
+                [
+                  134,
+                  0,
+                  19
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49736842105263157,
+              "macro_f1": 0.33250167672702885,
+              "log_loss": 1.048914581019097,
+              "multiclass_brier_score": 0.6323033279003935,
+              "expected_calibration_error": 0.09645653140716845,
+              "per_class_recall": {
+                "home_win": 0.9631901840490797,
+                "draw": 0.0,
+                "away_win": 0.24806201550387597
+              },
+              "per_class_precision": {
+                "home_win": 0.47005988023952094,
+                "draw": 0.0,
+                "away_win": 0.6956521739130435
+              },
+              "confusion_matrix": [
+                [
+                  157,
+                  0,
+                  6
+                ],
+                [
+                  80,
+                  0,
+                  8
+                ],
+                [
+                  97,
+                  0,
+                  32
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.315091335679571,
+              "log_loss": 1.0500296850901372,
+              "multiclass_brier_score": 0.6332296592085724,
+              "expected_calibration_error": 0.1070853709943528,
+              "per_class_recall": {
+                "home_win": 0.9293478260869565,
+                "draw": 0.0,
+                "away_win": 0.2018348623853211
+              },
+              "per_class_precision": {
+                "home_win": 0.5089285714285714,
+                "draw": 0.0,
+                "away_win": 0.5
+              },
+              "confusion_matrix": [
+                [
+                  171,
+                  0,
+                  13
+                ],
+                [
+                  78,
+                  0,
+                  9
+                ],
+                [
+                  87,
+                  0,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5210526315789473,
+              "macro_f1": 0.33286072636056274,
+              "log_loss": 1.0427557717510936,
+              "multiclass_brier_score": 0.6283161073968881,
+              "expected_calibration_error": 0.11905082961111674,
+              "per_class_recall": {
+                "home_win": 0.9771428571428571,
+                "draw": 0.0,
+                "away_win": 0.21951219512195122
+              },
+              "per_class_precision": {
+                "home_win": 0.49709302325581395,
+                "draw": 0.0,
+                "away_win": 0.75
+              },
+              "confusion_matrix": [
+                [
+                  171,
+                  0,
+                  4
+                ],
+                [
+                  77,
+                  0,
+                  5
+                ],
+                [
+                  96,
+                  0,
+                  27
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42894736842105263,
+              "macro_f1": 0.25986558815244076,
+              "log_loss": 1.0684680786926433,
+              "multiclass_brier_score": 0.646231985346012,
+              "expected_calibration_error": 0.03292292206739501,
+              "per_class_recall": {
+                "home_win": 0.9483870967741935,
+                "draw": 0.0,
+                "away_win": 0.12121212121212122
+              },
+              "per_class_precision": {
+                "home_win": 0.42363112391930835,
+                "draw": 0.0,
+                "away_win": 0.48484848484848486
+              },
+              "confusion_matrix": [
+                [
+                  147,
+                  0,
+                  8
+                ],
+                [
+                  84,
+                  0,
+                  9
+                ],
+                [
+                  116,
+                  0,
+                  16
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 1.0,
+          "rho": 0.0
+        },
+        "mean_log_loss": 1.0590190936504904,
+        "mean_macro_f1": 0.2753424091499651,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49473684210526314,
+              "macro_f1": 0.26382633604251865,
+              "log_loss": 1.040595788970477,
+              "multiclass_brier_score": 0.6281219521559902,
+              "expected_calibration_error": 0.10202841128426193,
+              "per_class_recall": {
+                "home_win": 0.9834254143646409,
+                "draw": 0.0,
+                "away_win": 0.078125
+              },
+              "per_class_precision": {
+                "home_win": 0.48501362397820164,
+                "draw": 0.0,
+                "away_win": 0.7692307692307693
+              },
+              "confusion_matrix": [
+                [
+                  178,
+                  0,
+                  3
+                ],
+                [
+                  71,
+                  0,
+                  0
+                ],
+                [
+                  118,
+                  0,
+                  10
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.4710526315789474,
+              "macro_f1": 0.26446419587455977,
+              "log_loss": 1.062013905767155,
+              "multiclass_brier_score": 0.6415826542048575,
+              "expected_calibration_error": 0.07805418501394808,
+              "per_class_recall": {
+                "home_win": 0.9767441860465116,
+                "draw": 0.0,
+                "away_win": 0.09482758620689655
+              },
+              "per_class_precision": {
+                "home_win": 0.46408839779005523,
+                "draw": 0.0,
+                "away_win": 0.6111111111111112
+              },
+              "confusion_matrix": [
+                [
+                  168,
+                  0,
+                  4
+                ],
+                [
+                  89,
+                  0,
+                  3
+                ],
+                [
+                  105,
+                  0,
+                  11
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.40789473684210525,
+              "macro_f1": 0.237927026944368,
+              "log_loss": 1.064099861897739,
+              "multiclass_brier_score": 0.6441881201782708,
+              "expected_calibration_error": 0.07124789514962118,
+              "per_class_recall": {
+                "home_win": 0.9861111111111112,
+                "draw": 0.0,
+                "away_win": 0.08496732026143791
+              },
+              "per_class_precision": {
+                "home_win": 0.39444444444444443,
+                "draw": 0.0,
+                "away_win": 0.65
+              },
+              "confusion_matrix": [
+                [
+                  142,
+                  0,
+                  2
+                ],
+                [
+                  78,
+                  0,
+                  5
+                ],
+                [
+                  140,
+                  0,
+                  13
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.4842105263157895,
+              "macro_f1": 0.30855615628869515,
+              "log_loss": 1.060212822317912,
+              "multiclass_brier_score": 0.6407310765006844,
+              "expected_calibration_error": 0.09488686200891108,
+              "per_class_recall": {
+                "home_win": 0.9815950920245399,
+                "draw": 0.0,
+                "away_win": 0.18604651162790697
+              },
+              "per_class_precision": {
+                "home_win": 0.45714285714285713,
+                "draw": 0.0,
+                "away_win": 0.8
+              },
+              "confusion_matrix": [
+                [
+                  160,
+                  0,
+                  3
+                ],
+                [
+                  85,
+                  0,
+                  3
+                ],
+                [
+                  105,
+                  0,
+                  24
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.3006377270528214,
+              "log_loss": 1.0595891605692909,
+              "multiclass_brier_score": 0.6403787458083535,
+              "expected_calibration_error": 0.11858898484719979,
+              "per_class_recall": {
+                "home_win": 0.9565217391304348,
+                "draw": 0.0,
+                "away_win": 0.1559633027522936
+              },
+              "per_class_precision": {
+                "home_win": 0.5086705202312138,
+                "draw": 0.0,
+                "away_win": 0.5
+              },
+              "confusion_matrix": [
+                [
+                  176,
+                  0,
+                  8
+                ],
+                [
+                  78,
+                  0,
+                  9
+                ],
+                [
+                  92,
+                  0,
+                  17
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.3105050505050505,
+              "log_loss": 1.0537077206162255,
+              "multiclass_brier_score": 0.6365778470006773,
+              "expected_calibration_error": 0.1175188593634254,
+              "per_class_recall": {
+                "home_win": 0.9828571428571429,
+                "draw": 0.0,
+                "away_win": 0.17073170731707318
+              },
+              "per_class_precision": {
+                "home_win": 0.48725212464589235,
+                "draw": 0.0,
+                "away_win": 0.7777777777777778
+              },
+              "confusion_matrix": [
+                [
+                  172,
+                  0,
+                  3
+                ],
+                [
+                  79,
+                  0,
+                  3
+                ],
+                [
+                  102,
+                  0,
+                  21
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42105263157894735,
+              "macro_f1": 0.24148037134174263,
+              "log_loss": 1.0729143954146336,
+              "multiclass_brier_score": 0.6495704583456146,
+              "expected_calibration_error": 0.05003673983718704,
+              "per_class_recall": {
+                "home_win": 0.9612903225806452,
+                "draw": 0.0,
+                "away_win": 0.08333333333333333
+              },
+              "per_class_precision": {
+                "home_win": 0.4197183098591549,
+                "draw": 0.0,
+                "away_win": 0.44
+              },
+              "confusion_matrix": [
+                [
+                  149,
+                  0,
+                  6
+                ],
+                [
+                  85,
+                  0,
+                  8
+                ],
+                [
+                  121,
+                  0,
+                  11
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "dixon_coles_candidates": [
+      {
+        "parameters": {
+          "alpha": 0.1,
+          "rho": -0.05
+        },
+        "mean_log_loss": 1.0182052141306486,
+        "mean_macro_f1": 0.36439100747385134,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5868421052631579,
+              "macro_f1": 0.41173356918397025,
+              "log_loss": 0.9844018325204571,
+              "multiclass_brier_score": 0.5858130780027232,
+              "expected_calibration_error": 0.14028343340033614,
+              "per_class_recall": {
+                "home_win": 0.9226519337016574,
+                "draw": 0.0,
+                "away_win": 0.4375
+              },
+              "per_class_precision": {
+                "home_win": 0.5529801324503312,
+                "draw": 0.0,
+                "away_win": 0.717948717948718
+              },
+              "confusion_matrix": [
+                [
+                  167,
+                  0,
+                  14
+                ],
+                [
+                  63,
+                  0,
+                  8
+                ],
+                [
+                  72,
+                  0,
+                  56
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5131578947368421,
+              "macro_f1": 0.3612439240346217,
+              "log_loss": 1.0097329942786764,
+              "multiclass_brier_score": 0.6032516202755605,
+              "expected_calibration_error": 0.07537725705765724,
+              "per_class_recall": {
+                "home_win": 0.8837209302325582,
+                "draw": 0.0,
+                "away_win": 0.3706896551724138
+              },
+              "per_class_precision": {
+                "home_win": 0.5049833887043189,
+                "draw": 0.0,
+                "away_win": 0.5443037974683544
+              },
+              "confusion_matrix": [
+                [
+                  152,
+                  0,
+                  20
+                ],
+                [
+                  76,
+                  0,
+                  16
+                ],
+                [
+                  73,
+                  0,
+                  43
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.48157894736842105,
+              "macro_f1": 0.34047271666180334,
+              "log_loss": 1.0422201402726814,
+              "multiclass_brier_score": 0.6269315821651195,
+              "expected_calibration_error": 0.03641807022868005,
+              "per_class_recall": {
+                "home_win": 0.9375,
+                "draw": 0.0,
+                "away_win": 0.3137254901960784
+              },
+              "per_class_precision": {
+                "home_win": 0.44554455445544555,
+                "draw": 0.0,
+                "away_win": 0.6233766233766234
+              },
+              "confusion_matrix": [
+                [
+                  135,
+                  0,
+                  9
+                ],
+                [
+                  63,
+                  0,
+                  20
+                ],
+                [
+                  105,
+                  0,
+                  48
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5263157894736842,
+              "macro_f1": 0.3833278151786043,
+              "log_loss": 1.0048467531106753,
+              "multiclass_brier_score": 0.5998002243788219,
+              "expected_calibration_error": 0.08657708505140918,
+              "per_class_recall": {
+                "home_win": 0.8773006134969326,
+                "draw": 0.0,
+                "away_win": 0.4418604651162791
+              },
+              "per_class_precision": {
+                "home_win": 0.4965277777777778,
+                "draw": 0.0,
+                "away_win": 0.6195652173913043
+              },
+              "confusion_matrix": [
+                [
+                  143,
+                  0,
+                  20
+                ],
+                [
+                  73,
+                  0,
+                  15
+                ],
+                [
+                  72,
+                  0,
+                  57
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5157894736842106,
+              "macro_f1": 0.35847470097328205,
+              "log_loss": 1.0239097136684392,
+              "multiclass_brier_score": 0.6137934836249224,
+              "expected_calibration_error": 0.075930753240105,
+              "per_class_recall": {
+                "home_win": 0.8315217391304348,
+                "draw": 0.0,
+                "away_win": 0.3944954128440367
+              },
+              "per_class_precision": {
+                "home_win": 0.5331010452961672,
+                "draw": 0.0,
+                "away_win": 0.46236559139784944
+              },
+              "confusion_matrix": [
+                [
+                  153,
+                  0,
+                  31
+                ],
+                [
+                  68,
+                  0,
+                  19
+                ],
+                [
+                  66,
+                  0,
+                  43
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5552631578947368,
+              "macro_f1": 0.3968253968253968,
+              "log_loss": 1.0043247501059118,
+              "multiclass_brier_score": 0.59922967667963,
+              "expected_calibration_error": 0.11578332418510476,
+              "per_class_recall": {
+                "home_win": 0.8914285714285715,
+                "draw": 0.0,
+                "away_win": 0.44715447154471544
+              },
+              "per_class_precision": {
+                "home_win": 0.5324232081911263,
+                "draw": 0.0,
+                "away_win": 0.632183908045977
+              },
+              "confusion_matrix": [
+                [
+                  156,
+                  0,
+                  19
+                ],
+                [
+                  69,
+                  0,
+                  13
+                ],
+                [
+                  68,
+                  0,
+                  55
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42894736842105263,
+              "macro_f1": 0.2986589294592809,
+              "log_loss": 1.0580003149576966,
+              "multiclass_brier_score": 0.6384903661600908,
+              "expected_calibration_error": 0.021055176002876753,
+              "per_class_recall": {
+                "home_win": 0.8193548387096774,
+                "draw": 0.0,
+                "away_win": 0.2727272727272727
+              },
+              "per_class_precision": {
+                "home_win": 0.43197278911564624,
+                "draw": 0.0,
+                "away_win": 0.4186046511627907
+              },
+              "confusion_matrix": [
+                [
+                  127,
+                  0,
+                  28
+                ],
+                [
+                  71,
+                  0,
+                  22
+                ],
+                [
+                  96,
+                  0,
+                  36
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 0.1,
+          "rho": -0.1
+        },
+        "mean_log_loss": 1.020323275971302,
+        "mean_macro_f1": 0.36439100747385134,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5868421052631579,
+              "macro_f1": 0.41173356918397025,
+              "log_loss": 0.9885107360695045,
+              "multiclass_brier_score": 0.5886378365627459,
+              "expected_calibration_error": 0.14620933190728144,
+              "per_class_recall": {
+                "home_win": 0.9226519337016574,
+                "draw": 0.0,
+                "away_win": 0.4375
+              },
+              "per_class_precision": {
+                "home_win": 0.5529801324503312,
+                "draw": 0.0,
+                "away_win": 0.717948717948718
+              },
+              "confusion_matrix": [
+                [
+                  167,
+                  0,
+                  14
+                ],
+                [
+                  63,
+                  0,
+                  8
+                ],
+                [
+                  72,
+                  0,
+                  56
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5131578947368421,
+              "macro_f1": 0.3612439240346217,
+              "log_loss": 1.0104966155468176,
+              "multiclass_brier_score": 0.6040080654580094,
+              "expected_calibration_error": 0.07847308903485081,
+              "per_class_recall": {
+                "home_win": 0.8837209302325582,
+                "draw": 0.0,
+                "away_win": 0.3706896551724138
+              },
+              "per_class_precision": {
+                "home_win": 0.5049833887043189,
+                "draw": 0.0,
+                "away_win": 0.5443037974683544
+              },
+              "confusion_matrix": [
+                [
+                  152,
+                  0,
+                  20
+                ],
+                [
+                  76,
+                  0,
+                  16
+                ],
+                [
+                  73,
+                  0,
+                  43
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.48157894736842105,
+              "macro_f1": 0.34047271666180334,
+              "log_loss": 1.0452288957458806,
+              "multiclass_brier_score": 0.6286901635568268,
+              "expected_calibration_error": 0.0423674084014702,
+              "per_class_recall": {
+                "home_win": 0.9375,
+                "draw": 0.0,
+                "away_win": 0.3137254901960784
+              },
+              "per_class_precision": {
+                "home_win": 0.44554455445544555,
+                "draw": 0.0,
+                "away_win": 0.6233766233766234
+              },
+              "confusion_matrix": [
+                [
+                  135,
+                  0,
+                  9
+                ],
+                [
+                  63,
+                  0,
+                  20
+                ],
+                [
+                  105,
+                  0,
+                  48
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5263157894736842,
+              "macro_f1": 0.3833278151786043,
+              "log_loss": 1.0063100995836647,
+              "multiclass_brier_score": 0.6010317121354872,
+              "expected_calibration_error": 0.09252363849058566,
+              "per_class_recall": {
+                "home_win": 0.8773006134969326,
+                "draw": 0.0,
+                "away_win": 0.4418604651162791
+              },
+              "per_class_precision": {
+                "home_win": 0.4965277777777778,
+                "draw": 0.0,
+                "away_win": 0.6195652173913043
+              },
+              "confusion_matrix": [
+                [
+                  143,
+                  0,
+                  20
+                ],
+                [
+                  73,
+                  0,
+                  15
+                ],
+                [
+                  72,
+                  0,
+                  57
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5157894736842106,
+              "macro_f1": 0.35847470097328205,
+              "log_loss": 1.025751991308268,
+              "multiclass_brier_score": 0.6151049321602453,
+              "expected_calibration_error": 0.08183434041369511,
+              "per_class_recall": {
+                "home_win": 0.8315217391304348,
+                "draw": 0.0,
+                "away_win": 0.3944954128440367
+              },
+              "per_class_precision": {
+                "home_win": 0.5331010452961672,
+                "draw": 0.0,
+                "away_win": 0.46236559139784944
+              },
+              "confusion_matrix": [
+                [
+                  153,
+                  0,
+                  31
+                ],
+                [
+                  68,
+                  0,
+                  19
+                ],
+                [
+                  66,
+                  0,
+                  43
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5552631578947368,
+              "macro_f1": 0.3968253968253968,
+              "log_loss": 1.0068460510253174,
+              "multiclass_brier_score": 0.6010654345051722,
+              "expected_calibration_error": 0.12172720399021396,
+              "per_class_recall": {
+                "home_win": 0.8914285714285715,
+                "draw": 0.0,
+                "away_win": 0.44715447154471544
+              },
+              "per_class_precision": {
+                "home_win": 0.5324232081911263,
+                "draw": 0.0,
+                "away_win": 0.632183908045977
+              },
+              "confusion_matrix": [
+                [
+                  156,
+                  0,
+                  19
+                ],
+                [
+                  69,
+                  0,
+                  13
+                ],
+                [
+                  68,
+                  0,
+                  55
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42894736842105263,
+              "macro_f1": 0.2986589294592809,
+              "log_loss": 1.0591185425196605,
+              "multiclass_brier_score": 0.6391215928729002,
+              "expected_calibration_error": 0.02208277677401679,
+              "per_class_recall": {
+                "home_win": 0.8193548387096774,
+                "draw": 0.0,
+                "away_win": 0.2727272727272727
+              },
+              "per_class_precision": {
+                "home_win": 0.43197278911564624,
+                "draw": 0.0,
+                "away_win": 0.4186046511627907
+              },
+              "confusion_matrix": [
+                [
+                  127,
+                  0,
+                  28
+                ],
+                [
+                  71,
+                  0,
+                  22
+                ],
+                [
+                  96,
+                  0,
+                  36
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 0.1,
+          "rho": -0.15
+        },
+        "mean_log_loss": 1.0230617274872151,
+        "mean_macro_f1": 0.36439100747385134,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5868421052631579,
+              "macro_f1": 0.41173356918397025,
+              "log_loss": 0.9931729545406097,
+              "multiclass_brier_score": 0.5918852806992045,
+              "expected_calibration_error": 0.15213523041422672,
+              "per_class_recall": {
+                "home_win": 0.9226519337016574,
+                "draw": 0.0,
+                "away_win": 0.4375
+              },
+              "per_class_precision": {
+                "home_win": 0.5529801324503312,
+                "draw": 0.0,
+                "away_win": 0.717948717948718
+              },
+              "confusion_matrix": [
+                [
+                  167,
+                  0,
+                  14
+                ],
+                [
+                  63,
+                  0,
+                  8
+                ],
+                [
+                  72,
+                  0,
+                  56
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5131578947368421,
+              "macro_f1": 0.3612439240346217,
+              "log_loss": 1.0119026251486738,
+              "multiclass_brier_score": 0.6051812386278586,
+              "expected_calibration_error": 0.07991298236698219,
+              "per_class_recall": {
+                "home_win": 0.8837209302325582,
+                "draw": 0.0,
+                "away_win": 0.3706896551724138
+              },
+              "per_class_precision": {
+                "home_win": 0.5049833887043189,
+                "draw": 0.0,
+                "away_win": 0.5443037974683544
+              },
+              "confusion_matrix": [
+                [
+                  152,
+                  0,
+                  20
+                ],
+                [
+                  76,
+                  0,
+                  16
+                ],
+                [
+                  73,
+                  0,
+                  43
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.48157894736842105,
+              "macro_f1": 0.34047271666180334,
+              "log_loss": 1.0488712234312818,
+              "multiclass_brier_score": 0.6308748167262118,
+              "expected_calibration_error": 0.048316746574260126,
+              "per_class_recall": {
+                "home_win": 0.9375,
+                "draw": 0.0,
+                "away_win": 0.3137254901960784
+              },
+              "per_class_precision": {
+                "home_win": 0.44554455445544555,
+                "draw": 0.0,
+                "away_win": 0.6233766233766234
+              },
+              "confusion_matrix": [
+                [
+                  135,
+                  0,
+                  9
+                ],
+                [
+                  63,
+                  0,
+                  20
+                ],
+                [
+                  105,
+                  0,
+                  48
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5263157894736842,
+              "macro_f1": 0.3833278151786043,
+              "log_loss": 1.0084002258612013,
+              "multiclass_brier_score": 0.6026885783428356,
+              "expected_calibration_error": 0.09847019192976218,
+              "per_class_recall": {
+                "home_win": 0.8773006134969326,
+                "draw": 0.0,
+                "away_win": 0.4418604651162791
+              },
+              "per_class_precision": {
+                "home_win": 0.4965277777777778,
+                "draw": 0.0,
+                "away_win": 0.6195652173913043
+              },
+              "confusion_matrix": [
+                [
+                  143,
+                  0,
+                  20
+                ],
+                [
+                  73,
+                  0,
+                  15
+                ],
+                [
+                  72,
+                  0,
+                  57
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5157894736842106,
+              "macro_f1": 0.35847470097328205,
+              "log_loss": 1.0282226913990133,
+              "multiclass_brier_score": 0.6168356910635262,
+              "expected_calibration_error": 0.08773792758728524,
+              "per_class_recall": {
+                "home_win": 0.8315217391304348,
+                "draw": 0.0,
+                "away_win": 0.3944954128440367
+              },
+              "per_class_precision": {
+                "home_win": 0.5331010452961672,
+                "draw": 0.0,
+                "away_win": 0.46236559139784944
+              },
+              "confusion_matrix": [
+                [
+                  153,
+                  0,
+                  31
+                ],
+                [
+                  68,
+                  0,
+                  19
+                ],
+                [
+                  66,
+                  0,
+                  43
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5552631578947368,
+              "macro_f1": 0.3968253968253968,
+              "log_loss": 1.009970308697445,
+              "multiclass_brier_score": 0.6033263472503864,
+              "expected_calibration_error": 0.1276710837953232,
+              "per_class_recall": {
+                "home_win": 0.8914285714285715,
+                "draw": 0.0,
+                "away_win": 0.44715447154471544
+              },
+              "per_class_precision": {
+                "home_win": 0.5324232081911263,
+                "draw": 0.0,
+                "away_win": 0.632183908045977
+              },
+              "confusion_matrix": [
+                [
+                  156,
+                  0,
+                  19
+                ],
+                [
+                  69,
+                  0,
+                  13
+                ],
+                [
+                  68,
+                  0,
+                  55
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42894736842105263,
+              "macro_f1": 0.2986589294592809,
+              "log_loss": 1.0608920633322811,
+              "multiclass_brier_score": 0.6401571427797369,
+              "expected_calibration_error": 0.024427065864369657,
+              "per_class_recall": {
+                "home_win": 0.8193548387096774,
+                "draw": 0.0,
+                "away_win": 0.2727272727272727
+              },
+              "per_class_precision": {
+                "home_win": 0.43197278911564624,
+                "draw": 0.0,
+                "away_win": 0.4186046511627907
+              },
+              "confusion_matrix": [
+                [
+                  127,
+                  0,
+                  28
+                ],
+                [
+                  71,
+                  0,
+                  22
+                ],
+                [
+                  96,
+                  0,
+                  36
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 0.5,
+          "rho": -0.05
+        },
+        "mean_log_loss": 1.051624629031124,
+        "mean_macro_f1": 0.30225495393571095,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5157894736842106,
+              "macro_f1": 0.3058947283246349,
+              "log_loss": 1.0321186561770663,
+              "multiclass_brier_score": 0.6212703367957135,
+              "expected_calibration_error": 0.11580239743004388,
+              "per_class_recall": {
+                "home_win": 0.9723756906077348,
+                "draw": 0.0,
+                "away_win": 0.15625
+              },
+              "per_class_precision": {
+                "home_win": 0.4971751412429379,
+                "draw": 0.0,
+                "away_win": 0.7692307692307693
+              },
+              "confusion_matrix": [
+                [
+                  176,
+                  0,
+                  5
+                ],
+                [
+                  70,
+                  0,
+                  1
+                ],
+                [
+                  108,
+                  0,
+                  20
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49473684210526314,
+              "macro_f1": 0.31141999141999144,
+              "log_loss": 1.0510356086253054,
+              "multiclass_brier_score": 0.6334837627203894,
+              "expected_calibration_error": 0.09530882484248236,
+              "per_class_recall": {
+                "home_win": 0.9651162790697675,
+                "draw": 0.0,
+                "away_win": 0.1896551724137931
+              },
+              "per_class_precision": {
+                "home_win": 0.4797687861271676,
+                "draw": 0.0,
+                "away_win": 0.6470588235294118
+              },
+              "confusion_matrix": [
+                [
+                  166,
+                  0,
+                  6
+                ],
+                [
+                  86,
+                  0,
+                  6
+                ],
+                [
+                  94,
+                  0,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.41842105263157897,
+              "macro_f1": 0.25815063088574736,
+              "log_loss": 1.0619146558139505,
+              "multiclass_brier_score": 0.6421023731985688,
+              "expected_calibration_error": 0.07506308815451254,
+              "per_class_recall": {
+                "home_win": 0.9722222222222222,
+                "draw": 0.0,
+                "away_win": 0.12418300653594772
+              },
+              "per_class_precision": {
+                "home_win": 0.4,
+                "draw": 0.0,
+                "away_win": 0.6333333333333333
+              },
+              "confusion_matrix": [
+                [
+                  140,
+                  0,
+                  4
+                ],
+                [
+                  76,
+                  0,
+                  7
+                ],
+                [
+                  134,
+                  0,
+                  19
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49736842105263157,
+              "macro_f1": 0.33250167672702885,
+              "log_loss": 1.050401950160529,
+              "multiclass_brier_score": 0.6333637806997824,
+              "expected_calibration_error": 0.10250526415673164,
+              "per_class_recall": {
+                "home_win": 0.9631901840490797,
+                "draw": 0.0,
+                "away_win": 0.24806201550387597
+              },
+              "per_class_precision": {
+                "home_win": 0.47005988023952094,
+                "draw": 0.0,
+                "away_win": 0.6956521739130435
+              },
+              "confusion_matrix": [
+                [
+                  157,
+                  0,
+                  6
+                ],
+                [
+                  80,
+                  0,
+                  8
+                ],
+                [
+                  97,
+                  0,
+                  32
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.315091335679571,
+              "log_loss": 1.0516585667837466,
+              "multiclass_brier_score": 0.6343577772806563,
+              "expected_calibration_error": 0.11310740029031163,
+              "per_class_recall": {
+                "home_win": 0.9293478260869565,
+                "draw": 0.0,
+                "away_win": 0.2018348623853211
+              },
+              "per_class_precision": {
+                "home_win": 0.5089285714285714,
+                "draw": 0.0,
+                "away_win": 0.5
+              },
+              "confusion_matrix": [
+                [
+                  171,
+                  0,
+                  13
+                ],
+                [
+                  78,
+                  0,
+                  9
+                ],
+                [
+                  87,
+                  0,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5210526315789473,
+              "macro_f1": 0.33286072636056274,
+              "log_loss": 1.0451666255403165,
+              "multiclass_brier_score": 0.6299148491045442,
+              "expected_calibration_error": 0.1250668564492165,
+              "per_class_recall": {
+                "home_win": 0.9771428571428571,
+                "draw": 0.0,
+                "away_win": 0.21951219512195122
+              },
+              "per_class_precision": {
+                "home_win": 0.49709302325581395,
+                "draw": 0.0,
+                "away_win": 0.75
+              },
+              "confusion_matrix": [
+                [
+                  171,
+                  0,
+                  4
+                ],
+                [
+                  77,
+                  0,
+                  5
+                ],
+                [
+                  96,
+                  0,
+                  27
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42894736842105263,
+              "macro_f1": 0.25986558815244076,
+              "log_loss": 1.0690763401169538,
+              "multiclass_brier_score": 0.6466479069781387,
+              "expected_calibration_error": 0.041706671100359194,
+              "per_class_recall": {
+                "home_win": 0.9483870967741935,
+                "draw": 0.0,
+                "away_win": 0.12121212121212122
+              },
+              "per_class_precision": {
+                "home_win": 0.42363112391930835,
+                "draw": 0.0,
+                "away_win": 0.48484848484848486
+              },
+              "confusion_matrix": [
+                [
+                  147,
+                  0,
+                  8
+                ],
+                [
+                  84,
+                  0,
+                  9
+                ],
+                [
+                  116,
+                  0,
+                  16
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 0.5,
+          "rho": -0.1
+        },
+        "mean_log_loss": 1.0542345525910617,
+        "mean_macro_f1": 0.30225495393571095,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5157894736842106,
+              "macro_f1": 0.3058947283246349,
+              "log_loss": 1.03695662933526,
+              "multiclass_brier_score": 0.6244006972559191,
+              "expected_calibration_error": 0.12185323236510462,
+              "per_class_recall": {
+                "home_win": 0.9723756906077348,
+                "draw": 0.0,
+                "away_win": 0.15625
+              },
+              "per_class_precision": {
+                "home_win": 0.4971751412429379,
+                "draw": 0.0,
+                "away_win": 0.7692307692307693
+              },
+              "confusion_matrix": [
+                [
+                  176,
+                  0,
+                  5
+                ],
+                [
+                  70,
+                  0,
+                  1
+                ],
+                [
+                  108,
+                  0,
+                  20
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49473684210526314,
+              "macro_f1": 0.31141999141999144,
+              "log_loss": 1.0524473258194573,
+              "multiclass_brier_score": 0.634546155486587,
+              "expected_calibration_error": 0.10036292793973735,
+              "per_class_recall": {
+                "home_win": 0.9651162790697675,
+                "draw": 0.0,
+                "away_win": 0.1896551724137931
+              },
+              "per_class_precision": {
+                "home_win": 0.4797687861271676,
+                "draw": 0.0,
+                "away_win": 0.6470588235294118
+              },
+              "confusion_matrix": [
+                [
+                  166,
+                  0,
+                  6
+                ],
+                [
+                  86,
+                  0,
+                  6
+                ],
+                [
+                  94,
+                  0,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.41842105263157897,
+              "macro_f1": 0.25815063088574736,
+              "log_loss": 1.0651319576171616,
+              "multiclass_brier_score": 0.644071220185458,
+              "expected_calibration_error": 0.0681158265968743,
+              "per_class_recall": {
+                "home_win": 0.9722222222222222,
+                "draw": 0.0,
+                "away_win": 0.12418300653594772
+              },
+              "per_class_precision": {
+                "home_win": 0.4,
+                "draw": 0.0,
+                "away_win": 0.6333333333333333
+              },
+              "confusion_matrix": [
+                [
+                  140,
+                  0,
+                  4
+                ],
+                [
+                  76,
+                  0,
+                  7
+                ],
+                [
+                  134,
+                  0,
+                  19
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49736842105263157,
+              "macro_f1": 0.33250167672702885,
+              "log_loss": 1.0525624600778702,
+              "multiclass_brier_score": 0.6348633245568087,
+              "expected_calibration_error": 0.10855399690629479,
+              "per_class_recall": {
+                "home_win": 0.9631901840490797,
+                "draw": 0.0,
+                "away_win": 0.24806201550387597
+              },
+              "per_class_precision": {
+                "home_win": 0.47005988023952094,
+                "draw": 0.0,
+                "away_win": 0.6956521739130435
+              },
+              "confusion_matrix": [
+                [
+                  157,
+                  0,
+                  6
+                ],
+                [
+                  80,
+                  0,
+                  8
+                ],
+                [
+                  97,
+                  0,
+                  32
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.315091335679571,
+              "log_loss": 1.0539537083060169,
+              "multiclass_brier_score": 0.6359211197128922,
+              "expected_calibration_error": 0.11912942958627039,
+              "per_class_recall": {
+                "home_win": 0.9293478260869565,
+                "draw": 0.0,
+                "away_win": 0.2018348623853211
+              },
+              "per_class_precision": {
+                "home_win": 0.5089285714285714,
+                "draw": 0.0,
+                "away_win": 0.5
+              },
+              "confusion_matrix": [
+                [
+                  171,
+                  0,
+                  13
+                ],
+                [
+                  78,
+                  0,
+                  9
+                ],
+                [
+                  87,
+                  0,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5210526315789473,
+              "macro_f1": 0.33286072636056274,
+              "log_loss": 1.0482186435000955,
+              "multiclass_brier_score": 0.631947955556781,
+              "expected_calibration_error": 0.13108288328731627,
+              "per_class_recall": {
+                "home_win": 0.9771428571428571,
+                "draw": 0.0,
+                "away_win": 0.21951219512195122
+              },
+              "per_class_precision": {
+                "home_win": 0.49709302325581395,
+                "draw": 0.0,
+                "away_win": 0.75
+              },
+              "confusion_matrix": [
+                [
+                  171,
+                  0,
+                  4
+                ],
+                [
+                  77,
+                  0,
+                  5
+                ],
+                [
+                  96,
+                  0,
+                  27
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42894736842105263,
+              "macro_f1": 0.25986558815244076,
+              "log_loss": 1.0703711434815715,
+              "multiclass_brier_score": 0.6474821470808976,
+              "expected_calibration_error": 0.042467967389822274,
+              "per_class_recall": {
+                "home_win": 0.9483870967741935,
+                "draw": 0.0,
+                "away_win": 0.12121212121212122
+              },
+              "per_class_precision": {
+                "home_win": 0.42363112391930835,
+                "draw": 0.0,
+                "away_win": 0.48484848484848486
+              },
+              "confusion_matrix": [
+                [
+                  147,
+                  0,
+                  8
+                ],
+                [
+                  84,
+                  0,
+                  9
+                ],
+                [
+                  116,
+                  0,
+                  16
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 0.5,
+          "rho": -0.15
+        },
+        "mean_log_loss": 1.0574704409120146,
+        "mean_macro_f1": 0.30225495393571095,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5157894736842106,
+              "macro_f1": 0.3058947283246349,
+              "log_loss": 1.0423621998644401,
+              "multiclass_brier_score": 0.6279704743842055,
+              "expected_calibration_error": 0.1279040673001653,
+              "per_class_recall": {
+                "home_win": 0.9723756906077348,
+                "draw": 0.0,
+                "away_win": 0.15625
+              },
+              "per_class_precision": {
+                "home_win": 0.4971751412429379,
+                "draw": 0.0,
+                "away_win": 0.7692307692307693
+              },
+              "confusion_matrix": [
+                [
+                  176,
+                  0,
+                  5
+                ],
+                [
+                  70,
+                  0,
+                  1
+                ],
+                [
+                  108,
+                  0,
+                  20
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49473684210526314,
+              "macro_f1": 0.31141999141999144,
+              "log_loss": 1.0545111927266824,
+              "multiclass_brier_score": 0.6360426017221212,
+              "expected_calibration_error": 0.10637679402041689,
+              "per_class_recall": {
+                "home_win": 0.9651162790697675,
+                "draw": 0.0,
+                "away_win": 0.1896551724137931
+              },
+              "per_class_precision": {
+                "home_win": 0.4797687861271676,
+                "draw": 0.0,
+                "away_win": 0.6470588235294118
+              },
+              "confusion_matrix": [
+                [
+                  166,
+                  0,
+                  6
+                ],
+                [
+                  86,
+                  0,
+                  6
+                ],
+                [
+                  94,
+                  0,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.41842105263157897,
+              "macro_f1": 0.25815063088574736,
+              "log_loss": 1.0689768250613265,
+              "multiclass_brier_score": 0.646477796667871,
+              "expected_calibration_error": 0.048442775315860886,
+              "per_class_recall": {
+                "home_win": 0.9722222222222222,
+                "draw": 0.0,
+                "away_win": 0.12418300653594772
+              },
+              "per_class_precision": {
+                "home_win": 0.4,
+                "draw": 0.0,
+                "away_win": 0.6333333333333333
+              },
+              "confusion_matrix": [
+                [
+                  140,
+                  0,
+                  4
+                ],
+                [
+                  76,
+                  0,
+                  7
+                ],
+                [
+                  134,
+                  0,
+                  19
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49736842105263157,
+              "macro_f1": 0.33250167672702885,
+              "log_loss": 1.055362538954941,
+              "multiclass_brier_score": 0.6368019594714727,
+              "expected_calibration_error": 0.11460272965585797,
+              "per_class_recall": {
+                "home_win": 0.9631901840490797,
+                "draw": 0.0,
+                "away_win": 0.24806201550387597
+              },
+              "per_class_precision": {
+                "home_win": 0.47005988023952094,
+                "draw": 0.0,
+                "away_win": 0.6956521739130435
+              },
+              "confusion_matrix": [
+                [
+                  157,
+                  0,
+                  6
+                ],
+                [
+                  80,
+                  0,
+                  8
+                ],
+                [
+                  97,
+                  0,
+                  32
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.315091335679571,
+              "log_loss": 1.0568820802092918,
+              "multiclass_brier_score": 0.6379196865052801,
+              "expected_calibration_error": 0.12515145888222923,
+              "per_class_recall": {
+                "home_win": 0.9293478260869565,
+                "draw": 0.0,
+                "away_win": 0.2018348623853211
+              },
+              "per_class_precision": {
+                "home_win": 0.5089285714285714,
+                "draw": 0.0,
+                "away_win": 0.5
+              },
+              "confusion_matrix": [
+                [
+                  171,
+                  0,
+                  13
+                ],
+                [
+                  78,
+                  0,
+                  9
+                ],
+                [
+                  87,
+                  0,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5210526315789473,
+              "macro_f1": 0.33286072636056274,
+              "log_loss": 1.051881184252964,
+              "multiclass_brier_score": 0.6344154267535986,
+              "expected_calibration_error": 0.13709891012541597,
+              "per_class_recall": {
+                "home_win": 0.9771428571428571,
+                "draw": 0.0,
+                "away_win": 0.21951219512195122
+              },
+              "per_class_precision": {
+                "home_win": 0.49709302325581395,
+                "draw": 0.0,
+                "away_win": 0.75
+              },
+              "confusion_matrix": [
+                [
+                  171,
+                  0,
+                  4
+                ],
+                [
+                  77,
+                  0,
+                  5
+                ],
+                [
+                  96,
+                  0,
+                  27
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42894736842105263,
+              "macro_f1": 0.25986558815244076,
+              "log_loss": 1.0723170653144556,
+              "multiclass_brier_score": 0.648734705654289,
+              "expected_calibration_error": 0.042502373505196984,
+              "per_class_recall": {
+                "home_win": 0.9483870967741935,
+                "draw": 0.0,
+                "away_win": 0.12121212121212122
+              },
+              "per_class_precision": {
+                "home_win": 0.42363112391930835,
+                "draw": 0.0,
+                "away_win": 0.48484848484848486
+              },
+              "confusion_matrix": [
+                [
+                  147,
+                  0,
+                  8
+                ],
+                [
+                  84,
+                  0,
+                  9
+                ],
+                [
+                  116,
+                  0,
+                  16
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 1.0,
+          "rho": -0.05
+        },
+        "mean_log_loss": 1.0611216945319302,
+        "mean_macro_f1": 0.2753424091499651,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49473684210526314,
+              "macro_f1": 0.26382633604251865,
+              "log_loss": 1.0450514490268572,
+              "multiclass_brier_score": 0.6308593022972133,
+              "expected_calibration_error": 0.1080975180225533,
+              "per_class_recall": {
+                "home_win": 0.9834254143646409,
+                "draw": 0.0,
+                "away_win": 0.078125
+              },
+              "per_class_precision": {
+                "home_win": 0.48501362397820164,
+                "draw": 0.0,
+                "away_win": 0.7692307692307693
+              },
+              "confusion_matrix": [
+                [
+                  178,
+                  0,
+                  3
+                ],
+                [
+                  71,
+                  0,
+                  0
+                ],
+                [
+                  118,
+                  0,
+                  10
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.4710526315789474,
+              "macro_f1": 0.26446419587455977,
+              "log_loss": 1.0629327742879104,
+              "multiclass_brier_score": 0.6422542527901762,
+              "expected_calibration_error": 0.08408562922674276,
+              "per_class_recall": {
+                "home_win": 0.9767441860465116,
+                "draw": 0.0,
+                "away_win": 0.09482758620689655
+              },
+              "per_class_precision": {
+                "home_win": 0.46408839779005523,
+                "draw": 0.0,
+                "away_win": 0.6111111111111112
+              },
+              "confusion_matrix": [
+                [
+                  168,
+                  0,
+                  4
+                ],
+                [
+                  89,
+                  0,
+                  3
+                ],
+                [
+                  105,
+                  0,
+                  11
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.40789473684210525,
+              "macro_f1": 0.237927026944368,
+              "log_loss": 1.0667227364346414,
+              "multiclass_brier_score": 0.6457480507928564,
+              "expected_calibration_error": 0.02319669695045645,
+              "per_class_recall": {
+                "home_win": 0.9861111111111112,
+                "draw": 0.0,
+                "away_win": 0.08496732026143791
+              },
+              "per_class_precision": {
+                "home_win": 0.39444444444444443,
+                "draw": 0.0,
+                "away_win": 0.65
+              },
+              "confusion_matrix": [
+                [
+                  142,
+                  0,
+                  2
+                ],
+                [
+                  78,
+                  0,
+                  5
+                ],
+                [
+                  140,
+                  0,
+                  13
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.4842105263157895,
+              "macro_f1": 0.30855615628869515,
+              "log_loss": 1.0618837726300194,
+              "multiclass_brier_score": 0.6418253890524462,
+              "expected_calibration_error": 0.10094718925710518,
+              "per_class_recall": {
+                "home_win": 0.9815950920245399,
+                "draw": 0.0,
+                "away_win": 0.18604651162790697
+              },
+              "per_class_precision": {
+                "home_win": 0.45714285714285713,
+                "draw": 0.0,
+                "away_win": 0.8
+              },
+              "confusion_matrix": [
+                [
+                  160,
+                  0,
+                  3
+                ],
+                [
+                  85,
+                  0,
+                  3
+                ],
+                [
+                  105,
+                  0,
+                  24
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.3006377270528214,
+              "log_loss": 1.06138058144901,
+              "multiclass_brier_score": 0.6415402849713744,
+              "expected_calibration_error": 0.12462593868048989,
+              "per_class_recall": {
+                "home_win": 0.9565217391304348,
+                "draw": 0.0,
+                "away_win": 0.1559633027522936
+              },
+              "per_class_precision": {
+                "home_win": 0.5086705202312138,
+                "draw": 0.0,
+                "away_win": 0.5
+              },
+              "confusion_matrix": [
+                [
+                  176,
+                  0,
+                  8
+                ],
+                [
+                  78,
+                  0,
+                  9
+                ],
+                [
+                  92,
+                  0,
+                  17
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.3105050505050505,
+              "log_loss": 1.0562822420505107,
+              "multiclass_brier_score": 0.6381990061469479,
+              "expected_calibration_error": 0.12354239608710903,
+              "per_class_recall": {
+                "home_win": 0.9828571428571429,
+                "draw": 0.0,
+                "away_win": 0.17073170731707318
+              },
+              "per_class_precision": {
+                "home_win": 0.48725212464589235,
+                "draw": 0.0,
+                "away_win": 0.7777777777777778
+              },
+              "confusion_matrix": [
+                [
+                  172,
+                  0,
+                  3
+                ],
+                [
+                  79,
+                  0,
+                  3
+                ],
+                [
+                  102,
+                  0,
+                  21
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42105263157894735,
+              "macro_f1": 0.24148037134174263,
+              "log_loss": 1.073598305844561,
+              "multiclass_brier_score": 0.650014865677776,
+              "expected_calibration_error": 0.034665212661786717,
+              "per_class_recall": {
+                "home_win": 0.9612903225806452,
+                "draw": 0.0,
+                "away_win": 0.08333333333333333
+              },
+              "per_class_precision": {
+                "home_win": 0.4197183098591549,
+                "draw": 0.0,
+                "away_win": 0.44
+              },
+              "confusion_matrix": [
+                [
+                  149,
+                  0,
+                  6
+                ],
+                [
+                  85,
+                  0,
+                  8
+                ],
+                [
+                  121,
+                  0,
+                  11
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 1.0,
+          "rho": -0.1
+        },
+        "mean_log_loss": 1.0638857472470702,
+        "mean_macro_f1": 0.2753424091499651,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49473684210526314,
+              "macro_f1": 0.26382633604251865,
+              "log_loss": 1.0501054926204274,
+              "multiclass_brier_score": 0.63403867666851,
+              "expected_calibration_error": 0.11416662476084478,
+              "per_class_recall": {
+                "home_win": 0.9834254143646409,
+                "draw": 0.0,
+                "away_win": 0.078125
+              },
+              "per_class_precision": {
+                "home_win": 0.48501362397820164,
+                "draw": 0.0,
+                "away_win": 0.7692307692307693
+              },
+              "confusion_matrix": [
+                [
+                  178,
+                  0,
+                  3
+                ],
+                [
+                  71,
+                  0,
+                  0
+                ],
+                [
+                  118,
+                  0,
+                  10
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.4710526315789474,
+              "macro_f1": 0.26446419587455977,
+              "log_loss": 1.0645439911301484,
+              "multiclass_brier_score": 0.6433624033279943,
+              "expected_calibration_error": 0.0901170734395374,
+              "per_class_recall": {
+                "home_win": 0.9767441860465116,
+                "draw": 0.0,
+                "away_win": 0.09482758620689655
+              },
+              "per_class_precision": {
+                "home_win": 0.46408839779005523,
+                "draw": 0.0,
+                "away_win": 0.6111111111111112
+              },
+              "confusion_matrix": [
+                [
+                  168,
+                  0,
+                  4
+                ],
+                [
+                  89,
+                  0,
+                  3
+                ],
+                [
+                  105,
+                  0,
+                  11
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.40789473684210525,
+              "macro_f1": 0.237927026944368,
+              "log_loss": 1.0700040238045911,
+              "multiclass_brier_score": 0.6477471092296585,
+              "expected_calibration_error": 0.027650342253552077,
+              "per_class_recall": {
+                "home_win": 0.9861111111111112,
+                "draw": 0.0,
+                "away_win": 0.08496732026143791
+              },
+              "per_class_precision": {
+                "home_win": 0.39444444444444443,
+                "draw": 0.0,
+                "away_win": 0.65
+              },
+              "confusion_matrix": [
+                [
+                  142,
+                  0,
+                  2
+                ],
+                [
+                  78,
+                  0,
+                  5
+                ],
+                [
+                  140,
+                  0,
+                  13
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.4842105263157895,
+              "macro_f1": 0.30855615628869515,
+              "log_loss": 1.0642324856884893,
+              "multiclass_brier_score": 0.6433604425410847,
+              "expected_calibration_error": 0.1070075165052992,
+              "per_class_recall": {
+                "home_win": 0.9815950920245399,
+                "draw": 0.0,
+                "away_win": 0.18604651162790697
+              },
+              "per_class_precision": {
+                "home_win": 0.45714285714285713,
+                "draw": 0.0,
+                "away_win": 0.8
+              },
+              "confusion_matrix": [
+                [
+                  160,
+                  0,
+                  3
+                ],
+                [
+                  85,
+                  0,
+                  3
+                ],
+                [
+                  105,
+                  0,
+                  24
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.3006377270528214,
+              "log_loss": 1.0638424268487967,
+              "multiclass_brier_score": 0.6431391722679519,
+              "expected_calibration_error": 0.13066289251377994,
+              "per_class_recall": {
+                "home_win": 0.9565217391304348,
+                "draw": 0.0,
+                "away_win": 0.1559633027522936
+              },
+              "per_class_precision": {
+                "home_win": 0.5086705202312138,
+                "draw": 0.0,
+                "away_win": 0.5
+              },
+              "confusion_matrix": [
+                [
+                  176,
+                  0,
+                  8
+                ],
+                [
+                  78,
+                  0,
+                  9
+                ],
+                [
+                  92,
+                  0,
+                  17
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.3105050505050505,
+              "log_loss": 1.0595018758409442,
+              "multiclass_brier_score": 0.6402555734635313,
+              "expected_calibration_error": 0.1295659328107927,
+              "per_class_recall": {
+                "home_win": 0.9828571428571429,
+                "draw": 0.0,
+                "away_win": 0.17073170731707318
+              },
+              "per_class_precision": {
+                "home_win": 0.48725212464589235,
+                "draw": 0.0,
+                "away_win": 0.7777777777777778
+              },
+              "confusion_matrix": [
+                [
+                  172,
+                  0,
+                  3
+                ],
+                [
+                  79,
+                  0,
+                  3
+                ],
+                [
+                  102,
+                  0,
+                  21
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42105263157894735,
+              "macro_f1": 0.24148037134174263,
+              "log_loss": 1.0749699347960944,
+              "multiclass_brier_score": 0.6508796033115948,
+              "expected_calibration_error": 0.04058354238067854,
+              "per_class_recall": {
+                "home_win": 0.9612903225806452,
+                "draw": 0.0,
+                "away_win": 0.08333333333333333
+              },
+              "per_class_precision": {
+                "home_win": 0.4197183098591549,
+                "draw": 0.0,
+                "away_win": 0.44
+              },
+              "confusion_matrix": [
+                [
+                  149,
+                  0,
+                  6
+                ],
+                [
+                  85,
+                  0,
+                  8
+                ],
+                [
+                  121,
+                  0,
+                  11
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "parameters": {
+          "alpha": 1.0,
+          "rho": -0.15
+        },
+        "mean_log_loss": 1.0672793511403227,
+        "mean_macro_f1": 0.2753424091499651,
+        "mean_draw_recall": 0.0,
+        "folds": [
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18"
+            ],
+            "evaluation_season": "2018-19",
+            "training_rows": 1140,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.49473684210526314,
+              "macro_f1": 0.26382633604251865,
+              "log_loss": 1.0557327044426472,
+              "multiclass_brier_score": 0.6376600752698802,
+              "expected_calibration_error": 0.12023573149913616,
+              "per_class_recall": {
+                "home_win": 0.9834254143646409,
+                "draw": 0.0,
+                "away_win": 0.078125
+              },
+              "per_class_precision": {
+                "home_win": 0.48501362397820164,
+                "draw": 0.0,
+                "away_win": 0.7692307692307693
+              },
+              "confusion_matrix": [
+                [
+                  178,
+                  0,
+                  3
+                ],
+                [
+                  71,
+                  0,
+                  0
+                ],
+                [
+                  118,
+                  0,
+                  10
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19"
+            ],
+            "evaluation_season": "2019-20",
+            "training_rows": 1520,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.4710526315789474,
+              "macro_f1": 0.26446419587455977,
+              "log_loss": 1.0668122366373505,
+              "multiclass_brier_score": 0.6449071058183121,
+              "expected_calibration_error": 0.09614851765233207,
+              "per_class_recall": {
+                "home_win": 0.9767441860465116,
+                "draw": 0.0,
+                "away_win": 0.09482758620689655
+              },
+              "per_class_precision": {
+                "home_win": 0.46408839779005523,
+                "draw": 0.0,
+                "away_win": 0.6111111111111112
+              },
+              "confusion_matrix": [
+                [
+                  168,
+                  0,
+                  4
+                ],
+                [
+                  89,
+                  0,
+                  3
+                ],
+                [
+                  105,
+                  0,
+                  11
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20"
+            ],
+            "evaluation_season": "2020-21",
+            "training_rows": 1900,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.40789473684210525,
+              "macro_f1": 0.237927026944368,
+              "log_loss": 1.0739130512729667,
+              "multiclass_brier_score": 0.6501852954886772,
+              "expected_calibration_error": 0.03369954482891663,
+              "per_class_recall": {
+                "home_win": 0.9861111111111112,
+                "draw": 0.0,
+                "away_win": 0.08496732026143791
+              },
+              "per_class_precision": {
+                "home_win": 0.39444444444444443,
+                "draw": 0.0,
+                "away_win": 0.65
+              },
+              "confusion_matrix": [
+                [
+                  142,
+                  0,
+                  2
+                ],
+                [
+                  78,
+                  0,
+                  5
+                ],
+                [
+                  140,
+                  0,
+                  13
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21"
+            ],
+            "evaluation_season": "2021-22",
+            "training_rows": 2280,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.4842105263157895,
+              "macro_f1": 0.30855615628869515,
+              "log_loss": 1.0672256052717863,
+              "multiclass_brier_score": 0.6453362369665999,
+              "expected_calibration_error": 0.11306784375349331,
+              "per_class_recall": {
+                "home_win": 0.9815950920245399,
+                "draw": 0.0,
+                "away_win": 0.18604651162790697
+              },
+              "per_class_precision": {
+                "home_win": 0.45714285714285713,
+                "draw": 0.0,
+                "away_win": 0.8
+              },
+              "confusion_matrix": [
+                [
+                  160,
+                  0,
+                  3
+                ],
+                [
+                  85,
+                  0,
+                  3
+                ],
+                [
+                  105,
+                  0,
+                  24
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22"
+            ],
+            "evaluation_season": "2022-23",
+            "training_rows": 2660,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.3006377270528214,
+              "log_loss": 1.0669418328425677,
+              "multiclass_brier_score": 0.6451754076980863,
+              "expected_calibration_error": 0.13669984634707,
+              "per_class_recall": {
+                "home_win": 0.9565217391304348,
+                "draw": 0.0,
+                "away_win": 0.1559633027522936
+              },
+              "per_class_precision": {
+                "home_win": 0.5086705202312138,
+                "draw": 0.0,
+                "away_win": 0.5
+              },
+              "confusion_matrix": [
+                [
+                  176,
+                  0,
+                  8
+                ],
+                [
+                  78,
+                  0,
+                  9
+                ],
+                [
+                  92,
+                  0,
+                  17
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23"
+            ],
+            "evaluation_season": "2023-24",
+            "training_rows": 3040,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.5078947368421053,
+              "macro_f1": 0.3105050505050505,
+              "log_loss": 1.0633361508724894,
+              "multiclass_brier_score": 0.6427475489504275,
+              "expected_calibration_error": 0.1355894695344764,
+              "per_class_recall": {
+                "home_win": 0.9828571428571429,
+                "draw": 0.0,
+                "away_win": 0.17073170731707318
+              },
+              "per_class_precision": {
+                "home_win": 0.48725212464589235,
+                "draw": 0.0,
+                "away_win": 0.7777777777777778
+              },
+              "confusion_matrix": [
+                [
+                  172,
+                  0,
+                  3
+                ],
+                [
+                  79,
+                  0,
+                  3
+                ],
+                [
+                  102,
+                  0,
+                  21
+                ]
+              ]
+            }
+          },
+          {
+            "train_seasons": [
+              "2015-16",
+              "2016-17",
+              "2017-18",
+              "2018-19",
+              "2019-20",
+              "2020-21",
+              "2021-22",
+              "2022-23",
+              "2023-24"
+            ],
+            "evaluation_season": "2024-25",
+            "training_rows": 3420,
+            "evaluation_rows": 380,
+            "metrics": {
+              "accuracy": 0.42105263157894735,
+              "macro_f1": 0.24148037134174263,
+              "log_loss": 1.0769938766424505,
+              "multiclass_brier_score": 0.6521646712470708,
+              "expected_calibration_error": 0.04650187209957045,
+              "per_class_recall": {
+                "home_win": 0.9612903225806452,
+                "draw": 0.0,
+                "away_win": 0.08333333333333333
+              },
+              "per_class_precision": {
+                "home_win": 0.4197183098591549,
+                "draw": 0.0,
+                "away_win": 0.44
+              },
+              "confusion_matrix": [
+                [
+                  149,
+                  0,
+                  6
+                ],
+                [
+                  85,
+                  0,
+                  8
+                ],
+                [
+                  121,
+                  0,
+                  11
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "selected_poisson": {
+      "alpha": 0.1,
+      "rho": 0.0
+    },
+    "selected_dixon_coles": {
+      "alpha": 0.1,
+      "rho": -0.05
+    }
+  },
+  "models": {
+    "Elo": {
+      "mean_accuracy": 0.5469924812030075,
+      "mean_macro_f1": 0.40137886761784775,
+      "mean_log_loss": 0.9762086298907894,
+      "mean_multiclass_brier_score": 0.5796213343731627,
+      "mean_expected_calibration_error": 0.044673463754293666,
+      "mean_draw_recall": 0.0,
+      "folds": [
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18"
+          ],
+          "evaluation_season": "2018-19",
+          "training_rows": 1140,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5842105263157895,
+            "macro_f1": 0.41831061918028256,
+            "log_loss": 0.9361077284568837,
+            "multiclass_brier_score": 0.5511733565920524,
+            "expected_calibration_error": 0.08090725068122268,
+            "per_class_recall": {
+              "home_win": 0.856353591160221,
+              "draw": 0.0,
+              "away_win": 0.5234375
+            },
+            "per_class_precision": {
+              "home_win": 0.5636363636363636,
+              "draw": 0.0,
+              "away_win": 0.638095238095238
+            },
+            "confusion_matrix": [
+              [
+                155,
+                0,
+                26
+              ],
+              [
+                59,
+                0,
+                12
+              ],
+              [
+                61,
+                0,
+                67
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19"
+          ],
+          "evaluation_season": "2019-20",
+          "training_rows": 1520,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5368421052631579,
+            "macro_f1": 0.3982309708753478,
+            "log_loss": 0.9836499723237834,
+            "multiclass_brier_score": 0.5845057992088629,
+            "expected_calibration_error": 0.04087828970867617,
+            "per_class_recall": {
+              "home_win": 0.7965116279069767,
+              "draw": 0.0,
+              "away_win": 0.5775862068965517
+            },
+            "per_class_precision": {
+              "home_win": 0.545816733067729,
+              "draw": 0.0,
+              "away_win": 0.5193798449612403
+            },
+            "confusion_matrix": [
+              [
+                137,
+                0,
+                35
+              ],
+              [
+                65,
+                0,
+                27
+              ],
+              [
+                49,
+                0,
+                67
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20"
+          ],
+          "evaluation_season": "2020-21",
+          "training_rows": 1900,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.49473684210526314,
+            "macro_f1": 0.36456147273890455,
+            "log_loss": 1.0278006631921923,
+            "multiclass_brier_score": 0.6129044504189988,
+            "expected_calibration_error": 0.029252296107386645,
+            "per_class_recall": {
+              "home_win": 0.8194444444444444,
+              "draw": 0.0,
+              "away_win": 0.45751633986928103
+            },
+            "per_class_precision": {
+              "home_win": 0.472,
+              "draw": 0.0,
+              "away_win": 0.5384615384615384
+            },
+            "confusion_matrix": [
+              [
+                118,
+                0,
+                26
+              ],
+              [
+                49,
+                0,
+                34
+              ],
+              [
+                83,
+                0,
+                70
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21"
+          ],
+          "evaluation_season": "2021-22",
+          "training_rows": 2280,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.55,
+            "macro_f1": 0.4090544871794872,
+            "log_loss": 0.9672491975885313,
+            "multiclass_brier_score": 0.5738587926477151,
+            "expected_calibration_error": 0.042867007204574314,
+            "per_class_recall": {
+              "home_win": 0.8282208588957055,
+              "draw": 0.0,
+              "away_win": 0.5736434108527132
+            },
+            "per_class_precision": {
+              "home_win": 0.5335968379446641,
+              "draw": 0.0,
+              "away_win": 0.5826771653543307
+            },
+            "confusion_matrix": [
+              [
+                135,
+                0,
+                28
+              ],
+              [
+                63,
+                0,
+                25
+              ],
+              [
+                55,
+                0,
+                74
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22"
+          ],
+          "evaluation_season": "2022-23",
+          "training_rows": 2660,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5578947368421052,
+            "macro_f1": 0.4039741948829332,
+            "log_loss": 0.979935975925768,
+            "multiclass_brier_score": 0.5831944746396394,
+            "expected_calibration_error": 0.048111926617799804,
+            "per_class_recall": {
+              "home_win": 0.8152173913043478,
+              "draw": 0.0,
+              "away_win": 0.5688073394495413
+            },
+            "per_class_precision": {
+              "home_win": 0.5928853754940712,
+              "draw": 0.0,
+              "away_win": 0.4881889763779528
+            },
+            "confusion_matrix": [
+              [
+                150,
+                0,
+                34
+              ],
+              [
+                56,
+                0,
+                31
+              ],
+              [
+                47,
+                0,
+                62
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23"
+          ],
+          "evaluation_season": "2023-24",
+          "training_rows": 3040,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5789473684210527,
+            "macro_f1": 0.42315406157287166,
+            "log_loss": 0.9452589662298324,
+            "multiclass_brier_score": 0.5578889225348004,
+            "expected_calibration_error": 0.062008844218923935,
+            "per_class_recall": {
+              "home_win": 0.8342857142857143,
+              "draw": 0.0,
+              "away_win": 0.6016260162601627
+            },
+            "per_class_precision": {
+              "home_win": 0.5934959349593496,
+              "draw": 0.0,
+              "away_win": 0.5522388059701493
+            },
+            "confusion_matrix": [
+              [
+                146,
+                0,
+                29
+              ],
+              [
+                51,
+                0,
+                31
+              ],
+              [
+                49,
+                0,
+                74
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23",
+            "2023-24"
+          ],
+          "evaluation_season": "2024-25",
+          "training_rows": 3420,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5263157894736842,
+            "macro_f1": 0.39236626689510756,
+            "log_loss": 0.9934579055185351,
+            "multiclass_brier_score": 0.5938235445700702,
+            "expected_calibration_error": 0.008688631741472124,
+            "per_class_recall": {
+              "home_win": 0.8451612903225807,
+              "draw": 0.0,
+              "away_win": 0.5227272727272727
+            },
+            "per_class_precision": {
+              "home_win": 0.5097276264591439,
+              "draw": 0.0,
+              "away_win": 0.5609756097560976
+            },
+            "confusion_matrix": [
+              [
+                131,
+                0,
+                24
+              ],
+              [
+                63,
+                0,
+                30
+              ],
+              [
+                63,
+                0,
+                69
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "Logistic regression": {
+      "mean_accuracy": 0.5353383458646617,
+      "mean_macro_f1": 0.4092540141633486,
+      "mean_log_loss": 0.9963371392066931,
+      "mean_multiclass_brier_score": 0.5885092374741507,
+      "mean_expected_calibration_error": 0.06307774400789085,
+      "mean_draw_recall": 0.02417412660424533,
+      "folds": [
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18"
+          ],
+          "evaluation_season": "2018-19",
+          "training_rows": 1140,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5894736842105263,
+            "macro_f1": 0.4726738141650422,
+            "log_loss": 0.9302171857678777,
+            "multiclass_brier_score": 0.5427474020930267,
+            "expected_calibration_error": 0.032351901590844424,
+            "per_class_recall": {
+              "home_win": 0.8342541436464088,
+              "draw": 0.09859154929577464,
+              "away_win": 0.515625
+            },
+            "per_class_precision": {
+              "home_win": 0.601593625498008,
+              "draw": 0.2413793103448276,
+              "away_win": 0.66
+            },
+            "confusion_matrix": [
+              [
+                151,
+                9,
+                21
+              ],
+              [
+                51,
+                7,
+                13
+              ],
+              [
+                49,
+                13,
+                66
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19"
+          ],
+          "evaluation_season": "2019-20",
+          "training_rows": 1520,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5052631578947369,
+            "macro_f1": 0.3812616315136476,
+            "log_loss": 1.0214033957203463,
+            "multiclass_brier_score": 0.6026256034653994,
+            "expected_calibration_error": 0.11231789744692582,
+            "per_class_recall": {
+              "home_win": 0.7267441860465116,
+              "draw": 0.0,
+              "away_win": 0.5775862068965517
+            },
+            "per_class_precision": {
+              "home_win": 0.5411255411255411,
+              "draw": 0.0,
+              "away_win": 0.4785714285714286
+            },
+            "confusion_matrix": [
+              [
+                125,
+                4,
+                43
+              ],
+              [
+                62,
+                0,
+                30
+              ],
+              [
+                44,
+                5,
+                67
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20"
+          ],
+          "evaluation_season": "2020-21",
+          "training_rows": 1900,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.4921052631578947,
+            "macro_f1": 0.38228705321304063,
+            "log_loss": 1.0882033661543176,
+            "multiclass_brier_score": 0.6368738747702529,
+            "expected_calibration_error": 0.09000470521750453,
+            "per_class_recall": {
+              "home_win": 0.8125,
+              "draw": 0.03614457831325301,
+              "away_win": 0.43790849673202614
+            },
+            "per_class_precision": {
+              "home_win": 0.46987951807228917,
+              "draw": 0.375,
+              "away_win": 0.5447154471544715
+            },
+            "confusion_matrix": [
+              [
+                117,
+                2,
+                25
+              ],
+              [
+                49,
+                3,
+                31
+              ],
+              [
+                83,
+                3,
+                67
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21"
+          ],
+          "evaluation_season": "2021-22",
+          "training_rows": 2280,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5421052631578948,
+            "macro_f1": 0.40831327206068796,
+            "log_loss": 0.9829487149014454,
+            "multiclass_brier_score": 0.5812060183999052,
+            "expected_calibration_error": 0.051659887320118,
+            "per_class_recall": {
+              "home_win": 0.7116564417177914,
+              "draw": 0.0,
+              "away_win": 0.6976744186046512
+            },
+            "per_class_precision": {
+              "home_win": 0.5979381443298969,
+              "draw": 0.0,
+              "away_win": 0.4891304347826087
+            },
+            "confusion_matrix": [
+              [
+                116,
+                0,
+                47
+              ],
+              [
+                41,
+                0,
+                47
+              ],
+              [
+                37,
+                2,
+                90
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22"
+          ],
+          "evaluation_season": "2022-23",
+          "training_rows": 2660,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5236842105263158,
+            "macro_f1": 0.4048475542882211,
+            "log_loss": 1.0102638853087493,
+            "multiclass_brier_score": 0.6023182120629175,
+            "expected_calibration_error": 0.04832334767209048,
+            "per_class_recall": {
+              "home_win": 0.6793478260869565,
+              "draw": 0.034482758620689655,
+              "away_win": 0.6513761467889908
+            },
+            "per_class_precision": {
+              "home_win": 0.6127450980392157,
+              "draw": 1.0,
+              "away_win": 0.41040462427745666
+            },
+            "confusion_matrix": [
+              [
+                125,
+                0,
+                59
+              ],
+              [
+                41,
+                3,
+                43
+              ],
+              [
+                38,
+                0,
+                71
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23"
+          ],
+          "evaluation_season": "2023-24",
+          "training_rows": 3040,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5657894736842105,
+            "macro_f1": 0.41748792270531404,
+            "log_loss": 0.9350142445454265,
+            "multiclass_brier_score": 0.5506882399303443,
+            "expected_calibration_error": 0.04958020820684447,
+            "per_class_recall": {
+              "home_win": 0.7771428571428571,
+              "draw": 0.0,
+              "away_win": 0.6422764227642277
+            },
+            "per_class_precision": {
+              "home_win": 0.6044444444444445,
+              "draw": 0.0,
+              "away_win": 0.5163398692810458
+            },
+            "confusion_matrix": [
+              [
+                136,
+                1,
+                38
+              ],
+              [
+                46,
+                0,
+                36
+              ],
+              [
+                43,
+                1,
+                79
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23",
+            "2023-24"
+          ],
+          "evaluation_season": "2024-25",
+          "training_rows": 3420,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5289473684210526,
+            "macro_f1": 0.3979068511974872,
+            "log_loss": 1.0063091820486896,
+            "multiclass_brier_score": 0.6031053115972098,
+            "expected_calibration_error": 0.05730626060090823,
+            "per_class_recall": {
+              "home_win": 0.7870967741935484,
+              "draw": 0.0,
+              "away_win": 0.5984848484848485
+            },
+            "per_class_precision": {
+              "home_win": 0.5327510917030568,
+              "draw": 0.0,
+              "away_win": 0.5231788079470199
+            },
+            "confusion_matrix": [
+              [
+                122,
+                0,
+                33
+              ],
+              [
+                54,
+                0,
+                39
+              ],
+              [
+                53,
+                0,
+                79
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "Random Forest": {
+      "mean_accuracy": 0.5428571428571429,
+      "mean_macro_f1": 0.40001684837781454,
+      "mean_log_loss": 0.9753264891608825,
+      "mean_multiclass_brier_score": 0.578015411433325,
+      "mean_expected_calibration_error": 0.03981674969775726,
+      "mean_draw_recall": 0.002012072434607646,
+      "folds": [
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18"
+          ],
+          "evaluation_season": "2018-19",
+          "training_rows": 1140,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5868421052631579,
+            "macro_f1": 0.4295812232205938,
+            "log_loss": 0.9163678392595345,
+            "multiclass_brier_score": 0.5370533785375976,
+            "expected_calibration_error": 0.0557197639995758,
+            "per_class_recall": {
+              "home_win": 0.8453038674033149,
+              "draw": 0.014084507042253521,
+              "away_win": 0.5390625
+            },
+            "per_class_precision": {
+              "home_win": 0.5708955223880597,
+              "draw": 0.5,
+              "away_win": 0.6272727272727273
+            },
+            "confusion_matrix": [
+              [
+                153,
+                1,
+                27
+              ],
+              [
+                56,
+                1,
+                14
+              ],
+              [
+                59,
+                0,
+                69
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19"
+          ],
+          "evaluation_season": "2019-20",
+          "training_rows": 1520,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5236842105263158,
+            "macro_f1": 0.38561786085150573,
+            "log_loss": 0.9768977045523056,
+            "multiclass_brier_score": 0.5804378446093146,
+            "expected_calibration_error": 0.052688131256875784,
+            "per_class_recall": {
+              "home_win": 0.7965116279069767,
+              "draw": 0.0,
+              "away_win": 0.5344827586206896
+            },
+            "per_class_precision": {
+              "home_win": 0.53515625,
+              "draw": 0.0,
+              "away_win": 0.5
+            },
+            "confusion_matrix": [
+              [
+                137,
+                0,
+                35
+              ],
+              [
+                65,
+                0,
+                27
+              ],
+              [
+                54,
+                0,
+                62
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20"
+          ],
+          "evaluation_season": "2020-21",
+          "training_rows": 1900,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5078947368421053,
+            "macro_f1": 0.3749518652226233,
+            "log_loss": 1.0448178882649093,
+            "multiclass_brier_score": 0.6219517437345705,
+            "expected_calibration_error": 0.04215708640506967,
+            "per_class_recall": {
+              "home_win": 0.8402777777777778,
+              "draw": 0.0,
+              "away_win": 0.47058823529411764
+            },
+            "per_class_precision": {
+              "home_win": 0.47265625,
+              "draw": 0.0,
+              "away_win": 0.5806451612903226
+            },
+            "confusion_matrix": [
+              [
+                121,
+                0,
+                23
+              ],
+              [
+                54,
+                0,
+                29
+              ],
+              [
+                81,
+                0,
+                72
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21"
+          ],
+          "evaluation_season": "2021-22",
+          "training_rows": 2280,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5526315789473685,
+            "macro_f1": 0.4142250971959971,
+            "log_loss": 0.96827747794983,
+            "multiclass_brier_score": 0.5729283012091981,
+            "expected_calibration_error": 0.0256341517083762,
+            "per_class_recall": {
+              "home_win": 0.7607361963190185,
+              "draw": 0.0,
+              "away_win": 0.6666666666666666
+            },
+            "per_class_precision": {
+              "home_win": 0.5636363636363636,
+              "draw": 0.0,
+              "away_win": 0.5375
+            },
+            "confusion_matrix": [
+              [
+                124,
+                0,
+                39
+              ],
+              [
+                53,
+                0,
+                35
+              ],
+              [
+                43,
+                0,
+                86
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22"
+          ],
+          "evaluation_season": "2022-23",
+          "training_rows": 2660,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5368421052631579,
+            "macro_f1": 0.3876759700125163,
+            "log_loss": 0.9850962746462275,
+            "multiclass_brier_score": 0.5864193521121396,
+            "expected_calibration_error": 0.017211283054618966,
+            "per_class_recall": {
+              "home_win": 0.7880434782608695,
+              "draw": 0.0,
+              "away_win": 0.5412844036697247
+            },
+            "per_class_precision": {
+              "home_win": 0.5753968253968254,
+              "draw": 0.0,
+              "away_win": 0.4609375
+            },
+            "confusion_matrix": [
+              [
+                145,
+                0,
+                39
+              ],
+              [
+                57,
+                0,
+                30
+              ],
+              [
+                50,
+                0,
+                59
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23"
+          ],
+          "evaluation_season": "2023-24",
+          "training_rows": 3040,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5789473684210527,
+            "macro_f1": 0.42492415968935804,
+            "log_loss": 0.9308488915199942,
+            "multiclass_brier_score": 0.5468840329795982,
+            "expected_calibration_error": 0.04871392049500411,
+            "per_class_recall": {
+              "home_win": 0.8114285714285714,
+              "draw": 0.0,
+              "away_win": 0.6341463414634146
+            },
+            "per_class_precision": {
+              "home_win": 0.6042553191489362,
+              "draw": 0.0,
+              "away_win": 0.5379310344827586
+            },
+            "confusion_matrix": [
+              [
+                142,
+                0,
+                33
+              ],
+              [
+                48,
+                0,
+                34
+              ],
+              [
+                45,
+                0,
+                78
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23",
+            "2023-24"
+          ],
+          "evaluation_season": "2024-25",
+          "training_rows": 3420,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5131578947368421,
+            "macro_f1": 0.38314176245210724,
+            "log_loss": 1.0049793479333773,
+            "multiclass_brier_score": 0.6004332268508561,
+            "expected_calibration_error": 0.03659291096478028,
+            "per_class_recall": {
+              "home_win": 0.8129032258064516,
+              "draw": 0.0,
+              "away_win": 0.5227272727272727
+            },
+            "per_class_precision": {
+              "home_win": 0.50199203187251,
+              "draw": 0.0,
+              "away_win": 0.5348837209302325
+            },
+            "confusion_matrix": [
+              [
+                126,
+                0,
+                29
+              ],
+              [
+                62,
+                0,
+                31
+              ],
+              [
+                63,
+                0,
+                69
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "Poisson": {
+      "mean_accuracy": 0.5154135338345865,
+      "mean_macro_f1": 0.36439100747385134,
+      "mean_log_loss": 1.016739358949017,
+      "mean_multiclass_brier_score": 0.6085571396566004,
+      "mean_expected_calibration_error": 0.07422592537234753,
+      "mean_draw_recall": 0.0,
+      "folds": [
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18"
+          ],
+          "evaluation_season": "2018-19",
+          "training_rows": 1140,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5868421052631579,
+            "macro_f1": 0.41173356918397025,
+            "log_loss": 0.980871648739551,
+            "multiclass_brier_score": 0.5834110050191365,
+            "expected_calibration_error": 0.13435753489339097,
+            "per_class_recall": {
+              "home_win": 0.9226519337016574,
+              "draw": 0.0,
+              "away_win": 0.4375
+            },
+            "per_class_precision": {
+              "home_win": 0.5529801324503312,
+              "draw": 0.0,
+              "away_win": 0.717948717948718
+            },
+            "confusion_matrix": [
+              [
+                167,
+                0,
+                14
+              ],
+              [
+                63,
+                0,
+                8
+              ],
+              [
+                72,
+                0,
+                56
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19"
+          ],
+          "evaluation_season": "2019-20",
+          "training_rows": 1520,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5131578947368421,
+            "macro_f1": 0.3612439240346217,
+            "log_loss": 1.0096472640243723,
+            "multiclass_brier_score": 0.6029119030805116,
+            "expected_calibration_error": 0.05834357669981074,
+            "per_class_recall": {
+              "home_win": 0.8837209302325582,
+              "draw": 0.0,
+              "away_win": 0.3706896551724138
+            },
+            "per_class_precision": {
+              "home_win": 0.5049833887043189,
+              "draw": 0.0,
+              "away_win": 0.5443037974683544
+            },
+            "confusion_matrix": [
+              [
+                152,
+                0,
+                20
+              ],
+              [
+                76,
+                0,
+                16
+              ],
+              [
+                73,
+                0,
+                43
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20"
+          ],
+          "evaluation_season": "2020-21",
+          "training_rows": 1900,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.48157894736842105,
+            "macro_f1": 0.34047271666180334,
+            "log_loss": 1.039874768722658,
+            "multiclass_brier_score": 0.6255990725510895,
+            "expected_calibration_error": 0.030468732055890027,
+            "per_class_recall": {
+              "home_win": 0.9375,
+              "draw": 0.0,
+              "away_win": 0.3137254901960784
+            },
+            "per_class_precision": {
+              "home_win": 0.44554455445544555,
+              "draw": 0.0,
+              "away_win": 0.6233766233766234
+            },
+            "confusion_matrix": [
+              [
+                135,
+                0,
+                9
+              ],
+              [
+                63,
+                0,
+                20
+              ],
+              [
+                105,
+                0,
+                48
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21"
+          ],
+          "evaluation_season": "2021-22",
+          "training_rows": 2280,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5263157894736842,
+            "macro_f1": 0.3833278151786043,
+            "log_loss": 1.004043967447554,
+            "multiclass_brier_score": 0.5989941150728393,
+            "expected_calibration_error": 0.08063053161223267,
+            "per_class_recall": {
+              "home_win": 0.8773006134969326,
+              "draw": 0.0,
+              "away_win": 0.4418604651162791
+            },
+            "per_class_precision": {
+              "home_win": 0.4965277777777778,
+              "draw": 0.0,
+              "away_win": 0.6195652173913043
+            },
+            "confusion_matrix": [
+              [
+                143,
+                0,
+                20
+              ],
+              [
+                73,
+                0,
+                15
+              ],
+              [
+                72,
+                0,
+                57
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22"
+          ],
+          "evaluation_season": "2022-23",
+          "training_rows": 2660,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5157894736842106,
+            "macro_f1": 0.35847470097328205,
+            "log_loss": 1.0227286543995258,
+            "multiclass_brier_score": 0.6129013454575577,
+            "expected_calibration_error": 0.07499093109669504,
+            "per_class_recall": {
+              "home_win": 0.8315217391304348,
+              "draw": 0.0,
+              "away_win": 0.3944954128440367
+            },
+            "per_class_precision": {
+              "home_win": 0.5331010452961672,
+              "draw": 0.0,
+              "away_win": 0.46236559139784944
+            },
+            "confusion_matrix": [
+              [
+                153,
+                0,
+                31
+              ],
+              [
+                68,
+                0,
+                19
+              ],
+              [
+                66,
+                0,
+                43
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23"
+          ],
+          "evaluation_season": "2023-24",
+          "training_rows": 3040,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5552631578947368,
+            "macro_f1": 0.3968253968253968,
+            "log_loss": 1.0024369483891886,
+            "multiclass_brier_score": 0.5978190737737598,
+            "expected_calibration_error": 0.10983944437999557,
+            "per_class_recall": {
+              "home_win": 0.8914285714285715,
+              "draw": 0.0,
+              "away_win": 0.44715447154471544
+            },
+            "per_class_precision": {
+              "home_win": 0.5324232081911263,
+              "draw": 0.0,
+              "away_win": 0.632183908045977
+            },
+            "confusion_matrix": [
+              [
+                156,
+                0,
+                19
+              ],
+              [
+                69,
+                0,
+                13
+              ],
+              [
+                68,
+                0,
+                55
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23",
+            "2023-24"
+          ],
+          "evaluation_season": "2024-25",
+          "training_rows": 3420,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.42894736842105263,
+            "macro_f1": 0.2986589294592809,
+            "log_loss": 1.0575722609202698,
+            "multiclass_brier_score": 0.6382634626413088,
+            "expected_calibration_error": 0.03095072686841774,
+            "per_class_recall": {
+              "home_win": 0.8193548387096774,
+              "draw": 0.0,
+              "away_win": 0.2727272727272727
+            },
+            "per_class_precision": {
+              "home_win": 0.43197278911564624,
+              "draw": 0.0,
+              "away_win": 0.4186046511627907
+            },
+            "confusion_matrix": [
+              [
+                127,
+                0,
+                28
+              ],
+              [
+                71,
+                0,
+                22
+              ],
+              [
+                96,
+                0,
+                36
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "Dixon-Coles": {
+      "mean_accuracy": 0.5154135338345865,
+      "mean_macro_f1": 0.36439100747385134,
+      "mean_log_loss": 1.0182052141306486,
+      "mean_multiclass_brier_score": 0.6096157187552669,
+      "mean_expected_calibration_error": 0.07877501416659559,
+      "mean_draw_recall": 0.0,
+      "folds": [
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18"
+          ],
+          "evaluation_season": "2018-19",
+          "training_rows": 1140,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5868421052631579,
+            "macro_f1": 0.41173356918397025,
+            "log_loss": 0.9844018325204571,
+            "multiclass_brier_score": 0.5858130780027232,
+            "expected_calibration_error": 0.14028343340033614,
+            "per_class_recall": {
+              "home_win": 0.9226519337016574,
+              "draw": 0.0,
+              "away_win": 0.4375
+            },
+            "per_class_precision": {
+              "home_win": 0.5529801324503312,
+              "draw": 0.0,
+              "away_win": 0.717948717948718
+            },
+            "confusion_matrix": [
+              [
+                167,
+                0,
+                14
+              ],
+              [
+                63,
+                0,
+                8
+              ],
+              [
+                72,
+                0,
+                56
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19"
+          ],
+          "evaluation_season": "2019-20",
+          "training_rows": 1520,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5131578947368421,
+            "macro_f1": 0.3612439240346217,
+            "log_loss": 1.0097329942786764,
+            "multiclass_brier_score": 0.6032516202755605,
+            "expected_calibration_error": 0.07537725705765724,
+            "per_class_recall": {
+              "home_win": 0.8837209302325582,
+              "draw": 0.0,
+              "away_win": 0.3706896551724138
+            },
+            "per_class_precision": {
+              "home_win": 0.5049833887043189,
+              "draw": 0.0,
+              "away_win": 0.5443037974683544
+            },
+            "confusion_matrix": [
+              [
+                152,
+                0,
+                20
+              ],
+              [
+                76,
+                0,
+                16
+              ],
+              [
+                73,
+                0,
+                43
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20"
+          ],
+          "evaluation_season": "2020-21",
+          "training_rows": 1900,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.48157894736842105,
+            "macro_f1": 0.34047271666180334,
+            "log_loss": 1.0422201402726814,
+            "multiclass_brier_score": 0.6269315821651195,
+            "expected_calibration_error": 0.03641807022868005,
+            "per_class_recall": {
+              "home_win": 0.9375,
+              "draw": 0.0,
+              "away_win": 0.3137254901960784
+            },
+            "per_class_precision": {
+              "home_win": 0.44554455445544555,
+              "draw": 0.0,
+              "away_win": 0.6233766233766234
+            },
+            "confusion_matrix": [
+              [
+                135,
+                0,
+                9
+              ],
+              [
+                63,
+                0,
+                20
+              ],
+              [
+                105,
+                0,
+                48
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21"
+          ],
+          "evaluation_season": "2021-22",
+          "training_rows": 2280,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5263157894736842,
+            "macro_f1": 0.3833278151786043,
+            "log_loss": 1.0048467531106753,
+            "multiclass_brier_score": 0.5998002243788219,
+            "expected_calibration_error": 0.08657708505140918,
+            "per_class_recall": {
+              "home_win": 0.8773006134969326,
+              "draw": 0.0,
+              "away_win": 0.4418604651162791
+            },
+            "per_class_precision": {
+              "home_win": 0.4965277777777778,
+              "draw": 0.0,
+              "away_win": 0.6195652173913043
+            },
+            "confusion_matrix": [
+              [
+                143,
+                0,
+                20
+              ],
+              [
+                73,
+                0,
+                15
+              ],
+              [
+                72,
+                0,
+                57
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22"
+          ],
+          "evaluation_season": "2022-23",
+          "training_rows": 2660,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5157894736842106,
+            "macro_f1": 0.35847470097328205,
+            "log_loss": 1.0239097136684392,
+            "multiclass_brier_score": 0.6137934836249224,
+            "expected_calibration_error": 0.075930753240105,
+            "per_class_recall": {
+              "home_win": 0.8315217391304348,
+              "draw": 0.0,
+              "away_win": 0.3944954128440367
+            },
+            "per_class_precision": {
+              "home_win": 0.5331010452961672,
+              "draw": 0.0,
+              "away_win": 0.46236559139784944
+            },
+            "confusion_matrix": [
+              [
+                153,
+                0,
+                31
+              ],
+              [
+                68,
+                0,
+                19
+              ],
+              [
+                66,
+                0,
+                43
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23"
+          ],
+          "evaluation_season": "2023-24",
+          "training_rows": 3040,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.5552631578947368,
+            "macro_f1": 0.3968253968253968,
+            "log_loss": 1.0043247501059118,
+            "multiclass_brier_score": 0.59922967667963,
+            "expected_calibration_error": 0.11578332418510476,
+            "per_class_recall": {
+              "home_win": 0.8914285714285715,
+              "draw": 0.0,
+              "away_win": 0.44715447154471544
+            },
+            "per_class_precision": {
+              "home_win": 0.5324232081911263,
+              "draw": 0.0,
+              "away_win": 0.632183908045977
+            },
+            "confusion_matrix": [
+              [
+                156,
+                0,
+                19
+              ],
+              [
+                69,
+                0,
+                13
+              ],
+              [
+                68,
+                0,
+                55
+              ]
+            ]
+          }
+        },
+        {
+          "train_seasons": [
+            "2015-16",
+            "2016-17",
+            "2017-18",
+            "2018-19",
+            "2019-20",
+            "2020-21",
+            "2021-22",
+            "2022-23",
+            "2023-24"
+          ],
+          "evaluation_season": "2024-25",
+          "training_rows": 3420,
+          "evaluation_rows": 380,
+          "metrics": {
+            "accuracy": 0.42894736842105263,
+            "macro_f1": 0.2986589294592809,
+            "log_loss": 1.0580003149576966,
+            "multiclass_brier_score": 0.6384903661600908,
+            "expected_calibration_error": 0.021055176002876753,
+            "per_class_recall": {
+              "home_win": 0.8193548387096774,
+              "draw": 0.0,
+              "away_win": 0.2727272727272727
+            },
+            "per_class_precision": {
+              "home_win": 0.43197278911564624,
+              "draw": 0.0,
+              "away_win": 0.4186046511627907
+            },
+            "confusion_matrix": [
+              [
+                127,
+                0,
+                28
+              ],
+              [
+                71,
+                0,
+                22
+              ],
+              [
+                96,
+                0,
+                36
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

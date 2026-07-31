@@ -46,6 +46,14 @@ Leakage-safe pre-match features (Phase 3 complete)
                     |
                     v
           Do not deploy frozen v1
+                    |
+                    v
+       Phase 6 v2 rolling research
+       Poisson and Dixon-Coles models
+                    |
+                    v
+         Retain benchmarks; goal models
+         did not improve the evidence
 ```
 
 ## Design principles
@@ -76,13 +84,16 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.models.run_calibration`: calibration selection and error reporting
 - `footcast.models.frozen`: v1 contract, fitting, and artifact serialization
 - `footcast.models.run_final_test`: frozen test evaluation and final report
+- `footcast.models.goal_models`: Poisson score rates and Dixon-Coles adjustment
+- `footcast.models.run_goal_models`: v2 expanding next-season backtests
 - `footcast.evaluation.metrics`: fixed-order multiclass model metrics
 - `footcast.evaluation.plots`: consistent confusion-matrix visualization
 - `footcast.evaluation.calibration_plots`: reliability and slice figures
 - `footcast.evaluation.error_analysis`: validation-only diagnostic slices
+- `footcast.evaluation.goal_model_plots`: rolling v2 comparison figures
 
-Planned later only after a new approved development policy:
+Planned later only after a new approved milestone:
 
-- v2 research, inference API, and dashboard work
+- additional v2 research, inference API, and dashboard work
 
 These modules will be introduced only when their milestone begins.

@@ -10,7 +10,7 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Phases 1 through 4 and both Phase 5 checkpoints are complete. Football-Data
+Phases 1 through 5 and the Phase 6 goal-model checkpoint are complete. Football-Data
 acquisition is checksum-pinned and repeatable, raw files are immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
 be regenerated locally. Exploratory analysis uses only the training and
@@ -22,7 +22,9 @@ Forest search provides a modest nonlinear improvement. Forward-only calibration
 testing found that its original probabilities outperform sigmoid and isotonic
 post-processing. The frozen v1 pipeline has now been evaluated once on the
 2024-25 test season. Its performance declined and it is not recommended for
-deployment. The 2025-26 holdout remains sealed.
+deployment. Phase 6 then evaluated Poisson and Dixon-Coles score models across
+seven expanding next-season backtests. They did not outperform Elo or Random
+Forest and did not solve draw recognition. The 2025-26 holdout remains sealed.
 
 ## Planned modeling question
 
@@ -311,6 +313,29 @@ the simpler models, so v1 is **not recommended for deployment**. The
 [frozen-model contract](docs/final_test.md) explains the decision, and the
 [final test report](reports/final_test_results.md) contains the complete
 evidence. The 2025-26 holdout remains unopened.
+
+## Phase 6 goal-model research
+
+Phase 6 begins v2 research with seasons through 2024-25 treated as development
+data and evaluates seven expanding next-season folds:
+
+```bash
+python -m footcast.models.run_goal_models
+```
+
+| Model | Mean log loss | Mean macro F1 | Mean draw recall |
+| --- | ---: | ---: | ---: |
+| Elo | 0.976 | 0.401 | 0.000 |
+| Logistic regression | 0.996 | **0.409** | **0.024** |
+| Random Forest | **0.975** | 0.400 | 0.002 |
+| Poisson | 1.017 | 0.364 | 0.000 |
+| Dixon-Coles | 1.018 | 0.364 | 0.000 |
+
+The explicit score models did not improve probability quality and still never
+selected a draw. This is retained as a documented negative result. See the
+[goal-model contract](docs/goal_models.md) and
+[generated report](reports/goal_model_results.md). No 2025-26 holdout data is
+loaded.
 
 ## Responsible use
 
