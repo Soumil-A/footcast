@@ -141,6 +141,17 @@ class _DashboardClient:
     def head_to_head(self, _home: str, _away: str, *, limit: int) -> dict:
         return {"matches": []}
 
+    def predict(self, home: str, away: str, match_date: str) -> dict:
+        return {
+            "home_team": home,
+            "away_team": away,
+            "match_date": match_date,
+            "home_win_probability": 0.54,
+            "draw_probability": 0.23,
+            "away_win_probability": 0.23,
+            "predicted_result": "home_win",
+        }
+
 
 def _render_test_dashboard(client) -> None:
     from footcast.dashboard.app import render_dashboard
@@ -154,6 +165,16 @@ def test_streamlit_dashboard_renders_against_client_contract() -> None:
     ).run(timeout=10)
 
     assert not app.exception
-    assert app.title[0].value == "⚽ FootCast"
     assert len(app.selectbox) == 2
-    assert len(app.dataframe) == 2
+    assert any("FootCast" in element.value for element in app.markdown)
+    assert any(
+        "Forecast engine standing by" in element.value
+        for element in app.markdown
+    )
+
+    assert len(app.button) == 1
+    app.button[0].click().run(timeout=10)
+
+    assert not app.exception
+    assert any("54.0%" in element.value for element in app.markdown)
+    assert any("Highest model probability" in element.value for element in app.markdown)

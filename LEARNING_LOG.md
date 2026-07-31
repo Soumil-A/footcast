@@ -541,3 +541,46 @@ build a Streamlit dashboard that calls FastAPI rather than importing model code.
 Phase 7 checkpoint 2 completes the first usable local FootCast product. The
 model is unchanged; this checkpoint improves accessibility, transparency, and
 portfolio presentation rather than predictive performance.
+
+## Phase 7 UI polish
+
+### Concepts
+
+- A portfolio dashboard needs a visual hierarchy: fixture first, forecast
+  second, supporting context third, and limitations always reachable.
+- Responsive validation should measure overflow and computed grid behavior,
+  not rely only on shrinking a screenshot.
+- Custom HTML inside Markdown must avoid retained indentation. Nested repeated
+  rows can otherwise be interpreted as code blocks after the first element.
+- Color can reinforce meaning, but W/D/L letters and text labels must carry the
+  same information for accessibility.
+
+### Decisions
+
+- Keep Streamlit and the existing HTTP boundary instead of adding a second
+  frontend framework for a presentation-only checkpoint.
+- Create a local CSS design system with no remote fonts, JavaScript, crest
+  downloads, or new runtime services.
+- Use team initials as neutral visual identifiers and preserve the explicit
+  educational-use language.
+- Collapse matchup, probability, and Elo grids below `760px`, with the fixture
+  controls provided by Streamlit's mobile sidebar drawer.
+- Leave every API request, probability, rating, split, and model limitation
+  unchanged.
+
+### Verification observations
+
+- The headless dashboard test covers the idle shell and a generated forecast.
+- All 109 repository tests and Ruff checks pass.
+- Live desktop testing displayed the real `54.0% / 23.3% / 22.7%`
+  Arsenal-Chelsea example with the redesigned probability spectrum.
+- At a `390px` viewport, all major grids collapsed to one column, the document
+  width remained `390px`, and the complete hero cleared the fixed toolbar.
+- Browser inspection exposed and corrected nested-row code rendering,
+  percentage wrapping, and top safe-area spacing before publication.
+
+### Outcome
+
+FootCast now has a cohesive, responsive portfolio presentation without
+changing its scientific claims. The next product milestone is public
+deployment and a README demo capture; accuracy work remains a separate track.

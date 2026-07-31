@@ -1,15 +1,17 @@
+# ruff: noqa: E501
 """Portfolio-facing Streamlit dashboard backed only by the FootCast API."""
 
 from __future__ import annotations
 
 import os
 from datetime import date, timedelta
+from html import escape
 from typing import Any
 
-import pandas as pd
 import streamlit as st
 
 from footcast.dashboard.client import FootCastApiClient, FootCastApiError
+from footcast.dashboard.styles import APP_CSS
 
 API_URL = os.getenv("FOOTCAST_API_URL", "http://127.0.0.1:8000")
 RESULT_LABELS = {
@@ -36,73 +38,234 @@ def load_analytics(
     )
 
 
-def _form_line(matches: list[dict[str, Any]]) -> str:
-    if not matches:
-        return "No completed matches"
-    symbols = {"win": "W", "draw": "D", "loss": "L"}
-    return " · ".join(symbols[match["outcome"]] for match in reversed(matches))
+def _team_initials(team: str) -> str:
+    words = [word for word in team.split() if word]
+    if len(words) >= 2:
+        return "".join(word[0] for word in words[:2]).upper()
+    return team[:2].upper()
 
 
-def _form_table(matches: list[dict[str, Any]]) -> pd.DataFrame:
-    return pd.DataFrame(
-        [
-            {
-                "Date": match["match_date"],
-                "Venue": match["venue"].title(),
-                "Opponent": match["opponent"],
-                "Score": f'{match["goals_for"]}–{match["goals_against"]}',
-                "Result": match["outcome"].title(),
-            }
-            for match in matches
-        ]
+def _render_hero(model_info: dict[str, Any], cutoff: date) -> None:
+    version = escape(str(model_info["model_version"]))
+    st.markdown(
+        f"""
+        <header class="fc-hero">
+          <div>
+            <div class="fc-eyebrow">Premier League intelligence</div>
+            <h1 class="fc-title">FootCast</h1>
+            <p class="fc-subtitle">
+              Transparent match probabilities, team momentum, and historical
+              context—built on a reproducible Elo reference model.
+            </p>
+          </div>
+          <div class="fc-live" title="{version}">
+            <span class="fc-live-dot"></span>
+            Model online · {cutoff.isoformat()}
+          </div>
+        </header>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_matchup(home_team: str, away_team: str) -> None:
+    home = escape(home_team)
+    away = escape(away_team)
+    st.markdown(
+        f"""
+        <section class="fc-matchup" aria-label="Selected fixture">
+          <div class="fc-team">
+            <div class="fc-team-orb">{escape(_team_initials(home_team))}</div>
+            <div>
+              <div class="fc-team-role">Home</div>
+              <div class="fc-team-name">{home}</div>
+            </div>
+          </div>
+          <div class="fc-vs">VS</div>
+          <div class="fc-team fc-team-away">
+            <div class="fc-team-orb">{escape(_team_initials(away_team))}</div>
+            <div>
+              <div class="fc-team-role">Away</div>
+              <div class="fc-team-name">{away}</div>
+            </div>
+          </div>
+        </section>
+        """,
+        unsafe_allow_html=True,
     )
 
 
 def _render_prediction(prediction: dict[str, Any]) -> None:
-    st.subheader("Match forecast")
-    columns = st.columns(3)
     labels = ("Home win", "Draw", "Away win")
-    keys = (
+    result_keys = ("home_win", "draw", "away_win")
+    probability_keys = (
         "home_win_probability",
         "draw_probability",
         "away_win_probability",
     )
-    for column, label, key in zip(columns, labels, keys, strict=True):
-        column.metric(label, f'{prediction[key]:.1%}')
+    probabilities = [float(prediction[key]) for key in probability_keys]
+    predicted_result = str(prediction["predicted_result"])
 
-    for label, key in zip(labels, keys, strict=True):
-        probability = float(prediction[key])
-        st.progress(probability, text=f"{label} — {probability:.1%}")
-    predicted = RESULT_LABELS[prediction["predicted_result"]]
-    st.info(
-        f"Highest model probability: **{predicted}**. "
-        "This is an educational estimate, not betting advice."
+    cards = []
+    for label, result_key, probability in zip(
+        labels, result_keys, probabilities, strict=True
+    ):
+        leading = " is-leading" if result_key == predicted_result else ""
+        cards.append(
+            f'<div class="fc-prob-card{leading}">'
+            f'<span class="fc-prob-label">{label}</span>'
+            f'<span class="fc-prob-value">{probability:.1%}</span>'
+            "</div>"
+        )
+
+    segments = "".join(
+        f'<span style="width:{probability * 100:.4f}%"></span>'
+        for probability in probabilities
     )
+    predicted = escape(RESULT_LABELS[predicted_result])
+    st.markdown('<div class="fc-section-label">Match forecast</div>', unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <section aria-label="Three-way match probabilities">
+          <div class="fc-prob-grid">{''.join(cards)}</div>
+          <div class="fc-prob-track" aria-hidden="true">{segments}</div>
+          <div class="fc-forecast-note">
+            <span>Highest model probability · <strong>{predicted}</strong></span>
+            <span>Educational estimate · not betting advice</span>
+          </div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_empty_forecast() -> None:
+    st.markdown('<div class="fc-section-label">Match forecast</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="fc-empty">
+          <strong>Forecast engine standing by</strong>
+          <span>Select a fixture in the control deck and generate a forecast.</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _form_pills(matches: list[dict[str, Any]]) -> str:
+    if not matches:
+        return '<span class="fc-sidebar-caption">No completed matches</span>'
+    labels = {"win": "W", "draw": "D", "loss": "L"}
+    return "".join(
+        (
+            f'<span class="fc-form-pill {escape(str(match["outcome"]))}" '
+            f'title="{escape(str(match["outcome"])).title()}">'
+            f'{labels[str(match["outcome"])]}</span>'
+        )
+        for match in reversed(matches)
+    )
+
+
+def _history_rows(matches: list[dict[str, Any]]) -> str:
+    rows: list[str] = []
+    for match in matches:
+        venue = "HOME" if match["venue"] == "home" else "AWAY"
+        outcome = escape(str(match["outcome"]))
+        opponent = escape(str(match["opponent"]))
+        score = f'{int(match["goals_for"])}–{int(match["goals_against"])}'
+        rows.append(
+            '<div class="fc-history-row">'
+            f'<span class="fc-venue">{venue}</span>'
+            f'<span class="fc-opponent">{opponent}</span>'
+            f'<span class="fc-score {outcome}">{score}</span>'
+            "</div>"
+        )
+    return "".join(rows)
 
 
 def _render_form(team: str, form: dict[str, Any]) -> None:
     summary = form["summary"]
-    st.markdown(f"#### {team}")
-    st.caption(f'Oldest → newest: {_form_line(form["matches"])}')
-    metric_columns = st.columns(3)
-    metric_columns[0].metric("Points", summary["points"])
-    metric_columns[1].metric("Goals for", summary["goals_for"])
-    metric_columns[2].metric("Goals against", summary["goals_against"])
-    st.dataframe(_form_table(form["matches"]), hide_index=True, width="stretch")
+    st.markdown(f"#### {escape(team)}")
+    st.markdown(
+        f'<div class="fc-form-pills">{_form_pills(form["matches"])}</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f"""
+        <div class="fc-mini-stats">
+          <div class="fc-mini-stat"><span>Points</span><strong>{int(summary['points'])}</strong></div>
+          <div class="fc-mini-stat"><span>Goals for</span><strong>{int(summary['goals_for'])}</strong></div>
+          <div class="fc-mini-stat"><span>Against</span><strong>{int(summary['goals_against'])}</strong></div>
+        </div>
+        <div class="fc-history-list">{_history_rows(form['matches'])}</div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_elo(home_team: str, away_team: str, comparison: dict[str, Any]) -> None:
+    home_elo = float(comparison["home_elo"])
+    away_elo = float(comparison["away_elo"])
+    difference = float(comparison["elo_difference"])
+    marker = min(82.0, max(18.0, 50.0 + difference / 5.0))
+    leader = home_team if difference >= 0 else away_team
+    st.markdown('<div class="fc-section-label">Strength signal</div>', unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <section class="fc-elo-grid" aria-label="Elo rating comparison">
+          <div class="fc-stat-card">
+            <div class="fc-stat-label">{escape(home_team)} Elo</div>
+            <div class="fc-stat-value">{home_elo:.0f}</div>
+          </div>
+          <div class="fc-stat-card fc-elo-center">
+            <div class="fc-stat-label">Rating edge</div>
+            <div class="fc-elo-delta">{escape(leader)} · {abs(difference):.0f}</div>
+            <div class="fc-elo-track">
+              <span class="fc-elo-marker" style="left:{marker:.2f}%"></span>
+            </div>
+            <div class="fc-elo-caption">Historical rating balance</div>
+          </div>
+          <div class="fc-stat-card right">
+            <div class="fc-stat-label">{escape(away_team)} Elo</div>
+            <div class="fc-stat-value">{away_elo:.0f}</div>
+          </div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_head_to_head(meetings: dict[str, Any]) -> None:
+    st.markdown('<div class="fc-section-label">Recent head-to-head</div>', unsafe_allow_html=True)
+    if not meetings["matches"]:
+        st.caption("No meetings are present in the approved history.")
+        return
+    rows = []
+    for match in meetings["matches"]:
+        rows.append(
+            '<div class="fc-h2h-row">'
+            f'<span class="fc-h2h-date">{escape(str(match["match_date"]))}</span>'
+            f'<span class="fc-h2h-home">{escape(str(match["home_team"]))}</span>'
+            f'<span class="fc-h2h-score">{int(match["home_goals"])}–'
+            f'{int(match["away_goals"])}</span>'
+            f'<span class="fc-h2h-away">{escape(str(match["away_team"]))}</span>'
+            "</div>"
+        )
+    st.markdown(
+        f'<div class="fc-h2h-list">{"".join(rows)}</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def render_dashboard(client: FootCastApiClient | None = None) -> None:
     """Render the dashboard; an injected client keeps the boundary testable."""
     st.set_page_config(
-        page_title="FootCast",
+        page_title="FootCast · Match Intelligence",
         page_icon="⚽",
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.title("⚽ FootCast")
-    st.markdown(
-        "Premier League outcome probabilities from a transparent Elo reference model."
-    )
+    st.markdown(APP_CSS, unsafe_allow_html=True)
 
     active_client = client or FootCastApiClient(API_URL)
     try:
@@ -122,7 +285,17 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
     default_date = max(date.today(), earliest_prediction)
 
     with st.sidebar:
-        st.header("Fixture")
+        st.markdown(
+            """
+            <div class="fc-sidebar-brand">
+              <div class="fc-sidebar-mark">FC</div>
+              <div class="fc-sidebar-name">FootCast Control</div>
+              <div class="fc-sidebar-caption">Configure a future fixture</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.header("Control deck")
         default_home = teams.index("Arsenal") if "Arsenal" in teams else 0
         home_team = st.selectbox("Home team", teams, index=default_home)
         away_options = [team for team in teams if team != home_team]
@@ -132,17 +305,29 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
             "Match date", value=default_date, min_value=earliest_prediction
         )
         predict_clicked = st.button(
-            "Generate forecast", type="primary", width="stretch"
+            "Generate forecast →", type="primary", width="stretch"
         )
-        st.divider()
-        st.caption(f"Model: {model_info['model_version']}")
-        st.caption(f"Completed data through {cutoff.isoformat()}")
+        st.markdown(
+            f"""
+            <div class="fc-meta">
+              <div class="fc-meta-row"><span>Engine</span><strong>{escape(str(model_info['model_version']))}</strong></div>
+              <div class="fc-meta-row"><span>Data cutoff</span><strong>{cutoff.isoformat()}</strong></div>
+              <div class="fc-meta-row"><span>Holdout</span><strong>Sealed</strong></div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    _render_hero(model_info, cutoff)
+    _render_matchup(home_team, away_team)
 
     if predict_clicked:
+        st.session_state.pop("prediction", None)
         try:
-            st.session_state["prediction"] = active_client.predict(
-                home_team, away_team, match_date.isoformat()
-            )
+            with st.spinner("Calculating fixture probabilities…"):
+                st.session_state["prediction"] = active_client.predict(
+                    home_team, away_team, match_date.isoformat()
+                )
         except FootCastApiError as error:
             st.error(str(error))
 
@@ -157,7 +342,7 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
     if prediction:
         _render_prediction(prediction)
     else:
-        st.info("Choose a fixture and generate a forecast to see probabilities.")
+        _render_empty_forecast()
 
     try:
         if client is None:
@@ -169,43 +354,26 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
         st.warning(f"Historical analytics could not be loaded: {error}")
         return
 
-    st.divider()
-    st.subheader("Team context")
-    elo_columns = st.columns(3)
-    elo_columns[0].metric(f"{home_team} Elo", f'{comparison["home_elo"]:.0f}')
-    elo_columns[1].metric("Rating difference", f'{comparison["elo_difference"]:+.0f}')
-    elo_columns[2].metric(f"{away_team} Elo", f'{comparison["away_elo"]:.0f}')
-
-    form_columns = st.columns(2)
+    _render_elo(home_team, away_team, comparison)
+    st.markdown('<div class="fc-section-label">Momentum monitor</div>', unsafe_allow_html=True)
+    form_columns = st.columns(2, gap="large")
     with form_columns[0]:
-        _render_form(home_team, comparison["home"])
+        with st.container(border=True):
+            _render_form(home_team, comparison["home"])
     with form_columns[1]:
-        _render_form(away_team, comparison["away"])
+        with st.container(border=True):
+            _render_form(away_team, comparison["away"])
 
-    st.subheader("Recent head-to-head")
-    if meetings["matches"]:
-        table = pd.DataFrame(
-            [
-                {
-                    "Date": match["match_date"],
-                    "Home": match["home_team"],
-                    "Score": f'{match["home_goals"]}–{match["away_goals"]}',
-                    "Away": match["away_team"],
-                }
-                for match in meetings["matches"]
-            ]
-        )
-        st.dataframe(table, hide_index=True, width="stretch")
-    else:
-        st.caption("No meetings are present in the approved history.")
+    _render_head_to_head(meetings)
 
-    with st.expander("How to read this forecast"):
+    with st.expander("Model transparency and responsible use"):
         st.write(model_info["intended_use"].capitalize() + ".")
         for limitation in model_info["limitations"]:
             st.markdown(f"- {limitation}")
         st.caption(
             f"Specification: {model_info['specification_sha256'][:12]}… · "
-            f"{model_info['completed_matches']:,} completed matches"
+            f"{model_info['completed_matches']:,} completed matches · "
+            "Recent form is descriptive context, not an extra model input."
         )
 
 
