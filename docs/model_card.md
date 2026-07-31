@@ -2,11 +2,13 @@
 
 ## Status
 
-Phase 4 checkpoints 1 and 2 are complete. Four reference methods and a Random
-Forest have been trained on 2015-16 through 2022-23 and evaluated on 2023-24.
-The Random Forest configuration was selected with expanding folds inside the
-training period. No model is yet calibrated, frozen, or released for inference.
-Test and holdout seasons remain untouched.
+Phase 5 checkpoint 1 is complete. Four reference methods and a Random Forest
+have been trained on 2015-16 through 2022-23 and evaluated on 2023-24. The
+Random Forest configuration and calibration decision were selected with
+forward-only folds inside the training period. No post-processing calibration
+was retained because both sigmoid and isotonic methods worsened training-period
+probability metrics. No model is frozen or released for inference. Test and
+holdout seasons remain untouched.
 
 ## Intended use
 
@@ -39,8 +41,8 @@ and the current best log loss at `0.931`. All three had zero draw recall at the
 selected most-likely label threshold. These are validation results, not final
 test performance.
 
-Brier score, calibration curves, per-class precision, and subgroup evaluation
-remain planned for the later calibration and error-analysis checkpoint.
+Brier score, calibration curves, and subgroup evaluation are now included in
+the Phase 5 report. Per-class precision remains planned for final evaluation.
 
 ## Known limitations
 
@@ -55,3 +57,6 @@ remain planned for the later calibration and error-analysis checkpoint.
   not a causal explanation.
 - Validation has guided comparison, so its scores are not an unbiased final
   generalization estimate.
+- Only one 2023-24 match is a complete-history cold start, so that slice cannot
+  support a stable performance claim.
+- Reliability-bin estimates are noisy when few matches fall in a bin.

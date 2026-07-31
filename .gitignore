@@ -30,3 +30,5 @@ reports/figures/*
 !reports/figures/phase2/*.png
 !reports/figures/phase4/
 !reports/figures/phase4/*.png
+!reports/figures/phase5/
+!reports/figures/phase5/*.png

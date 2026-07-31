@@ -22,6 +22,7 @@ footcast-explore = "footcast.exploration:main"
 footcast-features = "footcast.features.build_features:main"
 footcast-baselines = "footcast.models.run_baselines:main"
 footcast-random-forest = "footcast.models.run_random_forest:main"
+footcast-calibration = "footcast.models.run_calibration:main"
 
 [project.optional-dependencies]
 dev = [

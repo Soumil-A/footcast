@@ -36,6 +36,7 @@ Leakage-safe pre-match features (Phase 3 complete)
                     |
                     v
           Calibration and evaluation
+          (Phase 5 checkpoint 1 complete)
                     |
                     v
              Versioned artifact
@@ -70,11 +71,15 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.models.run_baselines`: chronological fitting and report generation
 - `footcast.models.random_forest`: deterministic forest and expanding folds
 - `footcast.models.run_random_forest`: selection, comparison, and reporting
+- `footcast.models.calibration`: forward-only probability calibration
+- `footcast.models.run_calibration`: calibration selection and error reporting
 - `footcast.evaluation.metrics`: fixed-order multiclass model metrics
 - `footcast.evaluation.plots`: consistent confusion-matrix visualization
+- `footcast.evaluation.calibration_plots`: reliability and slice figures
+- `footcast.evaluation.error_analysis`: validation-only diagnostic slices
 
 Planned later:
 
-- calibration, subgroup analysis, artifact versioning, and inference
+- model freezing, test evaluation, artifact versioning, and inference
 
 These modules will be introduced only when their milestone begins.

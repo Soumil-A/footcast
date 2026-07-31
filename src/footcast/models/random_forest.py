@@ -16,6 +16,11 @@ from footcast.evaluation.metrics import CLASS_LABELS, evaluate_predictions
 
 RANDOM_STATE = 42
 N_ESTIMATORS = 300
+SELECTED_PARAMETERS = {
+    "max_depth": 6,
+    "min_samples_leaf": 20,
+    "class_weight": None,
+}
 PARAMETER_GRID = (
     {"max_depth": 6, "min_samples_leaf": 5, "class_weight": None},
     {
