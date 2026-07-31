@@ -10,7 +10,7 @@ evaluation, and engineering decision is understandable and reproducible.
 
 ## Current status
 
-Phases 1 through 4 and Phase 5 checkpoint 1 are complete. Football-Data
+Phases 1 through 4 and both Phase 5 checkpoints are complete. Football-Data
 acquisition is checksum-pinned and repeatable, raw files are immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
 be regenerated locally. Exploratory analysis uses only the training and
@@ -20,7 +20,9 @@ rest, season-state, and Elo values. Four baselines, including FootCast's first
 learned model, establish the validation reference points. A time-aware Random
 Forest search provides a modest nonlinear improvement. Forward-only calibration
 testing found that its original probabilities outperform sigmoid and isotonic
-post-processing, without opening the reserved seasons.
+post-processing. The frozen v1 pipeline has now been evaluated once on the
+2024-25 test season. Its performance declined and it is not recommended for
+deployment. The 2025-26 holdout remains sealed.
 
 ## Planned modeling question
 
@@ -286,8 +288,29 @@ has log loss `0.931`, Brier score `0.547`, and expected calibration error
 The [calibration contract](docs/calibration.md) explains the forward-only
 selection design. The [generated report](reports/calibration_results.md)
 documents reliability, outcome, season-timing, prior-history, Elo-gap, and
-high-confidence-error diagnostics. Draws remain the dominant weakness. The
-2024-25 test season remains sealed until the pipeline is explicitly frozen.
+high-confidence-error diagnostics. Draws remain the dominant weakness.
+
+## Frozen v1 final test
+
+Phase 5 checkpoint 2 freezes the complete model contract, refits it through
+2023-24, and evaluates it on 2024-25:
+
+```bash
+python -m footcast.models.run_final_test
+```
+
+| Model | Accuracy | Macro F1 | Log loss |
+| --- | ---: | ---: | ---: |
+| Elo | 0.526 | 0.392 | **0.993** |
+| Logistic regression | **0.529** | **0.398** | 1.006 |
+| Frozen Random Forest | 0.513 | 0.383 | 1.005 |
+
+The frozen forest fell from `0.579` validation accuracy to `0.513` test
+accuracy and still had zero draw recall. It did not show a stable advantage over
+the simpler models, so v1 is **not recommended for deployment**. The
+[frozen-model contract](docs/final_test.md) explains the decision, and the
+[final test report](reports/final_test_results.md) contains the complete
+evidence. The 2025-26 holdout remains unopened.
 
 ## Responsible use
 

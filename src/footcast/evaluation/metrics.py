@@ -10,6 +10,7 @@ from sklearn.metrics import (
     accuracy_score,
     confusion_matrix,
     f1_score,
+    precision_score,
     recall_score,
 )
 
@@ -68,6 +69,13 @@ def evaluate_predictions(
         average=None,
         zero_division=0,
     )
+    precisions = precision_score(
+        actual,
+        predicted,
+        labels=labels,
+        average=None,
+        zero_division=0,
+    )
     matrix = confusion_matrix(actual, predicted, labels=labels)
     label_positions = {label: index for index, label in enumerate(labels)}
     true_probabilities = probability_values[
@@ -108,6 +116,10 @@ def evaluate_predictions(
         "per_class_recall": {
             label: float(value)
             for label, value in zip(labels, recalls, strict=True)
+        },
+        "per_class_precision": {
+            label: float(value)
+            for label, value in zip(labels, precisions, strict=True)
         },
         "confusion_matrix": matrix.astype(int).tolist(),
     }

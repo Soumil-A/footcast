@@ -24,6 +24,7 @@ def plot_reliability_comparison(
     destination: Path,
     *,
     selected_method: str = "selected method",
+    evaluation_label: str = "2023-24 validation",
 ) -> None:
     """Plot classwise observed frequency before and after calibration."""
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -34,7 +35,7 @@ def plot_reliability_comparison(
     }
     rows = (
         (("Selected: uncalibrated", uncalibrated),)
-        if selected_method == "uncalibrated"
+        if selected_method.startswith("uncalibrated")
         else (
             ("Uncalibrated Random Forest", uncalibrated),
             (f"Selected: {selected_method}", calibrated),
@@ -80,7 +81,7 @@ def plot_reliability_comparison(
             if column_index == 0:
                 axis.set_ylabel("Observed frequency")
     figure.suptitle(
-        "FootCast classwise reliability — 2023-24 validation",
+        f"FootCast classwise reliability — {evaluation_label}",
         fontsize=14,
     )
     figure.savefig(destination, dpi=160, bbox_inches="tight")
@@ -90,6 +91,8 @@ def plot_reliability_comparison(
 def plot_error_slices(
     analysis: dict[str, Any],
     destination: Path,
+    *,
+    title: str = "Selected probability model error slices — 2023-24 validation",
 ) -> None:
     """Compare accuracy and confidence for the principal validation slices."""
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -100,7 +103,7 @@ def plot_error_slices(
     )
     figure, axes = plt.subplots(1, 3, figsize=(15, 5), constrained_layout=True)
     width = 0.36
-    for axis, (title, groups) in zip(axes, panels, strict=True):
+    for axis, (panel_title, groups) in zip(axes, panels, strict=True):
         names = list(groups)
         positions = np.arange(len(names))
         axis.bar(
@@ -115,15 +118,12 @@ def plot_error_slices(
             width,
             label="Mean confidence",
         )
-        axis.set_title(title)
+        axis.set_title(panel_title)
         axis.set_ylim(0, 1)
         axis.set_xticks(positions, names, rotation=25, ha="right")
         axis.grid(axis="y", alpha=0.2)
     axes[0].set_ylabel("Rate")
     axes[-1].legend()
-    figure.suptitle(
-        "Selected probability model error slices — 2023-24 validation",
-        fontsize=14,
-    )
+    figure.suptitle(title, fontsize=14)
     figure.savefig(destination, dpi=160, bbox_inches="tight")
     plt.close(figure)

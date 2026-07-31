@@ -2,13 +2,12 @@
 
 ## Status
 
-Phase 5 checkpoint 1 is complete. Four reference methods and a Random Forest
-have been trained on 2015-16 through 2022-23 and evaluated on 2023-24. The
-Random Forest configuration and calibration decision were selected with
-forward-only folds inside the training period. No post-processing calibration
-was retained because both sigmoid and isotonic methods worsened training-period
-probability metrics. No model is frozen or released for inference. Test and
-holdout seasons remain untouched.
+Phase 5 is complete. `footcast-rf-v1` was frozen before evaluation on the
+2024-25 test season. No post-processing calibration was retained because both
+sigmoid and isotonic methods worsened forward training-period probability
+metrics. The frozen forest reached test accuracy `0.513`, macro F1 `0.383`, and
+log loss `1.005`. It is not recommended for deployment. The 2025-26 holdout
+remains untouched.
 
 ## Intended use
 
@@ -41,8 +40,13 @@ and the current best log loss at `0.931`. All three had zero draw recall at the
 selected most-likely label threshold. These are validation results, not final
 test performance.
 
-Brier score, calibration curves, and subgroup evaluation are now included in
-the Phase 5 report. Per-class precision remains planned for final evaluation.
+On the final 2024-25 test, Elo achieved accuracy `0.526` and log loss `0.993`;
+logistic regression achieved accuracy `0.529` and macro F1 `0.398`; the frozen
+forest achieved accuracy `0.513`, macro F1 `0.383`, and log loss `1.005`.
+The forest again had zero draw precision and recall.
+
+Brier score, calibration curves, subgroup evaluation, and per-class precision
+are included in the Phase 5 reports.
 
 ## Known limitations
 
@@ -60,3 +64,6 @@ the Phase 5 report. Per-class precision remains planned for final evaluation.
 - Only one 2023-24 match is a complete-history cold start, so that slice cannot
   support a stable performance claim.
 - Reliability-bin estimates are noisy when few matches fall in a bin.
+- The final forest underperformed simpler alternatives on important test
+  metrics and is not approved for deployment.
+- The 2024-25 result cannot be used to tune v1 and then treated as unseen again.
