@@ -584,3 +584,50 @@ portfolio presentation rather than predictive performance.
 FootCast now has a cohesive, responsive portfolio presentation without
 changing its scientific claims. The next product milestone is public
 deployment and a README demo capture; accuracy work remains a separate track.
+
+## Phase 8 Checkpoint 1: Containers and CI smoke test
+
+### Concepts
+
+- Reproducible deployment includes the data snapshot, not only Python package
+  versions. A serving image should prove exactly which manifest splits it uses.
+- A build-time bootstrap converts a versioned manifest plus source checksums
+  into an immutable runtime snapshot. Invalid or drifted data prevents the
+  image from being created.
+- Separate API and dashboard images preserve the HTTP product boundary and
+  avoid giving the presentation process direct access to raw data.
+- Health checks answer whether a process can serve traffic; a provenance smoke
+  test separately verifies that it loaded the intended model-data contract.
+- Container hardening can be simple and visible: use a non-root user, drop
+  capabilities, and disallow privilege escalation.
+
+### Decisions
+
+- Add one explicit serving-data selector limited to `train`, `validation`, and
+  `test`; fail on an incomplete approved history or any holdout entry.
+- Build the API snapshot from the checksum-verified Phase 1 downloader and run
+  the existing canonical schema validation before completing the image.
+- Do not copy workstation data, reports, notebooks, virtual environments, or
+  Git history into either image.
+- Route Streamlit to `http://api:8000` inside Compose while retaining
+  configurable host ports for developers.
+- Make GitHub Actions build and start the real two-container stack after Python
+  tests pass, then assert its health and `/model/info` provenance.
+- Leave public hosting and runtime monitoring for the next Phase 8 checkpoint.
+
+### Verification observations
+
+- Ruff passes and all 116 repository tests pass.
+- The local serving bootstrap validates exactly 3,800 matches through
+  `2025-05-25` and reports `holdout_included=false`.
+- Tests cover exact split selection, incomplete-history rejection, downloader
+  isolation from holdout, non-root users, health checks, internal API routing,
+  Compose hardening, and raw-data build-context exclusion.
+- Docker was unavailable locally, so GitHub Actions is the authoritative build
+  and live Compose verification for both images.
+
+### Outcome
+
+FootCast now has a portable, reviewable deployment unit and a CI gate that
+tests the running product boundary. It is ready for the next Phase 8 checkpoint:
+selecting a host, publishing the stack, and adding basic production monitoring.

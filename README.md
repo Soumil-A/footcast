@@ -412,6 +412,27 @@ W/D/L momentum chips, compact match-history cards, and a mobile control drawer.
 This is a presentation-only improvement; the API and model outputs are
 unchanged.
 
+## Phase 8 container checkpoint
+
+The Phase 7 product is now packaged as separate non-root API and dashboard
+images. The API image reproducibly downloads and validates only the 3,800
+approved matches through `2025-05-25`; the 2025-26 holdout is explicitly
+excluded. The dashboard image contains no raw match data and communicates with
+the API only over HTTP.
+
+With Docker Desktop running:
+
+```bash
+docker compose up --build --wait
+```
+
+Open `http://127.0.0.1:8501` for FootCast or
+`http://127.0.0.1:8000/docs` for the API, then stop the stack with
+`docker compose down`. Pull requests run lint, all tests, both container builds,
+and a live Compose health/provenance smoke test. See the
+[container and deployment contract](docs/deployment.md) for the reproducibility,
+security, configuration, and CI boundaries.
+
 ## Responsible use
 
 FootCast is an educational sports-analytics project. Its predictions are not

@@ -1,8 +1,14 @@
 """Project-wide constants and the chronological evaluation contract."""
 
+import os
 from dataclasses import dataclass
+from pathlib import Path
 
 PROJECT_NAME = "FootCast"
+SOURCE_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(
+    os.getenv("FOOTCAST_PROJECT_ROOT", SOURCE_PROJECT_ROOT)
+).resolve()
 
 
 @dataclass(frozen=True)
@@ -34,3 +40,5 @@ DATA_SPLIT = SeasonSplit(
     test=("2024-25",),
     holdout=("2025-26",),
 )
+
+SERVING_SPLITS = frozenset({"train", "validation", "test"})

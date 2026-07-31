@@ -1,0 +1,35 @@
+name: footcast
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    image: footcast-api:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${FOOTCAST_API_PORT:-8000}:8000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/dashboard.Dockerfile
+    image: footcast-dashboard:local
+    init: true
+    restart: unless-stopped
+    environment:
+      FOOTCAST_API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${FOOTCAST_DASHBOARD_PORT:-8501}:8501"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

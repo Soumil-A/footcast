@@ -1,0 +1,14 @@
+**
+!.streamlit/
+!.streamlit/**
+!README.md
+!data/
+!data/download_manifest.json
+!docker/
+!docker/**
+!models/
+!models/elo_reference_spec.json
+!pyproject.toml
+!src/
+!src/**
+!streamlit_app.py
