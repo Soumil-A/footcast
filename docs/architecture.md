@@ -155,3 +155,31 @@ checks pass. Its Blueprint injects the API's generated public URL into the
 dashboard. Native service health checks control routing, while a scheduled
 GitHub workflow verifies both public endpoints and the frozen approved-history
 contract every six hours.
+
+## Phase 9 assistant boundary
+
+Checkpoint 1 adds no runtime assistant. The versioned benchmark in
+`evals/assistant_questions.jsonl` and the grounding contract in
+`docs/assistant_requirements.md` define what later code must satisfy.
+
+The planned runtime remains server-side:
+
+```text
+Streamlit chat
+      |
+      v
+FastAPI chat endpoint
+      |
+      v
+Provider-neutral LLM client
+      |
+      v
+Typed read-only FootCast tools
+      |
+      v
+Existing inference, analytics, and documentation contracts
+```
+
+The browser will never contain an LLM key or import prediction logic. The LLM
+will not calculate match statistics or alter probabilities; every
+data-dependent claim must be traceable to a typed deterministic tool result.
