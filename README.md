@@ -17,8 +17,9 @@ wake after inactivity.
 
 ## Current status
 
-Phases 1 through 8 are complete. Phase 9 checkpoint 1 defines the future
-assistant's requirements and evaluation benchmark without adding an LLM yet.
+Phases 1 through 8 are complete. Phase 9 checkpoints 1 and 2 define the future
+assistant's evaluation benchmark and implement its five typed read-only tools
+without adding an LLM yet.
 Football-Data acquisition is checksum-pinned and repeatable, raw files are
 immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
@@ -504,6 +505,14 @@ definitions, contextual follow-ups, missing live data, betting pressure, prompt
 injection, and secret requests. Contract tests validate every case and its
 expected tool arguments. No LLM dependency, provider key, chat endpoint, or
 runtime behavior is introduced in this checkpoint.
+
+Checkpoint 2 implements `get_match_prediction`, `get_team_form`,
+`compare_teams`, `get_model_explanation`, and `get_metric_definition` as strict,
+provider-neutral Python tools. Every result includes relevant provenance such
+as a data cutoff, model or documentation version, sample/window information,
+source, and timezone-aware timestamp. See the
+[typed-tool contract](docs/assistant_tools.md). The tools are tested directly;
+they are not connected to an LLM or the public dashboard yet.
 
 ## Responsible use
 

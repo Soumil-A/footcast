@@ -758,3 +758,49 @@ unsupported accuracy claim or weakening the API/data separation.
 FootCast now has a measurable contract for what its future assistant may say
 and how success will be judged. The next checkpoint can implement and test the
 five typed read-only tools without involving an LLM.
+
+## Phase 9 Checkpoint 2: Typed read-only tools
+
+### Concepts
+
+- Tool calling separates language interpretation from deterministic
+  calculation. An LLM may choose a tool later, but it cannot redefine its
+  validation or compute its evidence.
+- Strict schemas turn a request into a small auditable input contract and
+  reject accidental or malicious extra fields.
+- Provenance is part of the result, not optional prose added by the LLM.
+- A shared data cutoff prevents a response from combining two valid but
+  inconsistent snapshots.
+- Provider-neutral tools keep model selection reversible and the core product
+  testable without network access or usage charges.
+
+### Decisions
+
+- Implement five single-purpose tools over the existing immutable Elo and
+  analytics services rather than duplicate their calculations.
+- Publish strict Pydantic JSON Schemas and a read-only flag through one catalog.
+- Use one dispatcher that validates exact arguments and converts domain errors
+  into a safe tool error.
+- Return typed evidence envelopes with sources and timezone-aware timestamps.
+- Limit model explanations and metric definitions to the benchmarked approved
+  topics; do not let the deterministic layer improvise answers.
+- Keep the provider client, prompt policy, rate limits, conversation state, and
+  chat UI out of this checkpoint.
+
+### Verification observations
+
+- Focused tests cover tool schemas, routing, validation, provenance,
+  serialization, shared-cutoff enforcement, prediction immutability, every
+  explanation and metric topic, and compatibility with all tool-backed
+  benchmark cases.
+- Calibration explanation values remain synchronized with the tracked Phase 5
+  report.
+- The tools require no provider dependency, key, network request, or new
+  deployment environment value.
+
+### Outcome
+
+FootCast now has five deterministic assistant capabilities that can be tested
+independently of language generation. The next checkpoint can connect a
+configurable server-side LLM client and policy without giving it direct access
+to model code, raw data, or credentials.

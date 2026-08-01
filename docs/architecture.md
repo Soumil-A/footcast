@@ -135,6 +135,8 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.inference.elo_service`: immutable approved-history replay and scoring
 - `footcast.analytics.service`: recent form, comparison, and head-to-head views
 - `footcast.analytics.portfolio`: audited public final-test evidence
+- `footcast.assistant.schemas`: strict provider-neutral tool contracts
+- `footcast.assistant.tools`: read-only inference, analytics, and evidence tools
 - `footcast.api.main`: validated FastAPI schemas, lifecycle, and endpoints
 - `footcast.dashboard.client`: defensive HTTP client and error translation
 - `footcast.dashboard.app`: Streamlit presentation with no model imports
@@ -183,3 +185,9 @@ Existing inference, analytics, and documentation contracts
 The browser will never contain an LLM key or import prediction logic. The LLM
 will not calculate match statistics or alter probabilities; every
 data-dependent claim must be traceable to a typed deterministic tool result.
+
+Checkpoint 2 implements the typed-tool layer, but not the provider client or
+chat endpoint. `AssistantTools` is constructed from the same prediction and
+analytics service instances and refuses to start if their data cutoffs differ.
+Its catalog contains strict JSON Schemas and read-only declarations so later
+provider adapters do not control validation or business logic.
