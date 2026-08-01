@@ -137,6 +137,10 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.analytics.portfolio`: audited public final-test evidence
 - `footcast.assistant.schemas`: strict provider-neutral tool contracts
 - `footcast.assistant.tools`: read-only inference, analytics, and evidence tools
+- `footcast.assistant.policy`: versioned grounding and refusal instructions
+- `footcast.assistant.client`: bounded provider-neutral tool orchestration
+- `footcast.assistant.openai_provider`: lazy server-side Responses API adapter
+- `footcast.assistant.settings`: validated environment configuration
 - `footcast.api.main`: validated FastAPI schemas, lifecycle, and endpoints
 - `footcast.dashboard.client`: defensive HTTP client and error translation
 - `footcast.dashboard.app`: Streamlit presentation with no model imports
@@ -186,8 +190,14 @@ The browser will never contain an LLM key or import prediction logic. The LLM
 will not calculate match statistics or alter probabilities; every
 data-dependent claim must be traceable to a typed deterministic tool result.
 
-Checkpoint 2 implements the typed-tool layer, but not the provider client or
-chat endpoint. `AssistantTools` is constructed from the same prediction and
-analytics service instances and refuses to start if their data cutoffs differ.
-Its catalog contains strict JSON Schemas and read-only declarations so later
-provider adapters do not control validation or business logic.
+Checkpoint 2 implements the typed-tool layer. `AssistantTools` is constructed
+from the same prediction and analytics service instances and refuses to start
+if their data cutoffs differ. Its catalog contains strict JSON Schemas and
+read-only declarations so provider adapters do not control validation or
+business logic.
+
+Checkpoint 3 implements the provider-neutral client and optional OpenAI adapter.
+The client owns the maximum four-call loop, timeout and retry policy, strict
+argument handling, context cap, and usage telemetry. The adapter is lazy and
+reads its key only when explicitly constructed on the server. There is still no
+FastAPI chat route, browser credential, live provider call, or public chat UI.

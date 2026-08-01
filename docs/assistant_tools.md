@@ -110,7 +110,7 @@ facts, and compatibility with all 35 tool-backed benchmark cases.
 
 ## Exit condition
 
-Checkpoint 2 is complete when all five tools work deterministically and their
-tests pass without an LLM. Checkpoint 3 may then add a configurable server-side
-provider client and concise assistant policy while keeping credentials out of
-Git and the browser.
+Checkpoint 2 is complete: all five tools work deterministically and their tests
+pass without an LLM. Checkpoint 3 now connects their catalog to a bounded
+provider client while keeping credentials out of Git and the browser; see
+[assistant_client.md](assistant_client.md).
