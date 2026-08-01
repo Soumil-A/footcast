@@ -17,10 +17,10 @@ wake after inactivity.
 
 ## Current status
 
-Phases 1 through 8 are complete. Phase 9 checkpoints 1 through 3 define the
-assistant benchmark, implement five typed read-only tools, and add a bounded,
-server-side provider client and safety policy. The public chat endpoint and UI
-remain intentionally disabled until evaluation.
+Phases 1 through 8 are complete. Phase 9 checkpoints 1 through 4 define the
+assistant benchmark, implement five typed read-only tools, add a bounded
+server-side provider client and safety policy, and expose a secured chat API.
+The Streamlit chat panel and live model evaluation remain intentionally absent.
 Football-Data acquisition is checksum-pinned and repeatable, raw files are
 immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
@@ -523,6 +523,15 @@ token/cost/latency telemetry without logging prompts or secrets. The
 [assistant client contract](docs/assistant_client.md) documents configuration
 and safety behavior. Tests use a fake provider, so this checkpoint makes no API
 calls and incurs no provider cost. No model is selected permanently yet.
+
+Checkpoint 4 adds `GET /assistant/status`, typed `POST /assistant/chat`, and
+session reset. It returns tool provenance separately from generated prose,
+retains at most ten ephemeral turns, and enforces request-size, answer-size,
+per-IP, and per-session limits. See the
+[chat API contract](docs/assistant_chat_api.md). With no server-side model and
+key configured, the current deployment continues serving predictions and
+analytics while reporting assistant availability as false. Tests remain fully
+offline and make no paid provider call.
 
 ## Responsible use
 

@@ -20,7 +20,7 @@ COPY src ./src
 COPY data/download_manifest.json ./data/download_manifest.json
 COPY models/elo_reference_spec.json ./models/elo_reference_spec.json
 
-RUN python -m pip install --no-cache-dir . \
+RUN python -m pip install --no-cache-dir ".[llm]" \
     && python -m footcast.data.serving --raw-dir /app/data/raw \
     && chown -R footcast:footcast /app
 

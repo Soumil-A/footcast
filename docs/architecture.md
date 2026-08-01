@@ -141,6 +141,7 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.assistant.client`: bounded provider-neutral tool orchestration
 - `footcast.assistant.openai_provider`: lazy server-side Responses API adapter
 - `footcast.assistant.settings`: validated environment configuration
+- `footcast.api.chat`: typed sessions, provenance responses, and abuse controls
 - `footcast.api.main`: validated FastAPI schemas, lifecycle, and endpoints
 - `footcast.dashboard.client`: defensive HTTP client and error translation
 - `footcast.dashboard.app`: Streamlit presentation with no model imports
@@ -201,3 +202,10 @@ The client owns the maximum four-call loop, timeout and retry policy, strict
 argument handling, context cap, and usage telemetry. The adapter is lazy and
 reads its key only when explicitly constructed on the server. There is still no
 FastAPI chat route, browser credential, live provider call, or public chat UI.
+
+Checkpoint 4 adds the FastAPI chat boundary. It stores only ten ephemeral
+user/assistant turns under a random session UUID and returns structured evidence
+metadata beside the generated answer. Message/body limits, answer limits,
+per-IP and per-session throttles, safe error translation, expiration, and reset
+are enforced in code. The route remains unavailable unless both model and key
+are configured on the server; no assistant state or secret enters Streamlit.

@@ -76,9 +76,11 @@ To enable the real adapter in a future chat service:
 python -m pip install -e ".[llm]"
 ```
 
-The next checkpoint will construct this client inside FastAPI, add rate limiting
-and a typed chat endpoint, run the 42-case benchmark against candidate models,
-and expose a dashboard chat surface only after the acceptance gates pass.
+Checkpoint 4 now constructs this client behind a typed FastAPI endpoint when
+server configuration is present; see
+[assistant_chat_api.md](assistant_chat_api.md). The next Phase 9 checkpoint adds
+the Streamlit chat surface. The 42-case live benchmark and model comparison
+remain Phase 10 work.
 
 ## Test contract
 
