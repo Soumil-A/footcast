@@ -27,6 +27,10 @@ from footcast.assistant.schemas import AssistantToolDescriptor
 
 class FakeResult(BaseModel):
     tool_name: str
+    answer_mode: str = "explanation"
+    generated_at: str = "2026-08-01T12:00:00Z"
+    source: str = "approved test source"
+    documentation_version: str = "test-v1"
     value: str = "approved evidence"
 
 
@@ -138,6 +142,8 @@ def test_tool_loop_preserves_output_items_and_returns_matching_call_output() -> 
     )
 
     assert result.tool_names == ("get_metric_definition",)
+    assert result.evidence[0].generated_at == "2026-08-01T12:00:00Z"
+    assert result.evidence[0].documentation_version == "test-v1"
     assert tools.calls == [("get_metric_definition", {"term": "log_loss", "detail": 1})]
     second_input = provider.requests[1]["input_items"]
     assert second_input[1]["type"] == "reasoning"
@@ -296,6 +302,17 @@ def test_empty_provider_response_is_rejected() -> None:
     )
     with pytest.raises(ProviderResponseError, match="neither answer"):
         AssistantClient(provider, FakeTools(), model="test-model").answer("Help")
+
+
+def test_oversized_provider_answer_is_rejected() -> None:
+    provider = ScriptedProvider([final_turn("x" * 11)])
+    with pytest.raises(ProviderResponseError, match="size limit"):
+        AssistantClient(
+            provider,
+            FakeTools(),
+            model="test-model",
+            max_answer_chars=10,
+        ).answer("Help")
 
 
 def test_context_is_capped_at_ten_turns() -> None:

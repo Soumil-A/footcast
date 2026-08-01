@@ -110,6 +110,22 @@ class AssistantToolRegistry(Protocol):
 
 
 @dataclass(frozen=True)
+class AssistantEvidence:
+    """Display-safe provenance extracted from one typed tool result."""
+
+    tool_name: str
+    answer_mode: str
+    generated_at: str
+    source: str
+    data_cutoff: str | None = None
+    model_version: str | None = None
+    test_season: str | None = None
+    window: int | None = None
+    sample_size: dict[str, Any] | None = None
+    documentation_version: str | None = None
+
+
+@dataclass(frozen=True)
 class AssistantRun:
     """A completed answer plus operational metadata safe for server logs."""
 
@@ -118,6 +134,7 @@ class AssistantRun:
     provider_responses: int
     tool_calls: int
     tool_names: tuple[str, ...]
+    evidence: tuple[AssistantEvidence, ...]
     input_tokens: int
     output_tokens: int
     total_tokens: int
@@ -167,6 +184,7 @@ class AssistantClient:
         instructions: str = ASSISTANT_INSTRUCTIONS,
         max_tool_calls: int = 4,
         max_context_items: int = 20,
+        max_answer_chars: int = 12_000,
         timeout_seconds: float = 10.0,
         max_retries: int = 2,
         retry_backoff_seconds: float = 0.25,
@@ -181,6 +199,8 @@ class AssistantClient:
             raise ValueError("max_tool_calls must be between 1 and 4")
         if not 0 <= max_context_items <= 20:
             raise ValueError("max_context_items must be between 0 and 20")
+        if not 1 <= max_answer_chars <= 12_000:
+            raise ValueError("max_answer_chars must be between 1 and 12000")
         if timeout_seconds <= 0 or max_retries < 0 or retry_backoff_seconds < 0:
             raise ValueError("Timeout and retry settings must be non-negative")
         prices = (input_usd_per_million_tokens, output_usd_per_million_tokens)
@@ -192,6 +212,7 @@ class AssistantClient:
         self._instructions = instructions
         self._max_tool_calls = max_tool_calls
         self._max_context_items = max_context_items
+        self._max_answer_chars = max_answer_chars
         self._timeout_seconds = timeout_seconds
         self._max_retries = max_retries
         self._retry_backoff_seconds = retry_backoff_seconds
@@ -201,6 +222,11 @@ class AssistantClient:
         self._sleep = sleep
         self._provider_tools = responses_tool_catalog(tools.catalog())
         self._known_tools = {tool["name"] for tool in self._provider_tools}
+
+    @property
+    def model(self) -> str:
+        """Configured model identifier for status and observability."""
+        return self._model
 
     def answer(
         self,
@@ -218,6 +244,7 @@ class AssistantClient:
         started = self._clock()
         responses = 0
         tool_names: list[str] = []
+        evidence: list[AssistantEvidence] = []
         usage = ProviderUsage()
 
         while True:
@@ -236,6 +263,10 @@ class AssistantClient:
                     raise ProviderResponseError(
                         "Provider returned neither answer text nor a tool call"
                     )
+                if len(answer) > self._max_answer_chars:
+                    raise ProviderResponseError(
+                        "Provider answer exceeded the configured size limit"
+                    )
                 elapsed_ms = round((self._clock() - started) * 1000)
                 result = AssistantRun(
                     answer=answer,
@@ -243,6 +274,7 @@ class AssistantClient:
                     provider_responses=responses,
                     tool_calls=len(tool_names),
                     tool_names=tuple(tool_names),
+                    evidence=tuple(evidence),
                     input_tokens=usage.input_tokens,
                     output_tokens=usage.output_tokens,
                     total_tokens=usage.total_tokens,
@@ -267,6 +299,7 @@ class AssistantClient:
                         f"Provider supplied invalid arguments for {call.name}"
                     ) from error
                 tool_names.append(call.name)
+                evidence.append(self._extract_evidence(tool_result))
                 input_items.append(
                     {
                         "type": "function_call_output",
@@ -274,6 +307,23 @@ class AssistantClient:
                         "output": tool_result.model_dump_json(),
                     }
                 )
+
+    @staticmethod
+    def _extract_evidence(tool_result: AssistantToolResult) -> AssistantEvidence:
+        payload = tool_result.model_dump(mode="json")
+        sample_size = payload.get("sample_size")
+        return AssistantEvidence(
+            tool_name=str(payload["tool_name"]),
+            answer_mode=str(payload["answer_mode"]),
+            generated_at=str(payload["generated_at"]),
+            source=str(payload["source"]),
+            data_cutoff=payload.get("data_cutoff"),
+            model_version=payload.get("model_version"),
+            test_season=payload.get("test_season"),
+            window=payload.get("window"),
+            sample_size=sample_size if isinstance(sample_size, dict) else None,
+            documentation_version=payload.get("documentation_version"),
+        )
 
     def _request(self, input_items: Sequence[Mapping[str, Any]]) -> ProviderTurn:
         for attempt in range(self._max_retries + 1):

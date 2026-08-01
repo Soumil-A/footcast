@@ -856,3 +856,56 @@ FootCast now has the guarded server-side machinery needed to connect language
 generation to its approved evidence tools. The next checkpoint can add the
 typed FastAPI chat boundary, rate limiting, benchmark candidate models, and
 only then expose the assistant in Streamlit.
+
+## Phase 9 Checkpoint 4: Typed chat API and session controls
+
+### Concepts
+
+- A generated session ID is a conversation handle, not authentication. It can
+  bind minimum follow-up context without pretending to identify a user.
+- Grounded prose is easier to audit when source metadata is also returned as a
+  typed API field rather than only embedded in the model's wording.
+- Prompt rules and tool limits do not replace HTTP controls. Request size,
+  answer size, rate limits, expiration, capacity, and error redaction belong at
+  the application boundary.
+- In-memory state is deliberately temporary. It is suitable for one portfolio
+  process but must not be described as durable or horizontally scalable.
+- Caching conversational output without a freshness and isolation contract can
+  return stale evidence or another context's answer. It should follow evals,
+  not precede them.
+
+### Decisions
+
+- Add separate status, chat, and reset endpoints with strict Pydantic schemas.
+- Return model, tool names, answer mode, evidence timestamp, source, data
+  cutoff, model/documentation version, window, and sample size when available.
+- Retain only the last ten user/assistant turns, expire inactive sessions after
+  one hour, and cap the process at 1,000 sessions.
+- Apply 20-request-per-IP and 10-request-per-session fixed windows, a 1,000
+  character message limit, an 8 KiB body limit, and a 12,000 character answer
+  limit.
+- Keep token and cost telemetry in server logs rather than returning operational
+  billing details to the browser.
+- Leave assistant construction lazy. The production prediction API remains
+  healthy with no key/model and reports chat unavailable.
+- Install the optional provider SDK only in the API image, never in the
+  dashboard image.
+- Split roadmap Step 20 into a backend checkpoint and a following Streamlit UI
+  checkpoint. Keep live benchmark/model selection in Phase 10 Step 21.
+
+### Verification observations
+
+- Offline endpoint tests cover availability, provenance, follow-up context,
+  reset, expiration, capacity boundaries, rate limits, request limits, error
+  redaction, and failed-session cleanup.
+- Existing prediction, analytics, API startup, and assistant-client contracts
+  continue to pass without provider configuration.
+- No OpenAI request, model benchmark, persistent transcript, browser key, or
+  provider charge is introduced.
+
+### Outcome
+
+FootCast now has a safe server contract for conversational requests and
+evidence display. The next checkpoint can build the Streamlit chat experience
+against this stable API without importing model or provider logic into the
+frontend.

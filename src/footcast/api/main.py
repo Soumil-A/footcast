@@ -10,9 +10,16 @@ from time import perf_counter
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel, ConfigDict, Field
+from starlette.responses import JSONResponse
 
 from footcast.analytics.portfolio import final_test_evidence
 from footcast.analytics.service import AnalyticsInputError, AnalyticsService
+from footcast.api.chat import (
+    AssistantAnswerer,
+    ChatService,
+    assistant_from_environment,
+    create_chat_router,
+)
 from footcast.inference.elo_service import (
     REFERENCE_MODEL_VERSION,
     EloReferenceService,
@@ -163,6 +170,8 @@ class PortfolioAnalyticsResponse(BaseModel):
 def create_app(
     service: EloReferenceService | None = None,
     analytics_service: AnalyticsService | None = None,
+    assistant_client: AssistantAnswerer | None = None,
+    chat_service: ChatService | None = None,
 ) -> FastAPI:
     """Create an application with injectable deterministic model state."""
 
@@ -177,6 +186,14 @@ def create_app(
         else:
             application.state.prediction_service = service
             application.state.analytics_service = analytics_service
+        if chat_service is not None:
+            application.state.chat_service = chat_service
+        else:
+            configured_assistant = assistant_client or assistant_from_environment(
+                application.state.prediction_service,
+                application.state.analytics_service,
+            )
+            application.state.chat_service = ChatService(configured_assistant)
         yield
 
     application = FastAPI(
@@ -192,6 +209,26 @@ def create_app(
     @application.middleware("http")
     async def measure_request_time(request: Request, call_next):
         started = perf_counter()
+        if request.url.path == "/assistant/chat":
+            content_length = request.headers.get("content-length")
+            if content_length is not None:
+                try:
+                    declared_size = int(content_length)
+                except ValueError:
+                    return JSONResponse(
+                        status_code=400,
+                        content={"detail": "Invalid Content-Length header"},
+                    )
+                if declared_size > 8_192:
+                    return JSONResponse(
+                        status_code=413,
+                        content={"detail": "Assistant request body is too large"},
+                    )
+            if len(await request.body()) > 8_192:
+                return JSONResponse(
+                    status_code=413,
+                    content={"detail": "Assistant request body is too large"},
+                )
         response = await call_next(request)
         elapsed_ms = (perf_counter() - started) * 1_000
         response.headers["X-Process-Time-Ms"] = f"{elapsed_ms:.3f}"
@@ -203,6 +240,8 @@ def create_app(
             elapsed_ms,
         )
         return response
+
+    application.include_router(create_chat_router())
 
     def current_service(request: Request) -> EloReferenceService:
         return request.app.state.prediction_service
