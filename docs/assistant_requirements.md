@@ -7,6 +7,11 @@ an LLM provider, writing a system prompt, or adding a chat endpoint. It adds a
 fixed benchmark and measurable acceptance gates. It does not call an LLM,
 require an API key, alter predictions, or add a chat interface.
 
+Implementation status: checkpoint 1 is complete. Checkpoint 2 implements the
+five deterministic tools described in
+[assistant_tools.md](assistant_tools.md); an LLM provider and chat surface
+remain intentionally absent.
+
 The assistant is an explanation and access layer over deterministic FootCast
 services. It is not a second prediction model and cannot improve prediction
 accuracy by reasoning around the deployed Elo output.
