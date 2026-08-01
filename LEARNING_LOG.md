@@ -716,3 +716,45 @@ continue without changing the model or weakening the data boundary.
 FootCast now explains team context, dataset scope, model selection, and failure
 modes visually. This increases the product's portfolio value without making an
 unsupported accuracy claim or weakening the API/data separation.
+
+## Phase 9 Checkpoint 1: Assistant requirements and benchmark
+
+### Concepts
+
+- An LLM assistant should be evaluated against representative questions before
+  prompts or providers are selected. Otherwise fluent demos can hide incorrect
+  facts and routing.
+- Grounding means data-dependent claims are supported by deterministic tool
+  results. It does not mean the language model has memorized the project.
+- Tool routing and factual correctness are separate: a model can choose the
+  right tool but pass the wrong team, date, or window.
+- Refusing unsupported live data is a correct product behavior, not a failure
+  to be helpful.
+- Cost and latency belong in the acceptance criteria before an API key is
+  introduced.
+
+### Decisions
+
+- Define five initial single-tool question families and postpone bounded
+  multi-tool answers until routing is reliable.
+- Create 42 balanced cases with exact expected arguments and dynamic evidence
+  requirements rather than copying mutable numeric answers into the benchmark.
+- Require explicit separation of observed history, model predictions, general
+  explanations, and refusals.
+- Include contextual follow-ups, entity normalization, the deployed model's
+  draw weakness, betting pressure, prompt injection, and secret exfiltration.
+- Set initial routing, groundedness, safety, latency, tool-call, and cost gates
+  without choosing an LLM provider.
+
+### Verification observations
+
+- Forty-five focused tests validate the benchmark's JSONL syntax, 42 unique
+  cases, balanced categories, exact tool argument shapes, evidence metadata,
+  contextual coverage, risk coverage, and future prediction dates.
+- No provider package, API key, chat endpoint, or assistant runtime was added.
+
+### Outcome
+
+FootCast now has a measurable contract for what its future assistant may say
+and how success will be judged. The next checkpoint can implement and test the
+five typed read-only tools without involving an LLM.

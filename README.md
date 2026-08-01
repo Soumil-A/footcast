@@ -17,7 +17,8 @@ wake after inactivity.
 
 ## Current status
 
-Phases 1 through 8 are complete.
+Phases 1 through 8 are complete. Phase 9 checkpoint 1 defines the future
+assistant's requirements and evaluation benchmark without adding an LLM yet.
 Football-Data acquisition is checksum-pinned and repeatable, raw files are
 immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
@@ -110,6 +111,7 @@ in isolation.
 footcast/
 ├── data/                 # Raw and reproducibly processed data
 ├── docs/                 # Architecture, leakage review, and model card
+├── evals/                # Versioned assistant evaluation questions
 ├── models/               # Generated model artifacts (not committed)
 ├── notebooks/            # Exploration and experiment notebooks
 ├── reports/figures/      # Generated visualizations
@@ -487,6 +489,21 @@ Production is live at:
 The Render workspace remains on Hobby, both services are Free, and the build
 pipeline's monthly spend limit is `$0`. Bandwidth is tracked separately against
 the workspace's included monthly allowance.
+
+## Phase 9 assistant checkpoint 1
+
+The conversational extension begins with a specification rather than an LLM
+API call. [Assistant requirements](docs/assistant_requirements.md) define five
+planned read-only tools, supported and unsupported questions, grounding and
+conversation-state rules, failure behavior, and measurable correctness,
+routing, safety, latency, and cost gates.
+
+`evals/assistant_questions.jsonl` contains 42 balanced benchmark cases. It
+covers predictions, team form, team comparisons, model explanations, metric
+definitions, contextual follow-ups, missing live data, betting pressure, prompt
+injection, and secret requests. Contract tests validate every case and its
+expected tool arguments. No LLM dependency, provider key, chat endpoint, or
+runtime behavior is introduced in this checkpoint.
 
 ## Responsible use
 
