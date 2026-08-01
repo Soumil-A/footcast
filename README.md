@@ -17,9 +17,10 @@ wake after inactivity.
 
 ## Current status
 
-Phases 1 through 8 are complete. Phase 9 checkpoints 1 and 2 define the future
-assistant's evaluation benchmark and implement its five typed read-only tools
-without adding an LLM yet.
+Phases 1 through 8 are complete. Phase 9 checkpoints 1 through 3 define the
+assistant benchmark, implement five typed read-only tools, and add a bounded,
+server-side provider client and safety policy. The public chat endpoint and UI
+remain intentionally disabled until evaluation.
 Football-Data acquisition is checksum-pinned and repeatable, raw files are
 immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
@@ -513,6 +514,15 @@ as a data cutoff, model or documentation version, sample/window information,
 source, and timezone-aware timestamp. See the
 [typed-tool contract](docs/assistant_tools.md). The tools are tested directly;
 they are not connected to an LLM or the public dashboard yet.
+
+Checkpoint 3 adds a provider-neutral, server-side tool loop and an optional
+OpenAI Responses API adapter. The loop preserves provider output items, returns
+tool evidence by matching call ID, caps each request at four tool calls and ten
+prior conversation turns, retries only transient failures, and records
+token/cost/latency telemetry without logging prompts or secrets. The
+[assistant client contract](docs/assistant_client.md) documents configuration
+and safety behavior. Tests use a fake provider, so this checkpoint makes no API
+calls and incurs no provider cost. No model is selected permanently yet.
 
 ## Responsible use
 

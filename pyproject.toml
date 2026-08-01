@@ -33,6 +33,9 @@ footcast-serving-data = "footcast.data.serving:main"
 footcast-monitor = "footcast.monitoring:main"
 
 [project.optional-dependencies]
+llm = [
+  "openai>=2,<3",
+]
 dev = [
   "httpx2>=2.9",
   "pyyaml>=6.0",

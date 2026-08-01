@@ -804,3 +804,55 @@ FootCast now has five deterministic assistant capabilities that can be tested
 independently of language generation. The next checkpoint can connect a
 configurable server-side LLM client and policy without giving it direct access
 to model code, raw data, or credentials.
+
+## Phase 9 Checkpoint 3: Server-side client and assistant policy
+
+### Concepts
+
+- A tool-calling assistant is an application-controlled loop: the model asks
+  for a function, the server validates and executes it, and the server returns
+  evidence using the provider's call identifier.
+- Provider reasoning and function-call items are conversation state, so they
+  must be preserved when sending tool results back for the final answer.
+- SDK retries plus application retries can multiply unexpectedly. One bounded
+  retry owner makes latency and failure behavior easier to reason about.
+- Token prices are changing deployment configuration, while token counts are
+  stable response evidence. Cost estimates should remain unset when current
+  prices have not been configured.
+- A prompt is not a security boundary by itself. The code must independently
+  restrict tool names, schemas, call counts, context length, errors, and logs.
+
+### Decisions
+
+- Keep orchestration provider-neutral and place the OpenAI Responses API shape
+  in one lazy adapter.
+- Require an explicit model rather than silently choosing one before the fixed
+  benchmark compares candidates.
+- Disable parallel calls and cap each request at four executed tool calls and
+  ten prior conversation turns.
+- Retry only classified transient failures with bounded exponential backoff;
+  redact upstream exception text from client-facing errors.
+- Preserve all provider output items, return typed tool results as JSON with the
+  matching call ID, and fail closed on unknown tools or invalid arguments.
+- Log operational counts, token usage, optional configured-price cost, and
+  latency without logging the user question, tool arguments, key, or prompt.
+- Version a concise policy covering grounding, uncertainty, provenance,
+  unsupported live data, betting pressure, prompt injection, and secrets.
+
+### Verification observations
+
+- The assistant-focused suite now includes offline fake-provider coverage for
+  direct answers, function-call continuation, strict tool schemas, output-item
+  preservation, retries, limits, redaction, telemetry, settings, and the
+  injected OpenAI adapter contract.
+- Existing API startup does not import the provider SDK, construct a provider,
+  read a key, or make a network request.
+- No live LLM request, benchmark score, model-selection claim, or provider cost
+  is introduced by this checkpoint.
+
+### Outcome
+
+FootCast now has the guarded server-side machinery needed to connect language
+generation to its approved evidence tools. The next checkpoint can add the
+typed FastAPI chat boundary, rate limiting, benchmark candidate models, and
+only then expose the assistant in Streamlit.
