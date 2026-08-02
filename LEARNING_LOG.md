@@ -962,3 +962,40 @@ Phase 9 is implemented end to end in code: typed tools, guarded language-model
 orchestration, secure chat API, and a portfolio-ready conversational interface.
 Phase 10 must now evaluate candidate configurations, harden regressions,
 document the selected model, and only then enable the assistant in production.
+
+## Frontend command-center polish
+
+### Concepts
+
+- A portfolio dashboard should communicate its data coverage, serving model,
+  and biggest limitation before asking the user to interpret a prediction.
+- An idle screen is useful product space: it can explain the request workflow
+  instead of appearing unfinished while no prediction is selected.
+- Visual polish includes focus visibility, reduced-motion behavior, and narrow
+  viewport hierarchy—not only gradients and hover effects.
+
+### Decisions
+
+- Keep Streamlit, the existing FastAPI boundary, and the Render deployment.
+- Add a compact system rail for approved history, season coverage, serving
+  engine, and draw recall using the existing portfolio API response.
+- Stage the selected teams around an explicit future-fixture date and replace
+  the generic empty panel with a three-step forecast launch sequence.
+- Number the four workspaces, clarify sidebar status, and add restrained grid,
+  focus, hover, responsive, and reduced-motion treatments in the shared CSS.
+- Do not alter model inputs, probability outputs, assistant behavior, API
+  contracts, or deployment configuration.
+
+### Verification observations
+
+- Streamlit contract tests assert the numbered navigation, system summary,
+  dated fixture stage, sidebar signal, idle workflow, and generated forecast.
+- The dashboard continues to render against an injected HTTP client; it does
+  not import raw data or prediction internals.
+
+### Outcome
+
+The first viewport now reads as a coherent forecasting product and explains
+what is online, what evidence is available, what is limited, and what happens
+when the user requests a forecast. The change is presentation-only, so Phase 10
+model evaluation and production assistant configuration remain the next work.

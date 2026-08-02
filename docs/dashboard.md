@@ -35,10 +35,15 @@ The Phase 7 polish checkpoint uses a responsive broadcast-analytics direction:
 - color-and-letter W/D/L chips so form does not depend on color alone
 - a collapsible control deck on narrow screens
 - a model-status pill, visible cutoff, and sealed-holdout indicator
+- a four-card system rail for history coverage, serving provenance, and the
+  known draw-recall limitation
+- a dated fixture stage and a three-step idle sequence before prediction
+- visible keyboard focus, reduced-motion behavior, and compact mobile cards
 
 ## Information architecture
 
-The portfolio product divides the page into four tabs:
+The portfolio product divides the page into four numbered tabs so its primary
+workflows remain obvious even as the evidence set grows:
 
 1. **Match Forecast** contains the only interactive prediction surface plus
    Elo, recent form, and head-to-head context.
@@ -53,8 +58,10 @@ Native Streamlit charts keep the container dependency set small. Metric names
 and captions state whether higher or lower is better, and the zero draw recall
 is shown explicitly rather than hidden behind overall accuracy.
 
-The layout collapses its matchup, probability, and Elo grids below `760px` and
-does not introduce horizontal scrolling at a `390px` viewport.
+The layout collapses its system rail, matchup, launch sequence, probability,
+and Elo grids below `760px`, switches summary cards to a single-column compact
+layout below `430px`, and does not introduce horizontal scrolling at a `390px`
+viewport. Hover movement is removed for users who prefer reduced motion.
 
 ## Run locally
 

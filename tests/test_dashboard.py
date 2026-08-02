@@ -323,16 +323,22 @@ def test_streamlit_dashboard_renders_against_client_contract() -> None:
     assert not app.exception
     assert len(app.selectbox) == 2
     assert [tab.label for tab in app.tabs] == [
-        "Match Forecast",
-        "Team Analytics",
-        "Model Insights",
-        "Ask FootCast",
+        "01 · Match Forecast",
+        "02 · Team Analytics",
+        "03 · Model Insights",
+        "04 · Ask FootCast",
     ]
     assert any("FootCast" in element.value for element in app.markdown)
     assert any(
-        "Forecast engine standing by" in element.value
+        "Launch sequence ready" in element.value
         for element in app.markdown
     )
+    rendered_markup = "\n".join(element.value for element in app.markdown)
+    assert "Approved history" in rendered_markup
+    assert "3,800" in rendered_markup
+    assert "Known limitation" in rendered_markup
+    assert "Future fixture" in rendered_markup
+    assert "Data link verified" in rendered_markup
 
     forecast_button = next(
         button for button in app.button if button.label == "Generate forecast →"
