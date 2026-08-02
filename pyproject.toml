@@ -31,6 +31,7 @@ footcast-goal-models = "footcast.models.run_goal_models:main"
 footcast-draw-aware = "footcast.models.run_draw_aware:main"
 footcast-serving-data = "footcast.data.serving:main"
 footcast-monitor = "footcast.monitoring:main"
+footcast-assistant-eval = "footcast.assistant.evaluate:main"
 
 [project.optional-dependencies]
 llm = [

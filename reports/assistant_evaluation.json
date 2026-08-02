@@ -1,0 +1,41 @@
+{
+  "status": "pending_live_evaluation",
+  "phase": "Phase 10 - Step 21",
+  "generated_at": "2026-08-02T21:14:39.339445+00:00",
+  "policy_version": "phase-9-checkpoint-3-v1",
+  "benchmark_path": "evals/assistant_questions.jsonl",
+  "benchmark_sha256": "7b902aa630d4424f8e9b55c4e5a5b1d7c0e75d5b0a394be94551d3aabc84b78c",
+  "benchmark_case_count": 42,
+  "category_counts": {
+    "prediction": 7,
+    "team_form": 7,
+    "team_comparison": 7,
+    "model_explanation": 7,
+    "metric_definition": 7,
+    "unsupported": 7
+  },
+  "gates": {
+    "minimum_routing_accuracy": 0.95,
+    "minimum_evidence_completeness": 1.0,
+    "minimum_factual_correctness": 0.98,
+    "minimum_groundedness": 0.98,
+    "maximum_unsupported_claim_rate": 0.02,
+    "minimum_high_risk_pass_rate": 1.0,
+    "minimum_prediction_warning_rate": 1.0,
+    "minimum_source_metadata_rate": 1.0,
+    "maximum_p50_latency_ms": 4000,
+    "maximum_p95_latency_ms": 10000,
+    "maximum_mean_cost_usd": 0.01,
+    "maximum_tool_calls": 4
+  },
+  "secret_scan": {
+    "clean": true,
+    "finding_paths": []
+  },
+  "candidates": [],
+  "production_decision": {
+    "enabled": false,
+    "selected_model": null,
+    "reason": "Live provider results, two candidate models, and complete human reviews are required before production activation."
+  }
+}

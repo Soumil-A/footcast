@@ -999,3 +999,54 @@ The first viewport now reads as a coherent forecasting product and explains
 what is online, what evidence is available, what is limited, and what happens
 when the user requests a forecast. The change is presentation-only, so Phase 10
 model evaluation and production assistant configuration remain the next work.
+
+## Phase 10: Assistant evaluation and release gate
+
+### Concepts
+
+- LLM quality is a release decision, not a visual impression. Routing,
+  grounding, factual correctness, refusals, latency, and cost need independent
+  measurements against a fixed golden set.
+- Schema checks can prove which tool ran and what evidence existed, but they
+  cannot prove that every sentence faithfully describes that evidence. Human
+  review remains part of the production gate.
+- Cost optimization comes after correctness. A cheaper model is useful only if
+  it preserves the required grounding and safety behavior.
+- Evaluation itself is an external side effect. A runner should require an
+  explicit budget and reuse saved results during review instead of paying for
+  the same outputs twice.
+
+### Decisions
+
+- Keep the 42 Phase 9 questions frozen and record their SHA-256 digest in each
+  report.
+- Require at least two explicitly priced candidates and a positive total spend
+  limit before any live provider request.
+- Record exact validated tool arguments, typed results, answer text, latency,
+  tokens, estimated cost, and operational errors for every case.
+- Combine deterministic gates with one model-specific human review per case.
+  Missing responses, prices, or reviews fail closed.
+- Permit human reviews to rescore saved live outputs without repeating paid
+  provider calls.
+- Select the lowest-cost candidate only from models that pass every gate, with
+  P95 latency as the tie-breaker.
+- Keep production chat offline until the report explicitly enables it. Do not
+  add a provider key or model setting to Render during preflight.
+
+### Verification observations
+
+- The zero-cost preflight loads all 42 balanced cases, records the benchmark
+  digest, passes the committed-secret scan, and leaves production disabled.
+- Tests cover exact route/argument capture, typed evidence, high-risk refusal,
+  incomplete human review, the two-model and positive-budget requirements,
+  secret detection, and no-cost application of saved reviews.
+- No provider SDK is installed locally, no API key is configured, and no paid
+  request has been made.
+
+### Outcome
+
+Step 21 is reproducible and fail-closed in code. The remaining external gate is
+to authorize a small evaluation budget, configure a private provider key, run
+two candidates, review their 84 outputs, and enable only a model that passes.
+Until then, the deterministic FootCast product remains fully available and the
+optional assistant correctly reports that it is offline.
