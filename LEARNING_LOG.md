@@ -909,3 +909,56 @@ FootCast now has a safe server contract for conversational requests and
 evidence display. The next checkpoint can build the Streamlit chat experience
 against this stable API without importing model or provider logic into the
 frontend.
+
+## Phase 9 Checkpoint 5: Grounded Streamlit chat experience
+
+### Concepts
+
+- A conversational UI should display evidence as structured product data, not
+  ask users to trust a fluent paragraph or parse an invisible tool trace.
+- Observed history, model predictions, approved explanations, and refusals need
+  visibly different labels because they carry different uncertainty.
+- Assistant availability is an optional product capability. Its failure must
+  not take down deterministic forecasts and analytics.
+- Progressive rendering can improve perceived responsiveness, but it is not
+  equivalent to end-to-end provider streaming. The distinction should be
+  documented rather than hidden.
+- Reset has two responsibilities: remove server follow-up context and clear the
+  browser-visible transcript.
+
+### Decisions
+
+- Add `assistant_status`, `chat`, and `reset_assistant_session` to the existing
+  dashboard HTTP client, with a longer timeout only for chat requests.
+- Add one `Ask FootCast` tab inside the established neon/glass visual system
+  rather than creating a separate frontend or hosting target.
+- Render four API-provided suggested prompts only before a conversation starts,
+  then use Streamlit's native chat input and message containers.
+- Show an answer-mode chip and verified evidence cards containing the source,
+  tool, timestamp, and all available version/window/sample metadata.
+- Keep operational token and cost telemetry out of the frontend while showing
+  model, tool-call count, and latency for transparency.
+- Treat assistant status failures as unavailable chat rather than historical
+  analytics failures.
+- Keep the current Render deployment. Do not create a second Sites deployment
+  or add provider configuration to the dashboard service.
+- Render the completed validated answer progressively; postpone true provider
+  token streaming until Phase 10 tests partial-response safety.
+
+### Verification observations
+
+- Dashboard client tests verify status, first question, contextual follow-up,
+  reset, payload shape, endpoint path, method, and the isolated chat timeout.
+- Streamlit interaction tests cover the fourth tab, typed chat, grounded source
+  display, suggested questions, reset, and the safe unavailable state.
+- Existing forecast, analytics, model-insight, API, and container boundaries
+  remain unchanged.
+- No provider key, browser SDK, direct tool call, live model request, alternate
+  hosting deployment, or provider charge is introduced.
+
+### Outcome
+
+Phase 9 is implemented end to end in code: typed tools, guarded language-model
+orchestration, secure chat API, and a portfolio-ready conversational interface.
+Phase 10 must now evaluate candidate configurations, harden regressions,
+document the selected model, and only then enable the assistant in production.

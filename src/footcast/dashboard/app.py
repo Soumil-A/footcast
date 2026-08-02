@@ -44,6 +44,11 @@ def load_portfolio(api_url: str) -> dict[str, Any]:
     return FootCastApiClient(api_url).portfolio()
 
 
+@st.cache_data(ttl=30, show_spinner=False)
+def load_assistant_status(api_url: str) -> dict[str, Any]:
+    return FootCastApiClient(api_url).assistant_status()
+
+
 def _team_initials(team: str) -> str:
     words = [word for word in team.split() if word]
     if len(words) >= 2:
@@ -439,6 +444,236 @@ def _render_model_insights(
         )
 
 
+def _assistant_mode(evidence: list[dict[str, Any]]) -> tuple[str, str]:
+    if not evidence:
+        return "guidance", "Assistant guidance"
+    modes = {str(item.get("answer_mode", "")) for item in evidence}
+    if "prediction" in modes:
+        return "prediction", "Model prediction"
+    if "observed" in modes:
+        return "observed", "Observed history"
+    return "explanation", "Approved explanation"
+
+
+def _evidence_cards(evidence: list[dict[str, Any]]) -> str:
+    cards: list[str] = []
+    for item in evidence:
+        details = []
+        if item.get("data_cutoff"):
+            details.append(f"Cutoff {escape(str(item['data_cutoff']))}")
+        if item.get("model_version"):
+            details.append(f"Model {escape(str(item['model_version']))}")
+        if item.get("test_season"):
+            details.append(f"Season {escape(str(item['test_season']))}")
+        if item.get("window"):
+            details.append(f"Window {int(item['window'])} matches")
+        if item.get("documentation_version"):
+            details.append(
+                f"Docs {escape(str(item['documentation_version']))}"
+            )
+        sample = item.get("sample_size")
+        if isinstance(sample, dict):
+            details.append(
+                " · ".join(
+                    f"{escape(str(key).replace('_', ' ').title())}: {int(value)}"
+                    for key, value in sample.items()
+                )
+            )
+        detail_text = " · ".join(details) or "Versioned FootCast evidence"
+        timestamp = escape(str(item.get("generated_at", "Unknown timestamp")))
+        source = escape(str(item.get("source", "FootCast approved source")))
+        cards.append(
+            '<article class="fc-evidence-card">'
+            '<div class="fc-evidence-kicker">Verified source</div>'
+            f'<div class="fc-evidence-tool">{escape(str(item["tool_name"]))}</div>'
+            f'<div class="fc-evidence-source">{source}</div>'
+            f'<div class="fc-evidence-detail">{detail_text}</div>'
+            f'<div class="fc-evidence-time">Generated {timestamp}</div>'
+            "</article>"
+        )
+    return "".join(cards)
+
+
+def _render_assistant_message(message: dict[str, Any]) -> None:
+    evidence = list(message.get("evidence", []))
+    mode_class, mode_label = _assistant_mode(evidence)
+    st.markdown(
+        f'<span class="fc-mode-chip {mode_class}">{mode_label}</span>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(str(message["content"]))
+    if evidence:
+        st.markdown(
+            f'<div class="fc-evidence-grid">{_evidence_cards(evidence)}</div>',
+            unsafe_allow_html=True,
+        )
+    if message.get("model"):
+        st.caption(
+            f"Language layer: {message['model']} · "
+            f"{int(message.get('tool_calls', 0))} tool call(s) · "
+            f"{int(message.get('latency_ms', 0))} ms"
+        )
+
+
+def _stream_answer(answer: str):
+    words = answer.split(" ")
+    for index, word in enumerate(words):
+        suffix = "" if index == len(words) - 1 else " "
+        yield word + suffix
+
+
+def _clear_assistant_state() -> None:
+    st.session_state.pop("assistant_session_id", None)
+    st.session_state.pop("assistant_messages", None)
+
+
+def _render_assistant(
+    active_client: FootCastApiClient,
+    status: dict[str, Any],
+) -> None:
+    available = bool(status.get("available"))
+    state_label = (
+        "Grounded assistant online" if available else "Awaiting configuration"
+    )
+    state_class = "online" if available else "offline"
+    st.markdown(
+        f"""
+        <section class="fc-assistant-hero">
+          <div>
+            <div class="fc-eyebrow">Conversational match intelligence</div>
+            <h2>Ask FootCast</h2>
+            <p>
+              Explore predictions, recent form, team comparisons, model
+              behavior, and evaluation metrics through verified FootCast tools.
+            </p>
+          </div>
+          <div class="fc-assistant-state {state_class}">
+            <span></span>{state_label}
+          </div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    if not available:
+        st.markdown(
+            """
+            <div class="fc-assistant-offline">
+              <strong>Conversation layer is safely offline</strong>
+              <span>
+                Predictions and analytics are still available. The assistant
+                activates only after a model and provider key are configured on
+                the API server—never in this dashboard or your browser.
+              </span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        return
+
+    messages = st.session_state.setdefault("assistant_messages", [])
+    header_columns = st.columns([5, 1])
+    with header_columns[0]:
+        st.caption(
+            "Tool-grounded answers · uncertain predictions · no betting advice"
+        )
+    with header_columns[1]:
+        reset_clicked = st.button(
+            "Reset chat",
+            key="assistant_reset",
+            disabled=not bool(messages),
+            width="stretch",
+        )
+    if reset_clicked:
+        session_id = st.session_state.get("assistant_session_id")
+        if session_id:
+            try:
+                active_client.reset_assistant_session(str(session_id))
+            except FootCastApiError:
+                pass
+        _clear_assistant_state()
+        st.rerun()
+
+    suggested = list(status.get("suggested_questions", []))[:4]
+    selected_prompt = None
+    if not messages and suggested:
+        st.markdown(
+            '<div class="fc-section-label">Suggested transmissions</div>',
+            unsafe_allow_html=True,
+        )
+        for row_start in range(0, len(suggested), 2):
+            columns = st.columns(2, gap="medium")
+            for offset, question in enumerate(
+                suggested[row_start : row_start + 2]
+            ):
+                with columns[offset]:
+                    if st.button(
+                        question,
+                        key=f"assistant_suggestion_{row_start + offset}",
+                        width="stretch",
+                    ):
+                        selected_prompt = question
+
+    for message in messages:
+        with st.chat_message(str(message["role"])):
+            if message["role"] == "assistant":
+                _render_assistant_message(message)
+            else:
+                st.markdown(str(message["content"]))
+
+    typed_prompt = st.chat_input(
+        "Ask about a match, team form, model behavior, or metric…",
+        max_chars=int(status.get("message_character_limit", 1_000)),
+        key="assistant_chat_input",
+    )
+    prompt = selected_prompt or typed_prompt
+    if not prompt:
+        return
+
+    user_message = {"role": "user", "content": str(prompt)}
+    messages.append(user_message)
+    with st.chat_message("user"):
+        st.markdown(str(prompt))
+    try:
+        with st.chat_message("assistant"):
+            with st.spinner("Consulting approved FootCast evidence…"):
+                response = active_client.chat(
+                    str(prompt),
+                    session_id=st.session_state.get("assistant_session_id"),
+                )
+            evidence = list(response.get("evidence", []))
+            mode_class, mode_label = _assistant_mode(evidence)
+            st.markdown(
+                f'<span class="fc-mode-chip {mode_class}">{mode_label}</span>',
+                unsafe_allow_html=True,
+            )
+            st.write_stream(_stream_answer(str(response["answer"])))
+            assistant_message = {
+                "role": "assistant",
+                "content": str(response["answer"]),
+                "evidence": evidence,
+                "model": str(response.get("model", "")),
+                "tool_calls": int(response.get("tool_calls", 0)),
+                "latency_ms": int(response.get("latency_ms", 0)),
+            }
+            if evidence:
+                st.markdown(
+                    f'<div class="fc-evidence-grid">{_evidence_cards(evidence)}</div>',
+                    unsafe_allow_html=True,
+                )
+            if assistant_message["model"]:
+                st.caption(
+                    f"Language layer: {assistant_message['model']} · "
+                    f"{assistant_message['tool_calls']} tool call(s) · "
+                    f"{assistant_message['latency_ms']} ms"
+                )
+        st.session_state["assistant_session_id"] = str(response["session_id"])
+        messages.append(assistant_message)
+    except FootCastApiError as error:
+        messages.pop()
+        st.error(str(error))
+
+
 def render_dashboard(client: FootCastApiClient | None = None) -> None:
     """Render the dashboard; an injected client keeps the boundary testable."""
     st.set_page_config(
@@ -530,10 +765,23 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
         st.warning(f"Historical analytics could not be loaded: {error}")
         return
 
+    try:
+        assistant_status = (
+            load_assistant_status(API_URL)
+            if client is None
+            else active_client.assistant_status()
+        )
+    except FootCastApiError:
+        assistant_status = {
+            "available": False,
+            "message_character_limit": 1_000,
+            "suggested_questions": [],
+        }
+
     _render_hero(model_info, cutoff)
     _render_matchup(home_team, away_team)
-    forecast_tab, analytics_tab, model_tab = st.tabs(
-        ["Match Forecast", "Team Analytics", "Model Insights"]
+    forecast_tab, analytics_tab, model_tab, assistant_tab = st.tabs(
+        ["Match Forecast", "Team Analytics", "Model Insights", "Ask FootCast"]
     )
 
     with forecast_tab:
@@ -562,6 +810,9 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
 
     with model_tab:
         _render_model_insights(model_info, portfolio)
+
+    with assistant_tab:
+        _render_assistant(active_client, assistant_status)
 
 
 def main() -> None:

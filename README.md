@@ -17,10 +17,11 @@ wake after inactivity.
 
 ## Current status
 
-Phases 1 through 8 are complete. Phase 9 checkpoints 1 through 4 define the
+Phases 1 through 8 are complete. Phase 9 checkpoints 1 through 5 define the
 assistant benchmark, implement five typed read-only tools, add a bounded
-server-side provider client and safety policy, and expose a secured chat API.
-The Streamlit chat panel and live model evaluation remain intentionally absent.
+server-side provider client and safety policy, expose a secured chat API, and
+add the Streamlit chat experience. Live model evaluation and production
+assistant configuration remain intentionally deferred to Phase 10.
 Football-Data acquisition is checksum-pinned and repeatable, raw files are
 immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
@@ -532,6 +533,14 @@ per-IP, and per-session limits. See the
 key configured, the current deployment continues serving predictions and
 analytics while reporting assistant availability as false. Tests remain fully
 offline and make no paid provider call.
+
+Checkpoint 5 adds an **Ask FootCast** tab with suggested questions, progressively
+rendered answers, distinct prediction/observed/explanation labels, verified
+evidence cards, model/tool/latency metadata, follow-up sessions, and a clear
+reset. The dashboard still contains no provider package, key, or model logic.
+On Render the tab safely reports that conversation is offline until Phase 10
+benchmarks a model and the API service receives private environment
+configuration. See the [dashboard contract](docs/dashboard.md).
 
 ## Responsible use
 
