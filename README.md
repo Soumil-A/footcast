@@ -418,15 +418,20 @@ streamlit run streamlit_app.py
 Visit `http://127.0.0.1:8501`. The dashboard calls FastAPI over HTTP and never
 imports Elo inference or raw data. It provides fixture controls, three-way
 probability bars, recent-form summaries, rating comparison, head-to-head
-results, provenance, and limitations. Set `FOOTCAST_API_URL` when the API is
-not available at `http://127.0.0.1:8000`. See the
+results, provenance, and limitations. Its command-center shell adds a verified
+system summary, an explicit future-fixture date, numbered workspaces, and a
+three-step idle state so the first screen explains both the evidence and the
+forecast workflow before a request is made. Set `FOOTCAST_API_URL` when the API
+is not available at `http://127.0.0.1:8000`. See the
 [dashboard contract](docs/dashboard.md) for its architecture and test boundary.
 
 The Phase 7 polish checkpoint adds a responsive dark analytics-console design:
 glass panels, team monograms, a probability spectrum, Elo balance indicator,
 W/D/L momentum chips, compact match-history cards, and a mobile control drawer.
-This is a presentation-only improvement; the API and model outputs are
-unchanged.
+The later command-center refinement adds a restrained data grid, compact system
+status rail, richer fixture staging, visible keyboard focus, reduced-motion
+support, and smaller mobile breakpoints. These are presentation-only
+improvements; the API and model outputs are unchanged.
 
 ### Portfolio analytics checkpoint
 

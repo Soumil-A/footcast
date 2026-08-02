@@ -56,8 +56,15 @@ def _team_initials(team: str) -> str:
     return team[:2].upper()
 
 
-def _render_hero(model_info: dict[str, Any], cutoff: date) -> None:
+def _render_hero(
+    model_info: dict[str, Any],
+    cutoff: date,
+    portfolio: dict[str, Any],
+) -> None:
     version = escape(str(model_info["model_version"]))
+    completed_matches = int(portfolio["completed_matches"])
+    season_count = int(portfolio["season_count"])
+    draw_recall = float(portfolio["deployed_elo_recall"]["draw"])
     st.markdown(
         f"""
         <header class="fc-hero">
@@ -65,21 +72,48 @@ def _render_hero(model_info: dict[str, Any], cutoff: date) -> None:
             <div class="fc-eyebrow">Premier League intelligence</div>
             <h1 class="fc-title">FootCast</h1>
             <p class="fc-subtitle">
-              Transparent match probabilities, team momentum, and historical
-              context—built on a reproducible Elo reference model.
+              A transparent Premier League forecasting command center—linking
+              match probabilities, team momentum, model evidence, and grounded
+              conversation in one reproducible system.
             </p>
           </div>
           <div class="fc-live" title="{version}">
             <span class="fc-live-dot"></span>
-            Model online · {cutoff.isoformat()}
+            Verified snapshot · {cutoff.isoformat()}
           </div>
         </header>
+        <section class="fc-system-rail" aria-label="FootCast system summary">
+          <div class="fc-system-card">
+            <span>Approved history</span>
+            <strong>{completed_matches:,}</strong>
+            <small>completed matches</small>
+          </div>
+          <div class="fc-system-card">
+            <span>Coverage</span>
+            <strong>{season_count}</strong>
+            <small>Premier League seasons</small>
+          </div>
+          <div class="fc-system-card">
+            <span>Serving engine</span>
+            <strong class="fc-system-text">Elo reference</strong>
+            <small>{version}</small>
+          </div>
+          <div class="fc-system-card fc-system-warning">
+            <span>Known limitation</span>
+            <strong>{draw_recall:.0%}</strong>
+            <small>draw recall on final test</small>
+          </div>
+        </section>
         """,
         unsafe_allow_html=True,
     )
 
 
-def _render_matchup(home_team: str, away_team: str) -> None:
+def _render_matchup(
+    home_team: str,
+    away_team: str,
+    match_date: date,
+) -> None:
     home = escape(home_team)
     away = escape(away_team)
     st.markdown(
@@ -92,7 +126,11 @@ def _render_matchup(home_team: str, away_team: str) -> None:
               <div class="fc-team-name">{home}</div>
             </div>
           </div>
-          <div class="fc-vs">VS</div>
+          <div class="fc-fixture-core">
+            <div class="fc-fixture-kicker">Future fixture</div>
+            <div class="fc-vs">VS</div>
+            <time class="fc-fixture-date">{match_date.strftime('%d %b %Y').upper()}</time>
+          </div>
           <div class="fc-team fc-team-away">
             <div class="fc-team-orb">{escape(_team_initials(away_team))}</div>
             <div>
@@ -150,13 +188,29 @@ def _render_prediction(prediction: dict[str, Any]) -> None:
     )
 
 
-def _render_empty_forecast() -> None:
+def _render_empty_forecast(
+    home_team: str,
+    away_team: str,
+    match_date: date,
+) -> None:
     st.markdown('<div class="fc-section-label">Match forecast</div>', unsafe_allow_html=True)
     st.markdown(
-        """
-        <div class="fc-empty">
-          <strong>Forecast engine standing by</strong>
-          <span>Select a fixture in the control deck and generate a forecast.</span>
+        f"""
+        <div class="fc-empty fc-launch-sequence">
+          <div class="fc-empty-copy">
+            <span class="fc-empty-kicker">Launch sequence ready</span>
+            <strong>{escape(home_team)} vs {escape(away_team)}</strong>
+            <span>
+              Generate a three-way probability forecast for
+              {match_date.strftime('%d %B %Y')}. Nothing is calculated until
+              you request it.
+            </span>
+          </div>
+          <div class="fc-launch-steps" aria-label="Forecast workflow">
+            <span><b>01</b> Validate fixture</span>
+            <span><b>02</b> Replay approved Elo</span>
+            <span><b>03</b> Return uncertainty</span>
+          </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -706,8 +760,9 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
             """
             <div class="fc-sidebar-brand">
               <div class="fc-sidebar-mark">FC</div>
-              <div class="fc-sidebar-name">FootCast Control</div>
-              <div class="fc-sidebar-caption">Configure a future fixture</div>
+              <div class="fc-sidebar-name">FootCast Command</div>
+              <div class="fc-sidebar-caption">Prediction & evidence console</div>
+              <div class="fc-sidebar-signal"><span></span> Data link verified</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -730,6 +785,7 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
               <div class="fc-meta-row"><span>Engine</span><strong>{escape(str(model_info['model_version']))}</strong></div>
               <div class="fc-meta-row"><span>Data cutoff</span><strong>{cutoff.isoformat()}</strong></div>
               <div class="fc-meta-row"><span>Holdout</span><strong>Sealed</strong></div>
+              <div class="fc-meta-row"><span>Assistant</span><strong>Phase 10 gate</strong></div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -778,17 +834,22 @@ def render_dashboard(client: FootCastApiClient | None = None) -> None:
             "suggested_questions": [],
         }
 
-    _render_hero(model_info, cutoff)
-    _render_matchup(home_team, away_team)
+    _render_hero(model_info, cutoff, portfolio)
+    _render_matchup(home_team, away_team, match_date)
     forecast_tab, analytics_tab, model_tab, assistant_tab = st.tabs(
-        ["Match Forecast", "Team Analytics", "Model Insights", "Ask FootCast"]
+        [
+            "01 · Match Forecast",
+            "02 · Team Analytics",
+            "03 · Model Insights",
+            "04 · Ask FootCast",
+        ]
     )
 
     with forecast_tab:
         if prediction:
             _render_prediction(prediction)
         else:
-            _render_empty_forecast()
+            _render_empty_forecast(home_team, away_team, match_date)
         _render_elo(home_team, away_team, comparison)
         st.markdown(
             '<div class="fc-section-label">Momentum monitor · last 10</div>',
