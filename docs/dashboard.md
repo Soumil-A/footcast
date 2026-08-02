@@ -38,7 +38,7 @@ The Phase 7 polish checkpoint uses a responsive broadcast-analytics direction:
 
 ## Information architecture
 
-The portfolio checkpoint divides the page into three tabs:
+The portfolio product divides the page into four tabs:
 
 1. **Match Forecast** contains the only interactive prediction surface plus
    Elo, recent form, and head-to-head context.
@@ -46,6 +46,8 @@ The portfolio checkpoint divides the page into three tabs:
    head-to-head balance, dataset coverage, result distribution, and Elo leaders.
 3. **Model Insights** compares the models on the untouched 2024-25 test and
    displays the deployed Elo model's class recall and confusion matrix.
+4. **Ask FootCast** provides tool-grounded conversational access with visible
+   evidence and clear answer-mode labels.
 
 Native Streamlit charts keep the container dependency set small. Metric names
 and captions state whether higher or lower is better, and the zero draw recall
@@ -82,14 +84,49 @@ FOOTCAST_API_URL=http://127.0.0.1:8000 streamlit run streamlit_app.py
   state for the matching teams and date.
 - Dates on or before the reported completed-data cutoff cannot be selected.
 
+## Ask FootCast
+
+Phase 9 checkpoint 5 adds a fourth dashboard workspace for conversational
+analytics. The tab calls only the typed API routes documented in
+[assistant_chat_api.md](assistant_chat_api.md); it never imports the provider,
+assistant tools, inference service, or match data.
+
+The first view offers four server-provided suggested questions and a 1,000
+character chat input. Successful answers render progressively inside Streamlit
+after the API response arrives and include:
+
+- a visible `Model prediction`, `Observed history`, `Approved explanation`, or
+  `Assistant guidance` label;
+- the final grounded answer;
+- one evidence card per executed tool with its source and generation timestamp;
+- available cutoff, model/documentation version, season, window, and sample
+  size metadata; and
+- the language model identifier, tool-call count, and end-to-end API latency.
+
+The reset control asks the API to delete the ephemeral session, then clears the
+dashboard transcript. Suggested questions return after reset. No transcript is
+stored in Streamlit's shared data cache.
+
+Availability is fetched separately from deterministic analytics. If the
+assistant endpoint is unavailable, missing during a rolling deploy, or not
+configured, forecasts and analytics still render. The chat tab shows a clear
+offline panel explaining that the key belongs only on the API server.
+
+This is not yet provider-token streaming: the secured API completes and
+validates the tool loop before the dashboard progressively renders the final
+text. End-to-end streaming should be considered only after Phase 10 evaluation
+confirms that partial responses cannot bypass grounding and evidence display.
+
 ## Test contract
 
-Unit tests verify URL encoding, the portfolio endpoint, the exact pre-match prediction payload, HTTP
-validation detail, and connection failures. A Streamlit `AppTest` renders the
-page headlessly against an injected client and now exercises the generated
-forecast state. Live verification additionally starts FastAPI and Streamlit,
-loads the real approved history, generates an Arsenal-Chelsea forecast, and
-checks the rendered form and comparison sections at desktop and mobile widths.
+Unit tests verify URL encoding, assistant routes, isolated request timeouts, the
+portfolio endpoint, the exact pre-match prediction payload, HTTP validation
+detail, and connection failures. A Streamlit `AppTest` renders the page
+headlessly against an injected client and exercises forecast state, typed chat,
+evidence display, suggested questions, reset, and unavailable behavior. Live
+verification additionally starts FastAPI and Streamlit, loads the real approved
+history, generates an Arsenal-Chelsea forecast, and checks the rendered form
+and comparison sections at desktop and mobile widths.
 
 ## Limitations
 

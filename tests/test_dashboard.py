@@ -80,6 +80,59 @@ def test_client_posts_only_pre_match_fixture_fields() -> None:
     }
 
 
+def test_client_uses_server_side_assistant_contract() -> None:
+    captured = []
+
+    def opener(request, *, timeout):
+        captured.append(
+            {
+                "url": request.full_url,
+                "method": request.method,
+                "body": None if request.data is None else json.loads(request.data),
+                "timeout": timeout,
+            }
+        )
+        if request.method == "DELETE":
+            return _Response({"reset": True})
+        if request.full_url.endswith("/assistant/status"):
+            return _Response({"available": True})
+        return _Response({"session_id": "session-1", "answer": "Grounded"})
+
+    client = FootCastApiClient("http://localhost:8000", opener=opener)
+
+    assert client.assistant_status() == {"available": True}
+    assert client.chat("First question")["answer"] == "Grounded"
+    client.chat("Follow up", session_id="session-1")
+    assert client.reset_assistant_session("session-1") == {"reset": True}
+
+    assert captured == [
+        {
+            "url": "http://localhost:8000/assistant/status",
+            "method": "GET",
+            "body": None,
+            "timeout": 10.0,
+        },
+        {
+            "url": "http://localhost:8000/assistant/chat",
+            "method": "POST",
+            "body": {"message": "First question"},
+            "timeout": 35.0,
+        },
+        {
+            "url": "http://localhost:8000/assistant/chat",
+            "method": "POST",
+            "body": {"message": "Follow up", "session_id": "session-1"},
+            "timeout": 35.0,
+        },
+        {
+            "url": "http://localhost:8000/assistant/sessions/session-1",
+            "method": "DELETE",
+            "body": None,
+            "timeout": 10.0,
+        },
+    ]
+
+
 def test_client_surfaces_api_validation_detail() -> None:
     error = HTTPError(
         "http://localhost/predict",
@@ -105,6 +158,10 @@ def test_client_surfaces_unavailable_api() -> None:
 
 
 class _DashboardClient:
+    def __init__(self) -> None:
+        self.chat_requests: list[dict] = []
+        self.reset_requests: list[str] = []
+
     def teams(self) -> dict:
         return {"teams": ["Arsenal", "Chelsea"]}
 
@@ -199,6 +256,46 @@ class _DashboardClient:
             "selection_note": "Elo is the transparent reference model.",
         }
 
+    def assistant_status(self) -> dict:
+        return {
+            "available": True,
+            "message_character_limit": 1_000,
+            "suggested_questions": [
+                "What is Elo rating in simple terms?",
+                "How have Arsenal performed over their last five completed matches?",
+                "Compare Liverpool and Manchester City over their last five matches.",
+                "What are FootCast's main model limitations?",
+            ],
+        }
+
+    def chat(self, message: str, *, session_id: str | None = None) -> dict:
+        self.chat_requests.append({"message": message, "session_id": session_id})
+        return {
+            "session_id": "00000000-0000-0000-0000-000000000001",
+            "answer": "Elo is a relative strength rating based on past results.",
+            "model": "test-language-model",
+            "evidence": [
+                {
+                    "tool_name": "get_metric_definition",
+                    "answer_mode": "explanation",
+                    "generated_at": "2026-08-01T12:00:00Z",
+                    "source": "FootCast approved documentation",
+                    "data_cutoff": None,
+                    "model_version": None,
+                    "test_season": None,
+                    "window": None,
+                    "sample_size": None,
+                    "documentation_version": "test-v1",
+                }
+            ],
+            "tool_calls": 1,
+            "latency_ms": 125,
+        }
+
+    def reset_assistant_session(self, session_id: str) -> dict:
+        self.reset_requests.append(session_id)
+        return {"session_id": session_id, "reset": True}
+
     def predict(self, home: str, away: str, match_date: str) -> dict:
         return {
             "home_team": home,
@@ -218,8 +315,9 @@ def _render_test_dashboard(client) -> None:
 
 
 def test_streamlit_dashboard_renders_against_client_contract() -> None:
+    client = _DashboardClient()
     app = AppTest.from_function(
-        _render_test_dashboard, args=(_DashboardClient(),)
+        _render_test_dashboard, args=(client,)
     ).run(timeout=10)
 
     assert not app.exception
@@ -228,6 +326,7 @@ def test_streamlit_dashboard_renders_against_client_contract() -> None:
         "Match Forecast",
         "Team Analytics",
         "Model Insights",
+        "Ask FootCast",
     ]
     assert any("FootCast" in element.value for element in app.markdown)
     assert any(
@@ -235,9 +334,86 @@ def test_streamlit_dashboard_renders_against_client_contract() -> None:
         for element in app.markdown
     )
 
-    assert len(app.button) == 1
-    app.button[0].click().run(timeout=10)
+    forecast_button = next(
+        button for button in app.button if button.label == "Generate forecast →"
+    )
+    forecast_button.click().run(timeout=10)
 
     assert not app.exception
     assert any("54.0%" in element.value for element in app.markdown)
     assert any("Highest model probability" in element.value for element in app.markdown)
+
+
+def test_streamlit_chat_renders_grounded_answer_and_evidence() -> None:
+    client = _DashboardClient()
+    app = AppTest.from_function(
+        _render_test_dashboard, args=(client,)
+    ).run(timeout=10)
+
+    assert len(app.chat_input) == 1
+    app.chat_input[0].set_value("Explain Elo").run(timeout=10)
+
+    assert not app.exception
+    assert client.chat_requests == [{"message": "Explain Elo", "session_id": None}]
+    assert any(
+        "Approved explanation" in element.value for element in app.markdown
+    )
+    assert any(
+        "get_metric_definition" in element.value for element in app.markdown
+    )
+    assert any(
+        "FootCast approved documentation" in element.value
+        for element in app.markdown
+    )
+    assert any(
+        "Language layer: test-language-model" in element.value
+        for element in app.caption
+    )
+
+
+def test_streamlit_suggested_question_and_reset_flow() -> None:
+    client = _DashboardClient()
+    app = AppTest.from_function(
+        _render_test_dashboard, args=(client,)
+    ).run(timeout=10)
+
+    suggestion = next(
+        button
+        for button in app.button
+        if button.label == "What is Elo rating in simple terms?"
+    )
+    suggestion.click().run(timeout=10)
+    assert client.chat_requests[0]["message"] == suggestion.label
+
+    reset = next(button for button in app.button if button.label == "Reset chat")
+    reset.click().run(timeout=10)
+
+    assert client.reset_requests == [
+        "00000000-0000-0000-0000-000000000001"
+    ]
+    assert not app.exception
+
+
+class _UnavailableAssistantClient(_DashboardClient):
+    def assistant_status(self) -> dict:
+        return {
+            "available": False,
+            "message_character_limit": 1_000,
+            "suggested_questions": [],
+        }
+
+    def chat(self, message: str, *, session_id: str | None = None) -> dict:
+        raise AssertionError("Unavailable assistant must not be called")
+
+
+def test_streamlit_chat_has_safe_unavailable_state() -> None:
+    app = AppTest.from_function(
+        _render_test_dashboard, args=(_UnavailableAssistantClient(),)
+    ).run(timeout=10)
+
+    assert not app.exception
+    assert len(app.chat_input) == 0
+    assert any(
+        "Conversation layer is safely offline" in element.value
+        for element in app.markdown
+    )

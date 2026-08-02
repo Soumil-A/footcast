@@ -7,12 +7,13 @@ an LLM provider, writing a system prompt, or adding a chat endpoint. It adds a
 fixed benchmark and measurable acceptance gates. It does not call an LLM,
 require an API key, alter predictions, or add a chat interface.
 
-Implementation status: checkpoints 1 through 4 are complete. Checkpoint 2
+Implementation status: checkpoints 1 through 5 are complete. Checkpoint 2
 implements the five deterministic tools described in
 [assistant_tools.md](assistant_tools.md). Checkpoint 3 adds the bounded
 [server-side client and policy](assistant_client.md). Checkpoint 4 adds the
-secured [chat API](assistant_chat_api.md). A provider benchmark run and
-Streamlit chat surface remain intentionally absent.
+secured [chat API](assistant_chat_api.md). Checkpoint 5 adds the Streamlit chat
+surface. A live provider benchmark and production model selection remain Phase
+10 work.
 
 The assistant is an explanation and access layer over deterministic FootCast
 services. It is not a second prediction model and cannot improve prediction

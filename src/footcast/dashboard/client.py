@@ -40,6 +40,27 @@ class FootCastApiClient:
     def portfolio(self) -> dict[str, Any]:
         return self._request("/analytics/portfolio")
 
+    def assistant_status(self) -> dict[str, Any]:
+        return self._request("/assistant/status")
+
+    def chat(
+        self, message: str, *, session_id: str | None = None
+    ) -> dict[str, Any]:
+        payload: dict[str, Any] = {"message": message}
+        if session_id is not None:
+            payload["session_id"] = session_id
+        return self._request(
+            "/assistant/chat",
+            method="POST",
+            payload=payload,
+            timeout=35.0,
+        )
+
+    def reset_assistant_session(self, session_id: str) -> dict[str, Any]:
+        return self._request(
+            f"/assistant/sessions/{session_id}", method="DELETE"
+        )
+
     def predict(
         self, home_team: str, away_team: str, match_date: str
     ) -> dict[str, Any]:
@@ -80,6 +101,7 @@ class FootCastApiClient:
         query: dict[str, Any] | None = None,
         method: str = "GET",
         payload: dict[str, Any] | None = None,
+        timeout: float | None = None,
     ) -> dict[str, Any]:
         url = f"{self._base_url}{path}"
         if query:
@@ -92,7 +114,10 @@ class FootCastApiClient:
             headers={"Content-Type": "application/json", "Accept": "application/json"},
         )
         try:
-            with self._opener(request, timeout=self._timeout) as response:
+            with self._opener(
+                request,
+                timeout=self._timeout if timeout is None else timeout,
+            ) as response:
                 body = response.read().decode("utf-8")
         except HTTPError as error:
             detail = self._error_detail(error)

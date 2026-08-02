@@ -109,6 +109,7 @@ status, availability, typed source metadata, follow-up context, the ten-turn
 cap, reset and expiration, IP and session limits, request/body validation,
 redacted errors, failed-session cleanup, and the disabled environment path.
 
-The next Phase 9 checkpoint will add the Streamlit chat panel, suggested
-questions, evidence cards, observed/prediction labels, and reset control. Live
-benchmark execution and model comparison remain Phase 10 work.
+Checkpoint 5 now adds the Streamlit chat panel, suggested questions, evidence
+cards, observed/prediction labels, progressive final-answer rendering, and
+reset control. Live benchmark execution and model comparison remain Phase 10
+work.

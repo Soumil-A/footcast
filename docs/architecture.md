@@ -209,3 +209,10 @@ metadata beside the generated answer. Message/body limits, answer limits,
 per-IP and per-session throttles, safe error translation, expiration, and reset
 are enforced in code. The route remains unavailable unless both model and key
 are configured on the server; no assistant state or secret enters Streamlit.
+
+Checkpoint 5 adds the `Ask FootCast` presentation layer. Streamlit stores only
+the API session UUID and browser-visible user/assistant messages, sends every
+question through `FootCastApiClient`, and renders structured evidence returned
+by FastAPI. Suggested prompts, answer-mode labels, safe unavailable behavior,
+and reset contain no direct provider or analytics access. The existing Render
+deployment remains the single hosting path.
