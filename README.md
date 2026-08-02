@@ -17,11 +17,14 @@ wake after inactivity.
 
 ## Current status
 
-Phases 1 through 8 are complete. Phase 9 checkpoints 1 through 5 define the
+Phases 1 through 9 are complete. Phase 9 checkpoints 1 through 5 define the
 assistant benchmark, implement five typed read-only tools, add a bounded
 server-side provider client and safety policy, expose a secured chat API, and
-add the Streamlit chat experience. Live model evaluation and production
-assistant configuration remain intentionally deferred to Phase 10.
+add the Streamlit chat experience. Phase 10 now adds the fixed live-evaluation,
+human-review, cost, latency, secret, and production-decision gate. Its zero-cost
+preflight passes, but live model comparison and production assistant
+configuration remain intentionally blocked until a private provider key and an
+explicit evaluation budget are supplied.
 Football-Data acquisition is checksum-pinned and repeatable, raw files are
 immutable, eleven
 seasons pass schema and content validation, and the canonical match table can
@@ -546,6 +549,22 @@ reset. The dashboard still contains no provider package, key, or model logic.
 On Render the tab safely reports that conversation is offline until Phase 10
 benchmarks a model and the API service receives private environment
 configuration. See the [dashboard contract](docs/dashboard.md).
+
+## Phase 10 evaluation gate
+
+`footcast-assistant-eval` runs a zero-cost preflight by default and generates
+the versioned [assistant evaluation report](reports/assistant_evaluation.md).
+The live mode requires at least two explicitly priced model candidates and a
+positive maximum total budget. It records exact tool calls, typed evidence,
+latency, tokens, estimated cost, and complete outputs for human review.
+
+All 42 cases must be manually reviewed. Reviews can be applied to the saved
+provider results without paying to rerun the benchmark. A candidate must pass
+every routing, evidence, correctness, grounding, refusal, uncertainty, source,
+latency, cost, tool-limit, and secret gate. Production remains disabled when
+any evidence is missing. See the
+[assistant model card](docs/assistant_model_card.md) for the complete contract
+and live-run procedure.
 
 ## Responsible use
 

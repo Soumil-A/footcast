@@ -141,6 +141,8 @@ Leakage-safe pre-match features (Phase 3 complete)
 - `footcast.assistant.client`: bounded provider-neutral tool orchestration
 - `footcast.assistant.openai_provider`: lazy server-side Responses API adapter
 - `footcast.assistant.settings`: validated environment configuration
+- `footcast.assistant.evaluate`: fixed benchmark, human review, candidate
+  comparison, cost budget, and fail-closed production gate
 - `footcast.api.chat`: typed sessions, provenance responses, and abuse controls
 - `footcast.api.main`: validated FastAPI schemas, lifecycle, and endpoints
 - `footcast.dashboard.client`: defensive HTTP client and error translation
@@ -216,3 +218,20 @@ question through `FootCastApiClient`, and renders structured evidence returned
 by FastAPI. Suggested prompts, answer-mode labels, safe unavailable behavior,
 and reset contain no direct provider or analytics access. The existing Render
 deployment remains the single hosting path.
+
+## Phase 10 release boundary
+
+Phase 10 wraps the optional language layer in a separate release gate. The
+evaluator replays the frozen 42-case benchmark against at least two model
+candidates, recording exact validated tool calls, typed evidence, answers,
+latency, token usage, and estimated cost.
+
+Deterministic checks verify routing, evidence, provenance, tool-call limits,
+prediction warnings, and high-risk refusal behavior. One model-specific human
+review per case checks factual correctness, grounding, uncertainty, and safety.
+Saved provider results can be rescored after review without another paid run.
+
+Only candidates passing every fixed check are eligible. The lowest-cost
+eligible model is selected, with P95 latency as the tie-breaker. If no candidate
+passes—or a key, price, review, or result is absent—the assistant stays offline
+while the deterministic prediction and analytics routes remain available.

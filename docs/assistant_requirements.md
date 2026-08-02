@@ -12,8 +12,10 @@ implements the five deterministic tools described in
 [assistant_tools.md](assistant_tools.md). Checkpoint 3 adds the bounded
 [server-side client and policy](assistant_client.md). Checkpoint 4 adds the
 secured [chat API](assistant_chat_api.md). Checkpoint 5 adds the Streamlit chat
-surface. A live provider benchmark and production model selection remain Phase
-10 work.
+surface. Phase 10 adds the fail-closed runner and
+[assistant model card](assistant_model_card.md). The live provider comparison,
+human review, and production model selection remain pending until a private key
+and explicit evaluation budget are approved.
 
 The assistant is an explanation and access layer over deterministic FootCast
 services. It is not a second prediction model and cannot improve prediction
